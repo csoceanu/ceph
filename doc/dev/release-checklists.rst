@@ -1,3 +1,4 @@
+--------------------
 ==================
 Release checklists
 ==================
@@ -47,7 +48,7 @@ Scripts
 Misc
 ~~~~
 - [x] update src/ceph-volume/ceph_volume/__init__.py (`__release__`)
-- [x] update src/cephadm/cephadmlib/constants.py (`DEFAULT_IMAGE_RELEASE` and `LATEST_STABLE_RELEASE` to X)
+- [x] update src/cephadm/cephadmlib/constants.py (`DEFAULT_IMAGE_RELEASE`, `LATEST_STABLE_RELEASE` to X, and `MIN_PODMAN_VERSION`)
 
 Feature bits
 ------------
@@ -153,3 +154,5 @@ First stable release
 - [ ] activate latest release in readthedocs, as described in `the readthedocs
   documentation <https://docs.readthedocs.io/en/stable/versions.html>`_ 
 - [ ] add release and supported distros to tables in `doc/start/os-recommendations.rst`
+
+--------------------
