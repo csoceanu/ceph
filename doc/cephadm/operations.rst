@@ -401,6 +401,22 @@ You can disable this health warning by running the following command:
 
   ceph config set mgr mgr/cephadm/warn_on_failed_host_check false
 
+.. _cephadm_container_health_checks:
+
+Container Health Checks
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Cephadm automatically monitors the health of all managed containers. Health
+checks run periodically to detect and report container issues.
+
+The following configuration options control this behavior:
+
+- ``CONTAINER_HEALTH_CHECK_ENABLED``: Enables or disables automated health checks.
+- ``CONTAINER_HEALTH_CHECK_INTERVAL``: Seconds between health checks (default: 30).
+- ``CONTAINER_HEALTH_CHECK_TIMEOUT``: Seconds before a health check times out (default: 10).
+- ``CONTAINER_HEALTH_CHECK_RETRIES``: Number of failed checks before marking a container as unhealthy (default: 3).
+- ``CONTAINER_RESTART_ON_FAILURE``: Automatically restarts unhealthy containers.
+
 Cluster Configuration Checks
 ----------------------------
 Cephadm periodically scans each host in the cluster in order

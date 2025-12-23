@@ -82,6 +82,9 @@ This table shows the operating systems that support Ceph's official container im
 
 - **H**: Ceph tests this distribution as a container host.
 
+Cephadm requires Podman 3.0.0 or later for improved security and rootless
+container support.
+
 .. _CRUSH Tunables: ../../rados/operations/crush-map#tunables
 
 .. _Mounting CephFS using Kernel Driver: ../../cephfs/mount-using-kernel-driver#which-kernel-version
