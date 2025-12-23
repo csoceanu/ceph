@@ -25,7 +25,9 @@ LOG_DIR_MODE = 0o770
 DATA_DIR_MODE = 0o700
 DEFAULT_MODE = 0o600
 CONTAINER_INIT = True
-MIN_PODMAN_VERSION = (2, 0, 2)
+# Minimum Podman version - updated to require Podman 3.0+ for better security
+# and rootless container support. See install documentation for details.
+MIN_PODMAN_VERSION = (3, 0, 0)
 CGROUPS_SPLIT_PODMAN_VERSION = (2, 1, 0)
 PIDS_LIMIT_UNLIMITED_PODMAN_VERSION = (3, 4, 1)
 CUSTOM_PS1 = r'[ceph: \u@\h \W]\$ '
@@ -37,3 +39,15 @@ NO_DEPRECATED = False
 UID_NOBODY = 65534
 GID_NOGROUP = 65534
 DAEMON_FAILED_ERROR = 17
+
+# Container Health Monitoring --------------------------------------------------
+# These settings control automated container health checks for all Ceph daemons.
+# Health checks run periodically to detect and report container issues early.
+CONTAINER_HEALTH_CHECK_ENABLED = True
+CONTAINER_HEALTH_CHECK_INTERVAL = 30  # seconds between health checks
+CONTAINER_HEALTH_CHECK_TIMEOUT = 10   # seconds before health check times out
+CONTAINER_HEALTH_CHECK_RETRIES = 3    # failed checks before marking unhealthy
+CONTAINER_RESTART_ON_FAILURE = True   # auto-restart unhealthy containers
+CONTAINER_RESTART_MAX_ATTEMPTS = 5    # max restart attempts within window
+CONTAINER_RESTART_WINDOW = 300        # restart attempt window in seconds
+# ------------------------------------------------------------------------------
