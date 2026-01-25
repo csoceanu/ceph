@@ -49,3 +49,5 @@ support older versions of Ceph.
     Client Setup <client-setup>
     troubleshooting
     Cephadm Feature Planning <../dev/cephadm/index>
+
+.. Added for testing index regeneration
