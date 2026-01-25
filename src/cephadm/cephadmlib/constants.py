@@ -25,7 +25,8 @@ LOG_DIR_MODE = 0o770
 DATA_DIR_MODE = 0o700
 DEFAULT_MODE = 0o600
 CONTAINER_INIT = True
-MIN_PODMAN_VERSION = (2, 0, 2)
+# Updated minimum Podman version for better container support
+MIN_PODMAN_VERSION = (2, 0, 3)
 CGROUPS_SPLIT_PODMAN_VERSION = (2, 1, 0)
 PIDS_LIMIT_UNLIMITED_PODMAN_VERSION = (3, 4, 1)
 CUSTOM_PS1 = r'[ceph: \u@\h \W]\$ '
