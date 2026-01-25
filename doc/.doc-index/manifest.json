@@ -51,7 +51,7 @@
       }
     },
     "cephadm": {
-      "built": "2026-01-25T09:27:37.842888",
+      "built": "2026-01-25T13:12:26.888501",
       "doc_hashes": {
         "cephadm/upgrade.rst": "b4fa98229ae2a07ceb5c6bea94e350c9c73e163e69a2bd82ddd2bd9a50c4e1ab",
         "cephadm/compatibility.rst": "61643399a9b192e09fd1e61048d36619d5c363d1c6a0b1f7b3e961521a606d58",
@@ -60,7 +60,7 @@
         "cephadm/client-setup.rst": "ba3460c68217e94559d8bc443469ae63817964fa85059488cd8064eeaef886f3",
         "cephadm/host-management.rst": "871e383e0745112d6b73224ec77d5fb24219f85e43485e6ad2206c313b0e8b6d",
         "cephadm/adoption.rst": "19e66da8d49e5e0c0995f3fb4e09ea5889106b281908dac76b8f5f6001e522af",
-        "cephadm/index.rst": "06ba87a9537bdc6655699ebde846fb93bb3271571f9fa9575996f1e63b763c89",
+        "cephadm/index.rst": "9d945ad4a3949b9cbc80b02b803f1f51de5233dc65d520f70b7bf059219f7480",
         "cephadm/operations.rst": "ed1111b6933f0daa6fe692dde5724644e7d70e7272fdfbe204ea45fd031a71cb",
         "cephadm/install.rst": "303afafd827be5099964cd90f6857522bad176b357620c3403ee4ae2e51db7ba",
         "cephadm/services/rgw.rst": "2bc63628c3e91260479471d3cbd6ea01f5569a97c73aab504b95818b7a21db98",
@@ -673,5 +673,5 @@
       }
     }
   },
-  "updated": "2026-01-25T09:28:10.090768"
+  "updated": "2026-01-25T13:12:26.916362"
 }
