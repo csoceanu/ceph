@@ -77,8 +77,8 @@
       "summary_file": "rados-operations-erasure-code.rst.summary.md"
     },
     "cephadm/install.rst": {
-      "hash": "303afafd827be5099964cd90f6857522bad176b357620c3403ee4ae2e51db7ba",
-      "generated": "2026-01-26T09:38:25.079142",
+      "hash": "3340a5cdbe747488a2038ea79328ae485b53395d4e61d053b54fdcdd0c111c96",
+      "generated": "2026-01-26T10:27:40.495857",
       "summary_file": "cephadm-install.rst.summary.md"
     },
     "rados/operations/crush-map.rst": {
@@ -302,5 +302,5 @@
       "summary_file": "install-manual-freebsd-deployment.rst.summary.md"
     }
   },
-  "updated": "2026-01-26T09:48:11.889237"
+  "updated": "2026-01-26T10:27:40.495891"
 }
