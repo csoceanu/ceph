@@ -275,7 +275,32 @@
       "hash": "83eca290e6464b7765d4da13f7ff2d7826454c3527012c32f339adbe10efb610",
       "generated": "2026-01-26T09:39:19.572157",
       "summary_file": "man-8-cephadm.rst.summary.md"
+    },
+    "start/documenting-ceph.rst": {
+      "hash": "b35b863d9397df4d844a29ea53ee07dc0e0db7e42a8a7fc35523811966df3471",
+      "generated": "2026-01-26T09:48:10.384716",
+      "summary_file": "start-documenting-ceph.rst.summary.md"
+    },
+    "install/get-packages.rst": {
+      "hash": "f5f4699e5c57dfe3d81a3c1de58bb5eb78696c4ec0fa33dcdcd00a5454b4913d",
+      "generated": "2026-01-26T09:48:10.811660",
+      "summary_file": "install-get-packages.rst.summary.md"
+    },
+    "install/manual-deployment.rst": {
+      "hash": "58bf7a91a1769082b8be3b6d93993cfe44812959872d8fbf4a3998691affd225",
+      "generated": "2026-01-26T09:48:11.218049",
+      "summary_file": "install-manual-deployment.rst.summary.md"
+    },
+    "start/hardware-recommendations.rst": {
+      "hash": "9a646bc486efa0aac79446afdca56755b8b599737ce301ef99601309f30212ff",
+      "generated": "2026-01-26T09:48:11.301827",
+      "summary_file": "start-hardware-recommendations.rst.summary.md"
+    },
+    "install/manual-freebsd-deployment.rst": {
+      "hash": "d1902d6f0b65602a0274d394cce3e5c80416e7eff8156e5e051b4e499586493f",
+      "generated": "2026-01-26T09:48:11.889205",
+      "summary_file": "install-manual-freebsd-deployment.rst.summary.md"
     }
   },
-  "updated": "2026-01-26T09:39:19.572183"
+  "updated": "2026-01-26T09:48:11.889237"
 }
