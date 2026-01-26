@@ -1,62 +1,64 @@
 # CEPHADM Documentation Index
 
 ## Overview
-This documentation area covers **cephadm**, the native container-based orchestrator for Ceph. It details the full lifecycle management of a Ceph cluster, including bootstrapping, host management, service deployment (daemons), automated upgrades, monitoring integration, and troubleshooting in a containerized environment using Podman or Docker.
+This documentation area covers **cephadm**, the native management and orchestration tool for Ceph clusters starting from version 15.2.0 (Octopus). It details the full lifecycle management of a cluster, including bootstrapping, host management, daemon deployment via service specifications, automated upgrades, and integrated monitoring and troubleshooting.
 
 ## Files Summary
-*   **upgrade.rst**: Procedures for automated and staggered upgrades, MDS upgrade safety (fail_fs), and troubleshooting upgrade failures.
-*   **compatibility.rst**: Support matrices for Podman versions and the current stability status of various cephadm features.
-*   **certmgr.rst**: Management of the Root CA, self-signed and user-provided SSL certificates, and service-specific certificate bindings.
-*   **troubleshooting.rst**: Tools for debugging containerized daemons, including log access, SSH key recovery, and using GDB/coredumps within containers.
-*   **client-setup.rst**: Basic configuration for client hosts, including minimal `ceph.conf` generation and keyring distribution.
-*   **host-management.rst**: CLI commands for adding/removing hosts, managing host labels (like `_admin` or `_no_schedule`), and OS tuning profiles.
-*   **adoption.rst**: Workflow for converting existing legacy clusters (deployed via ceph-ansible/deploy) to cephadm management.
-*   **index.rst**: Main entry point and table of contents for the cephadm documentation suite.
-*   **operations.rst**: Day-2 operations including daemon control (start/stop/redeploy), log destination management, and cluster health checks.
-*   **install.rst**: Prerequisites and multi-method bootstrap instructions (distribution packages vs. curl) for new clusters.
-*   **services/rgw.rst**: Deployment of Object Gateways, multisite configurations, and high-availability ingress (HAProxy/Keepalived).
-*   **services/snmp-gateway.rst**: Integration with Prometheus Alertmanager to forward SNMP notifications (V2c/V3) to management platforms.
-*   **services/monitoring.rst**: Setup of the Prometheus/Grafana stack, secure monitoring (TLS/Auth), and centralized logging with Loki/Alloy.
-*   **services/mds.rst**: Deployment of Metadata Servers for CephFS via volumes and service specs.
-*   **services/mgmt-gateway.rst**: Deployment of the Nginx-based management gateway for unified, secure access to the dashboard and monitoring.
-*   **services/oauth2-proxy.rst**: Configuration of external Identity Providers (IDPs) using OIDC for authenticated access to Ceph apps.
-*   **services/smb.rst**: Deployment of Samba containers for SMB share access to CephFS, including clustering (CTDB) and AD integration.
-*   **services/iscsi.rst**: Deployment and configuration of iSCSI gateways and target parameters.
-*   **services/nfs.rst**: NFS Ganesha deployment, high-availability ingress setup, and HAProxy protocol support.
-*   **services/tracing.rst**: Deployment of Jaeger tracing services (Agent, Collector, Query) and ElasticSearch integration.
-*   **services/mgr.rst**: Management of MGR daemons, network binding, and co-location policies.
-*   **services/osd.rst**: Storage device management, OSD creation/removal, drive groups (OSDSpecs), and memory autotuning.
-*   **services/mon.rst**: Monitor daemon deployment, public network configuration, and CRUSH location assignment for tiebreakers.
-*   **services/index.rst**: Overview of service and daemon status monitoring and the schema for YAML service specifications.
-*   **services/custom-container.rst**: Specification format for deploying arbitrary non-Ceph containers, including init-containers and volume mounts.
+*   **upgrade.rst**: Procedures for automated and staggered Ceph upgrades, monitoring progress, and handling upgrade-specific health alerts.
+*   **compatibility.rst**: Support matrices for Podman versions and a status report on the stability of developing features.
+*   **certmgr.rst**: Management of the Root CA and SSL/TLS certificates for cluster services (Self-signed vs. User-provided).
+*   **troubleshooting.rst**: Guide for debugging containerized daemons, recovering quorum, manual manager deployment, and using gdb/core dumps.
+*   **client-setup.rst**: Basic configuration for client hosts, including minimal `ceph.conf` and keyring generation.
+*   **host-management.rst**: Operations for adding, removing, draining, and labeling hosts, plus OS-level tuning via sysctl profiles.
+*   **adoption.rst**: Workflow for converting legacy clusters (deployed via ceph-ansible, DeepSea, etc.) to cephadm management.
+*   **index.rst**: Main landing page and table of contents for the cephadm documentation section.
+*   **operations.rst**: Day-to-day management tasks including daemon control (start/stop/redeploy), logging configurations, and custom health checks.
+*   **install.rst**: Prerequisites and bootstrap procedures for new clusters, including air-gapped and custom SSH configurations.
+*   **services/rgw.rst**: Deployment of RGW daemons, multisite configurations, and high availability via the ingress service.
+*   **services/snmp-gateway.rst**: Integration with SNMP management platforms for alert forwarding from Prometheus.
+*   **services/monitoring.rst**: Setup of the Prometheus/Grafana/Alertmanager stack, Loki/Alloy logging, and security/template customization.
+*   **services/mds.rst**: Deployment of Metadata Servers (MDS) for CephFS volumes.
+*   **services/mgmt-gateway.rst**: Configuration of the Nginx-based management gateway for unified, secure access to dashboards.
+*   **services/oauth2-proxy.rst**: Integration with external Identity Providers (IDPs) via OIDC for cluster authentication.
+*   **services/smb.rst**: Deployment and configuration of Samba containers for SMB share hosting on CephFS.
+*   **services/iscsi.rst**: Deployment of iSCSI gateways and target configuration.
+*   **services/nfs.rst**: Deployment of NFS Ganesha gateways and high-availability ingress configurations.
+*   **services/tracing.rst**: Jaeger tracing backend deployment using Elasticsearch.
+*   **services/mgr.rst**: Specifics for the Manager (MGR) service, including co-location and network binding.
+*   **services/osd.rst**: Comprehensive OSD lifecycle management, including device scanning, OSDSpecs (DriveGroups), and memory autotuning.
+*   **services/mon.rst**: Monitor (MON) deployment, network subnetting, and CRUSH location management.
+*   **services/index.rst**: Overview of service status, daemon placement logic (count, label, patterns), and YAML service specifications.
+*   **services/custom-container.rst**: Specification format for deploying non-Ceph arbitrary containers with init-containers support.
 
 ## Code Changes That Would Require Documentation Updates
-*   **CLI Syntax Changes**: Any modification to `ceph orch` subcommands or `cephadm` binary arguments (e.g., adding a flag to `bootstrap` or `upgrade`).
-*   **Service Spec Schema**: Adding or removing fields in the `ServiceSpec` (e.g., new attributes in `RGWSpec`, `NFSGaneshaSpec`, or `OSDSpec`).
-*   **Daemon Deployment Logic**: Changes to the order of operations in `cephadm` (e.g., changing the upgrade sequence or how `fail_fs` behaves).
-*   **New Service Types**: Introduction of new managed services (e.g., a new exporter or gateway type).
-*   **Container Runtime Support**: Changes to how `cephadm` interacts with Podman/Docker or updates to the Podman compatibility version matrix.
-*   **Internal Configuration Keys**: Changes to `mgr/cephadm/` options (e.g., `autotune_memory_target_ratio` or `container_image_...`).
-*   **Certificate/Security Logic**: Modifications to `certmgr` behavior, automated rotation policies, or new `mgmt-gateway` security features.
-*   **Host/Label Logic**: Changes to special host labels (e.g., adding a new `_no_...` label) or how `_admin` distributes files.
-*   **Health Checks**: Adding, removing, or changing the threshold for `CEPHADM_` health warnings and configuration checks.
-*   **Logging/Monitoring Architecture**: Changing default container images (Prometheus, Grafana) or modifying the logging flow (Journald vs. File).
+*   **CLI Changes**: Adding, renaming, or removing commands under `ceph orch ...` or `cephadm ...`.
+*   **Service Specification Schema**: Changes to the YAML structure for any `ServiceSpec` (e.g., adding `extra_container_args`, `networks`, or service-specific fields like `rgw_frontend_port`).
+*   **Daemon Deployment Logic**: Modifications to how cephadm selects hosts (placement logic), handles co-location, or orders daemon restarts during upgrades.
+*   **Container Images**: Changes to default container images (Prometheus, Grafana, Nginx, etc.) or the logic for pulling/mapping versions.
+*   **Dependency Requirements**: Changes in minimum required versions for Python, Podman, Docker, or Linux kernel versions.
+*   **Health Checks**: Addition of new `CEPHADM_` health check codes or modifications to existing check logic (e.g., MTU or Linkspeed checks).
+*   **Hardware/Storage Handling**: Changes in how `ceph-volume` scans devices or how `libstoragemgmt` interacts with disk LEDs and health status.
+*   **Security/Auth Modules**: Modifications to `certmgr` behavior, OIDC/OAuth2 integration flows, or Nginx proxy configurations.
+*   **Support for New Services**: Code implementing management for new daemon types (e.g., adding a new `service_type`).
+*   **Bootstrap/Install Logic**: Changes to the `cephadm bootstrap` flags, SSH key generation, or initial cluster setup steps.
 
 ## Key Technical Concepts
-*   **Orchestrator CLI**: `ceph orch apply`, `ceph orch ls`, `ceph orch ps`, `ceph orch host`.
-*   **Bootstrap**: `cephadm bootstrap`, `--mon-ip`, `--ssh-user`, `--registry-json`.
-*   **Service Specs**: Declarative YAML files defining `service_type`, `placement`, `networks`, and `spec`.
-*   **Placement Specs**: `host_pattern`, `label`, `count`, `count_per_host`.
-*   **Upgrade Mechanisms**: Staggered upgrades, `--ceph-version`, `--image`, `fail_fs`.
-*   **Storage Management**: `ceph-volume` integration, Drive Groups (OSDSpec), `all-available-devices`, `zap`.
-*   **Networking**: `public_network`, `cluster_network`, `virtual_ip` (VIP), CIDR notation.
-*   **Security**: `certmgr`, Root CA, self-signed certs, `oauth2-proxy`, `mgmt-gateway`.
-*   **Monitoring Stack**: Prometheus, Grafana, Alertmanager, Node-exporter, Loki, Alloy.
-*   **Troubleshooting Tools**: `cephadm shell`, `cephadm logs`, `cephadm enter`, `ceph -W cephadm`.
+*   **Orchestrator CLI**: `ceph orch` commands (ls, ps, apply, device ls, host add, upgrade).
+*   **Service Specification (Spec)**: YAML-based declarations for MDS, RGW, OSD, etc.
+*   **Bootstrap**: The initial creation of a cluster from a single node.
+*   **Placement Spec**: Logic for deploying daemons based on `hosts`, `labels`, `count`, or `host_pattern`.
+*   **DriveGroups / OSDSpec**: Filters for automating OSD creation based on device properties (size, model, type).
+*   **Ingress Service**: High availability wrapper for RGW/NFS using Keepalived and HAProxy.
+*   **Adoption**: Converting "legacy" (non-containerized) daemons to cephadm management.
+*   **Drain/Maintenance Mode**: Safely removing daemons or pausing a host for hardware service.
+*   **Certmgr**: Cephadm's internal certificate authority and rotation system.
+*   **Staggered Upgrade**: Limiting upgrade scope to specific daemon types, services, or hosts.
 
 ## Related Components
-*   **MGR Modules**: `cephadm`, `orchestrator`, `prometheus`, `dashboard`, `rgw`, `nfs`, `smb`.
+*   **ceph-mgr modules**: `cephadm`, `prometheus`, `dashboard`, `nfs`, `smb`.
 *   **Container Runtimes**: Podman, Docker.
-*   **System Tools**: Systemd, Journald, SSH, LVM2, Chrony/NTP.
-*   **Ceph Daemons**: MON, MGR, OSD, MDS, RGW.
-*   **External Gateways**: HAProxy, Keepalived, Nginx, SNMP Gateway, Jaeger.
+*   **Storage Tools**: `ceph-volume`, `libstoragemgmt`, LVM2.
+*   **Networking**: Keepalived, HAProxy, Nginx.
+*   **Monitoring/Observability**: Prometheus, Grafana, Alertmanager, Loki, Alloy, Jaeger, SNMP.
+*   **External IDPs**: Dex, Keycloak (via OAuth2-proxy).
+*   **Protocols**: S3/Swift (RGW), NFSv4, SMB, iSCSI.
