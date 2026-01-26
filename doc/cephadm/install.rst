@@ -1,3 +1,5 @@
+.. Test comment to verify index/summary regeneration - Jan 2026
+
 .. _cephadm_deploying_new_cluster:
 
 ==========================================
