@@ -1,44 +1,43 @@
-This analysis covers the `cephadm/troubleshooting.rst` file, which serves as the primary diagnostic guide for Ceph clusters managed by the `cephadm` orchestrator.
+This documentation provides a technical guide for troubleshooting Ceph clusters deployed using **cephadm**, specifically focusing on the challenges of managing containerized daemons versus traditional package-based installations.
 
 ### 1. Primary Purpose
-The file provides a comprehensive guide for diagnosing and resolving issues within a **containerized** Ceph environment. It acknowledges that troubleshooting container-managed daemons (via `podman` or `docker`) requires different methodologies compared to traditional package-based installations, specifically focusing on log access, event tracking, and manual daemon intervention.
+The file serves as the definitive reference for diagnosing and resolving failures in a **cephadm-managed** Ceph cluster. It outlines the specific workflows required to interact with containerized services, manage the orchestrator's behavior during crises, and recover from critical states like loss of monitor quorum.
 
 ### 2. Key Topics Covered
-*   **Operational Control**: How to pause or completely disable the `cephadm` orchestrator to stop it from making automated changes during a crisis.
-*   **Event Logging**: Viewing per-service and per-daemon events stored within the Ceph orchestrator for high-level failure analysis.
-*   **Log Management**: Accessing daemon logs via `journald` and the `cephadm logs` command.
-*   **Systemd Integration**: Interacting with the underlying host systemd units that manage the containers.
-*   **Connectivity Troubleshooting**: Resolving SSH authentication and network configuration (CIDR/public_network) errors.
-*   **Manual Recovery**: 
-    *   Accessing admin sockets (`asok`) inside containers.
-    *   Restoring monitor quorum when `cephadm` is non-functional.
-    *   Manually deploying a Manager (`mgr`) daemon if all managers are lost.
-*   **Advanced Debugging**: Configuring core dumps, using `gdb` within container shells, and attaching debuggers to live containerized processes.
+*   **Orchestrator Control**: Commands to pause or disable the cephadm background processes to prevent interference during manual troubleshooting.
+*   **Event Logging**: How to access metadata-rich events at both the service level and individual daemon level.
+*   **Log Management**: Transitioning from `/var/log/` to `journald` and using `cephadm logs` to fetch logs across hosts.
+*   **Systemd Integration**: Mapping containerized services to systemd units on the host.
+*   **Connectivity & Networking**: Troubleshooting SSH authentication between the manager and hosts, and resolving CIDR/public network inference errors.
+*   **Advanced Recovery**: 
+    *   Manual deployment of a Manager (MGR) when none exist.
+    *   Restoring Monitor (MON) quorum by manually editing the monmap.
+*   **Deep Debugging**: Procedures for capturing core dumps, using `gdb` inside specialized debug containers, and attaching to live processes.
 
 ### 3. Technical Keywords
-*   **Commands**: `ceph orch pause`, `ceph orch ls`, `ceph orch ps`, `cephadm logs`, `cephadm shell`, `cephadm enter`, `systemctl`, `journalctl`.
-*   **Configuration/APIs**: `mgr/cephadm/ssh_identity_key`, `public_network`, `mon_network`, `unit.run`, `asok` (admin socket).
-*   **Tools**: `podman`, `docker`, `jq`, `gdb`, `systemd-coredump`, `ceph-monstore-tool`.
-*   **Files/Paths**: `/var/lib/ceph/<fsid>/`, `/var/run/ceph/`, `/var/lib/systemd/coredump`.
+*   **Orchestrator Commands**: `ceph orch pause`, `ceph orch ls`, `ceph orch ps`, `ceph orch set backend`.
+*   **Cephadm CLI**: `cephadm logs`, `cephadm shell`, `cephadm enter`, `cephadm unit`, `cephadm ls`.
+*   **Configuration Keys**: `mgr/cephadm/ssh_identity_key`, `mgr/cephadm/pause`, `public_network`.
+*   **Tools**: `journalctl`, `podman`/`docker`, `jq`, `gdb`, `systemd-coredump`, `ceph-monstore-tool`.
+*   **Files/Paths**: `/var/lib/ceph/<fsid>/<service>/unit.run`, `authorized_keys`, `ceph.cephadm.log`.
 
 ### 4. Target Audience
-*   **Ceph Cluster Administrators**: Responsible for maintaining cluster health and uptime.
-*   **SRE/DevOps Engineers**: Managing the container infrastructure and automation.
-*   **Technical Support Engineers**: Investigating specific daemon failures or connectivity issues.
+*   **Ceph Administrators**: Primary users responsible for cluster health.
+*   **Site Reliability Engineers (SREs)**: Users automating recovery or monitoring.
+*   **Support Engineers**: Users needing to perform "post-mortem" analysis on failed daemons or core dumps.
 
 ### 5. Related Concepts
-*   **Ceph Orchestrator (`ceph orch`)**: The high-level abstraction layer that `cephadm` implements.
-*   **Container Runtime**: The underlying technology (`podman` or `docker`) used to execute Ceph daemons.
-*   **RADOS**: The underlying storage layer, particularly regarding monitor quorum and admin sockets.
-*   **Systemd**: The host-level service manager that orchestrates container lifecycles.
+*   **Container Orchestration**: Relates to how Ceph encapsulates logic within Podman/Docker.
+*   **Systemd**: Relates to host-level service management and lifecycle.
+*   **RADOS**: Relates to low-level monitoring via admin sockets and monitor store tools.
+*   **SSH/Security**: Relates to the authentication layer required for the orchestrator to manage remote nodes.
 
 ---
 
-### Update Triggers for AI Systems
-This file should be reviewed and updated if any of the following code or architectural changes occur:
-*   **CLI Changes**: If `ceph orch` or `cephadm` command-line arguments are renamed, deprecated, or added (e.g., changes to log retrieval flags).
-*   **Log Location Shifting**: If the default logging backend moves away from `journald` or the directory structure in `/var/lib/ceph/` is altered.
-*   **Security/SSH Logic**: If the method `cephadm` uses to distribute keys or connect to hosts changes (e.g., moving away from `execnet` or changing SSH key storage keys).
-*   **Container Workflow**: If the way containers are launched (the `unit.run` wrapper logic) or the recommended container engine (moving from `podman` to a different runtime) changes.
-*   **Deployment Logic**: If the minimum requirements for a manual Manager or Monitor recovery change (e.g., new required fields in the `config-json.json`).
-*   **Debug Toolchain**: If the base OS of the Ceph containers changes (e.g., switching from `dnf` to another package manager), which would invalidate the "Running the Debugger" instructions.
+### Maintenance Triggers for AI (Update Indicators)
+This file should be updated if code changes occur in the following areas:
+*   **Logging Backend**: If cephadm moves away from `journald` or changes the default log path.
+*   **CLI Syntax**: Changes to `ceph orch` or `cephadm` subcommands or output formats (especially YAML structure).
+*   **Dependency Changes**: If the container engine changes (e.g., moving from Podman to a different runtime) or if the base OS for containers changes (affecting `dnf` or `apt` commands in debugging).
+*   **Recovery Procedures**: If the logic for forming a Monitor quorum or deploying a "bootstrap" Manager daemon changes.
+*   **File System Hierarchy**: Changes to where `unit.run` files or admin sockets (`.asok`) are stored on the host.

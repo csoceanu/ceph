@@ -1,43 +1,41 @@
-This documentation file, `osd-config-ref.rst`, serves as the primary technical reference for configuring **Ceph Object Storage Daemons (OSDs)**. It bridges the gap between raw code parameters and operational deployment, detailing how to tune OSD behavior for performance, reliability, and resource management.
+This documentation file, `osd-config-ref.rst`, serves as the primary technical reference for configuring **Ceph Object Storage Daemons (OSDs)**. It acts as a comprehensive manual for tuning OSD performance, reliability, and resource allocation.
 
 ### 1. Primary Purpose
-The file provides a comprehensive guide to the configuration variables (`confval`) available for Ceph OSDs. It explains the hierarchy of configuration (global `[osd]` vs. specific `[osd.ID]`), provides context for legacy versus modern storage backends (Filestore vs. BlueStore), and defines the operational mechanics of data integrity and Quality of Service (QoS).
+The file documents the available configuration options for Ceph OSDs. It explains how OSDs are identified, how they interact with the rest of the cluster, and provides a reference for parameters that control hardware utilization, data integrity (scrubbing), and I/O prioritization.
 
 ### 2. Key Topics Covered
-*   **General Configuration**: Basic identification (UUIDs), data paths, and the incremental numbering convention (e.g., `osd.0`).
-*   **Storage Backends**: 
-    *   **Filestore (Legacy)**: Detailed documentation on journals, file system mount options (XFS), and mkfs settings.
-    *   **BlueStore (Current)**: Mentioned as the preferred default, though many settings in this specific file focus on tuning the I/O path.
-*   **Data Integrity (Scrubbing)**: Differentiates between "light" and "deep" scrubbing; provides parameters to control timing, frequency, and resource impact.
-*   **Operations & QoS (mClock)**: Extensive detail on the `dmClock` algorithm, discussing I/O sharding, cost-based resource allocation, and priority buckets (client vs. recovery vs. scrub).
-*   **Cluster Maintenance**: 
-    *   **Backfilling**: Managing data rebalancing when OSDs are added or removed.
-    *   **Recovery**: Managing data restoration after a crash or peering event.
-*   **OSD Maps**: Management of the map cache and epoch deduplication to maintain performance as the cluster scales.
+*   **General Configuration**: OSD naming conventions (e.g., `osd.0`), configuration inheritance via `[osd]` global sections versus daemon-specific sections, and data/journal paths.
+*   **Backend Storage (Filestore vs. BlueStore)**: Guidance on legacy Filestore settings (journaling, XFS mount options) while emphasizing that BlueStore is the modern default.
+*   **Data Integrity (Scrubbing)**: Detailed explanation of "light" vs. "deep" scrubbing and the parameters used to control their frequency and performance impact.
+*   **Quality of Service (mClock)**: A deep dive into the **dmClock algorithm**, explaining how Ceph manages I/O priorities (client ops, recovery, scrubbing) using reservation, limitation, and weight tags.
+*   **Resource Management**: Sharding logic for OSD operations, threading models for different storage media (HDD vs. SSD), and backfilling/recovery speed controls.
+*   **Cluster Dynamics**: Management of OSD Maps, peering processes, and rebalancing (backfilling) behaviors when the cluster topology changes.
 
 ### 3. Technical Keywords
-*   **Configuration Sections**: `[osd]`, `[osd.n]`
-*   **APIs/Config Options**: `osd_data`, `osd_journal_size`, `osd_max_scrubs`, `osd_op_num_shards`, `osd_mclock_scheduler_client_res`, `osd_recovery_priority`.
-*   **Internal Mechanisms**: Heartbeats, Peering, Backfilling, Shallow vs. Deep Scrubbing, mClock/dmClock scheduler.
-*   **Storage Terms**: XFS, BlueStore, Filestore, Journals, Placement Groups (PGs).
+*   **Core Entities**: `osd`, `mon`, `placement group (PG)`, `crush`, `journal`.
+*   **Storage Backends**: `Filestore`, `BlueStore`, `XFS`.
+*   **mClock/dmClock Parameters**: `osd_mclock_scheduler`, `reservation`, `limitation`, `weight`, `osd_op_queue`.
+*   **Scrubbing Options**: `osd_max_scrubs`, `osd_deep_scrub_interval`, `osd_scrub_auto_repair`.
+*   **Performance Tuning**: `osd_op_num_shards`, `osd_recovery_max_active`, `osd_op_thread_timeout`, `bluestore_throttle_bytes`.
+*   **Configuration Files**: `ceph.conf`, Central Config Store.
 
 ### 4. Target Audience
-*   **Storage Administrators**: Seeking to tune cluster performance or troubleshoot OSD stability.
-*   **Systems Architects**: Designing hardware layouts (e.g., SSD for journals/NVMe for mClock scaling).
-*   **Developers**: Implementing new OSD features or modifying default behaviors in the Ceph source code.
+*   **Storage Administrators**: Who need to tune cluster performance or troubleshoot OSD stability.
+*   **System Architects**: Designing hardware layouts (e.g., colocating journals on NVMe vs. HDDs).
+*   **Ceph Developers**: Reference for default behavior and existing configuration hooks when adding new OSD features.
 
 ### 5. Related Concepts
-*   **CRUSH Algorithm**: Relates to how data rebalancing (backfilling) is triggered.
-*   **Monitors (MONs)**: Relates to OSD-Monitor interaction and heartbeat reporting.
-*   **Pools & PGs**: Relates to the logical grouping of data that OSDs manage.
-*   **mClock Configuration**: This file is a high-level reference that points to the more specialized `mclock-config-ref`.
+*   **CRUSH Algorithm**: Determines how backfilling and recovery are triggered based on map changes.
+*   **Monitor (MON) Interaction**: OSDs report heartbeats to Monitors; configuration here defines those intervals.
+*   **Pool & PG Management**: This file references external documentation for specific data placement and pool-level tuning.
+*   **Quality of Service (QoS)**: Heavily linked to the `mclock-config-ref` for advanced traffic shaping.
 
 ---
 
-### When to Update this File (For AI/DevOps triggers)
-This file must be updated if any of the following code changes occur:
-1.  **New `confval` Definitions**: If a developer adds a new `Option` in the C++ source (typically `common/options/osd.yaml.in` or similar) that affects OSD behavior.
-2.  **Default Value Changes**: If the default priority, timeout, or size for OSD operations (e.g., `osd_journal_size`) is modified.
-3.  **Deprecation of Features**: If a storage backend (like Filestore) or a specific scheduler is removed or moved to legacy status.
-4.  **mClock Refinement**: If the buckets (client, recovery, scrub) or the way weights/reservations are calculated in the `dmClock` implementation are changed.
-5.  **Sharding Logic**: Changes to how OSDs shard operations (HDD vs. SSD) require updates to the "Operations" and "Caveats" sections.
+### Update Triggers for AI Systems
+This file should be updated if code changes occur in the following areas:
+1.  **New Config Options**: If a new `confval` is added to the OSD daemon source code.
+2.  **Default Value Changes**: If the default value for threads, shards, or scrubbing intervals is modified in the C++ headers.
+3.  **Feature Deprecation**: If Filestore-specific settings are removed or if a new storage backend is introduced.
+4.  **mClock Refinement**: If the dmClock implementation changes how it handles "cost," "shards," or "sequencer" logic.
+5.  **Priority Handling**: If the internal prioritization of operations (e.g., snap trim, recovery, client I/O) is restructured.

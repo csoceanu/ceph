@@ -1,40 +1,40 @@
-This documentation file serves as the manual page for `ceph-objectstore-tool`, a critical low-level diagnostic and recovery utility for Ceph storage clusters.
+This documentation file describes the usage and syntax for `ceph-objectstore-tool`, a powerful offline utility used for low-level manipulation and diagnostics of Ceph Object Storage Daemons (OSDs).
 
 ### 1. Primary Purpose
-The file documents the usage, syntax, and capabilities of the `ceph-objectstore-tool`. This utility is designed for **offline** manipulation and examination of a Ceph Object Storage Device (OSD). It allows administrators to bypass the standard Ceph protocol to fix corruption, recover lost objects, or export/import data directly from the OSD's underlying storage.
+The file serves as a manual page (man page) for **`ceph-objectstore-tool`**. It documents how to modify or examine the internal state of a Ceph OSD at the object level without the OSD daemon being active. It is primarily used for troubleshooting, data recovery, and manual repair of corrupted objects or Placement Groups (PGs).
 
 ### 2. Key Topics Covered
-*   **Operational Requirements**: Emphasis on the requirement that the OSD daemon must be stopped (`systemctl stop ceph-osd@$ID`) before use to avoid data corruption or "Resource temporarily unavailable" errors.
-*   **Object Manipulation**: Procedures for getting/setting raw bytes, removing objects, and handling object clones.
-*   **Metadata Management**: Detailed instructions for listing and modifying Object Map (OMAP) keys, OMAP headers, and object attributes (attrs).
-*   **Troubleshooting & Recovery**: Commands for fixing "lost" objects, performing `fsck` on the store, repairing PGs, and trimming PG logs.
-*   **Data Portability**: Exporting and importing OSD data or specific Placement Groups (PGs).
-*   **System Integration**: Interaction with OSD maps, superblocks, and monitor databases.
+*   **Object Manipulation**: Getting/setting raw bytes, removing objects, and handling object clones.
+*   **Metadata Management**: Listing and modifying Object Map (OMAP) keys, OMAP headers, and object attributes (attrs).
+*   **Maintenance & Recovery**: Fixing "lost" objects, performing consistency checks (`fsck`, `repair`), and trimming PG logs.
+*   **Data Portability**: Exporting and importing OSD data to files.
+*   **OSD Configuration**: Interacting with the OSD superblock, OSD Maps, and creating new object stores (`mkfs`).
+*   **Operational Safety**: Instructions on ensuring the OSD is stopped (`systemctl status`) before running the tool.
 
 ### 3. Technical Keywords
-*   **Core Commands (`--op`)**: `info`, `log`, `remove`, `mkfs`, `fsck`, `repair`, `fuse`, `export`, `import`, `fix-lost`, `trim-pg-log`, `list-pgs`.
-*   **Object Arguments**: `get-bytes`, `set-bytes`, `list-omap`, `get-omaphdr`, `set-attrs`, `rm-omap`.
-*   **Configuration/Flags**: `--data-path`, `--pgid`, `--osd-type` (bluestore/memstore), `--journal-path`, `--dry-run`, `--force`, `--format`.
-*   **Data Structures**: OMAP (Object Map), PG (Placement Group), Superblock, OSDMap, Epoch, fsid.
+*   **Core Commands**: `get-bytes`, `set-bytes`, `list-omap`, `set-omap`, `get-attrs`, `rm-attrs`, `fix-lost`, `export`, `import`.
+*   **Key Arguments**: `--data-path` (mandatory), `--pgid`, `--op`, `--dry-run`, `--force`, `--journal-path`.
+*   **APIs/Storage Types**: `bluestore`, `memstore`, `omap`, `osdmap`, `superblock`.
+*   **JSON Identifiers**: The tool uses a JSON-formatted string to uniquely identify objects (including `oid`, `key`, `snapid`, `hash`, `pool`, and `namespace`).
 
 ### 4. Target Audience
-*   **Storage Administrators**: For emergency data recovery and manual cluster repair.
-*   **Site Reliability Engineers (SREs)**: For troubleshooting deep-seated OSD inconsistencies.
-*   **Ceph Developers**: For testing object-store behaviors or manually injecting states for debugging.
+*   **Ceph Administrators**: Performing manual disaster recovery or data maintenance.
+*   **Storage Engineers**: Debugging low-level data corruption or verifying object-level metadata.
+*   **Developers**: Testing object-store interactions or simulating OSD failures.
 
 ### 5. Related Concepts
-*   **Ceph OSD (Object Storage Device)**: The underlying service being manipulated.
-*   **BlueStore/FileStore**: The storage backend engines that `ceph-objectstore-tool` interacts with.
-*   **Placement Groups (PGs)**: The logical collection of objects that this tool often filters by.
-*   **RADOS**: The fundamental object store layer of Ceph.
+*   **Ceph OSD (Object Storage Daemon)**: The daemon that this tool targets.
+*   **RADOS**: The underlying reliable autonomic distributed object store.
+*   **BlueStore**: The primary storage implementation for Ceph OSDs referenced in the configuration options.
+*   **Placement Groups (PGs)**: The logical units for distributing objects across OSDs.
+*   **Systemd**: Specifically `ceph-osd@.service`, used to manage the lifecycle of the daemon before using this tool.
 
 ---
 
-### Maintenance Triggers: When to update this file
-An AI system should flag this documentation for updates if code changes occur in the following areas:
-
-1.  **Command-Line Interface (CLI) Changes**: If new arguments are added to `ObjectStoreTool.cc` or if the syntax for positional arguments changes.
-2.  **New Backend Support**: If a new storage engine is introduced (beyond BlueStore/MemStore) that requires a new `--type` argument.
-3.  **New Recovery Operations**: If new recovery logic is added to the OSD code (e.g., a new way to handle "scrub" errors or a new metadata repair tool).
-4.  **JSON Schema Changes**: If the JSON structure used to identify objects (containing `oid`, `key`, `snapid`, `hash`, etc.) is modified, as the examples in the doc rely heavily on this format.
-5.  **New PG/Object Attributes**: If fundamental metadata types are added to the Ceph object store that require new `get/set` operations.
+### Update Triggers for AI Systems
+This documentation should be updated if code changes occur in the following areas:
+1.  **New OSD Operations**: If a new subcommand is added to the `--op` argument list (e.g., a new repair or diagnostic function).
+2.  **Object Metadata Structure**: Changes to how objects are identified (JSON object schema) or changes to the OMAP/Attribute storage logic.
+3.  **New Storage Backends**: If Ceph adds a new storage type beyond `bluestore` or `memstore` that requires specific flags.
+4.  **CLI Argument Modifications**: Adding or deprecating flags like `--data-path` or `--pgid`.
+5.  **Error Handling**: Changes in how the tool handles file locks (related to the "Resource temporarily unavailable" error).

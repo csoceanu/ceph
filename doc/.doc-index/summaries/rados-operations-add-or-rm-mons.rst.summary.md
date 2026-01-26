@@ -1,41 +1,39 @@
-This analysis summarizes the Ceph documentation regarding the management of Monitor (MON) daemons. This summary is designed to help determine when documentation updates are required due to changes in the Ceph codebase or management tools.
+This documentation file, `rados/operations/add-or-rm-mons.rst`, is the definitive guide for managing the lifecycle and network configuration of **Ceph Monitors (MONs)**. It provides both the theoretical requirements for cluster consensus and the practical CLI procedures for altering the monitor cluster membership.
 
 ### 1. Primary Purpose
-This file provides operational procedures for managing the lifecycle of Ceph Monitors. It documents how to add, remove, and modify the network identity (IP addresses) of monitor nodes in an active RADOS cluster while maintaining quorum and data consistency.
+The file documents the administrative procedures for **scaling, maintaining, and recovering** the Ceph Monitor quorum. It outlines how to add or remove monitor daemons and how to transition monitors to new IP addresses or networks while ensuring the cluster maintains a Paxos-driven consensus.
 
 ### 2. Key Topics Covered
-*   **Quorum Theory**: Explains the necessity of an odd number of monitors (3, 5, etc.) and the reliance on the Paxos algorithm to prevent "split-brain" scenarios.
-*   **Hardware & Deployment Strategy**: Guidance on running monitors on dedicated hosts versus colocation with OSDs.
-*   **Manual Addition/Removal**: Step-by-step CLI instructions for bootstrapping a new `ceph-mon` daemon or decommissioning an old one.
-*   **Disaster Recovery**: Procedures for removing monitors from "unhealthy" clusters where quorum has already been lost.
-*   **IP Address Migration**: Detailed workflows for changing monitor IP addresses, ranging from the preferred "add-then-remove" method to advanced manual `monmap` injection.
-*   **Cephadm Integration**: Specific workflows for using the `cephadm` orchestrator to migrate a cluster to a new public network.
+*   **Quorum and Paxos Theory**: Explains the necessity of an odd number of monitors to avoid "split-brain" scenarios and the requirement for a majority (50% + 1) to be active.
+*   **Manual Deployment**: Step-by-step instructions for manually creating monitor data directories, fetching keyrings/maps, and initializing daemons.
+*   **Monitor Removal**: Procedures for graceful removal and emergency removal from "unhealthy" (non-quorum) clusters.
+*   **IP/Network Migration**: 
+    *   The "Preferred Method" (additive replacement).
+    *   The "Advanced Method" (direct `monmap` manipulation).
+*   **Cephadm Integration**: Specific workflows for modern Ceph deployments using `cephadm` to change the public network and host addresses.
 
 ### 3. Technical Keywords
-*   **Daemons/Components**: `ceph-mon`, `ceph-mgr`, `OSD`, `mon.a`, `monmap`.
-*   **APIs & CLI Tools**: `ceph-mon`, `monmaptool`, `ceph auth`, `ceph orch`, `systemctl`.
-*   **Configuration Files**: `ceph.conf`, `/var/lib/ceph/mon/`, `monmap`.
-*   **Commands**: 
-    *   `ceph-mon --mkfs`, `--extract-monmap`, `--inject-monmap`
-    *   `monmaptool --add`, `--rm`, `--print`
-    *   `ceph mon getmap`, `ceph mon remove`
-    *   `ceph orch host set-addr`
-*   **Concepts**: Paxos consensus, Quorum, Split-brain, `fsid`, Public Network.
+*   **Daemons/Components**: `ceph-mon`, `ceph-mgr`, `OSD`.
+*   **Tools/CLI**: `monmaptool`, `cephadm`, `ceph-mon --mkfs`, `ceph auth get`, `ceph mon getmap`, `ceph orch host set-addr`.
+*   **Configuration/Maps**: `monmap`, `ceph.conf`, `keyring`, `fsid`, `public-addr`, `public-network`.
+*   **Concepts**: Paxos algorithm, Quorum, Split-brain, Epoch, Bootstrap.
+*   **Directories**: `/var/lib/ceph/mon/`, `/var/lib/ceph/{FSID}/`.
 
 ### 4. Target Audience
-*   **Ceph Cluster Administrators**: Responsible for scaling or maintaining cluster health.
-*   **Site Reliability Engineers (SREs)**: Handling datacenter migrations or network re-addressing.
-*   **Support Engineers**: Troubleshooting clusters that have lost quorum.
+*   **Ceph Cluster Administrators**: Responsible for cluster health and scaling.
+*   **System Operations/SREs**: Handling hardware migrations or network re-addressing.
+*   **Infrastructure Engineers**: Automating Ceph deployments or building disaster recovery playbooks.
 
 ### 5. Related Concepts
-*   **Monitor Bootstrap/Manual Deployment**: The initial setup of the cluster.
-*   **Hardware Recommendations**: Minimum specs for monitor performance (especially disk latency for Paxos).
-*   **Cephadm/Orchestrator**: The modern management layer that automates these manual steps.
+*   **RADOS Cluster Health**: Directly impacts the ability of the cluster to function; without MON quorum, OSDs cannot operate.
+*   **Ceph Orchestrator (`cephadm`)**: Modern management layer that abstracts some of these manual steps.
+*   **Network Configuration**: Relates to `ceph.conf` and the underlying Linux networking stack.
+*   **Hardware Planning**: Tied to recommendations for dedicated monitor nodes to avoid resource contention with OSDs.
 
-### Update Triggers for AI Maintenance
-This documentation should be updated if code changes occur in the following areas:
-1.  **CLI Argument Changes**: If the flags for `ceph-mon` (like `--mkfs` or `--inject-monmap`) or `monmaptool` are deprecated or renamed.
-2.  **Orchestrator Logic**: If `cephadm` changes how it handles `public_network` updates or how `host set-addr` behaves.
-3.  **Data Path Changes**: If the default directory structure for monitor data (`/var/lib/ceph/mon/`) is altered.
-4.  **Consensus Algorithm Updates**: If Ceph moves away from or significantly modifies its Paxos implementation affecting the "odd number" recommendation.
-5.  **New Monitor Versions**: If the "v2" vs "v1" messenger protocol syntax (e.g., `[v2:IP:PORT,v1:IP:PORT]`) changes in the `monmap`.
+### When to Update This Document
+This file should be updated if:
+1.  **CLI Changes**: Arguments for `ceph-mon` or `monmaptool` are deprecated or added.
+2.  **Default Path Changes**: The standard directory structure for Ceph data (e.g., `/var/lib/ceph/mon`) is altered in new releases.
+3.  **Quorum Logic**: Changes are made to the Paxos implementation or how Ceph handles monitor elections.
+4.  **Orchestrator Evolution**: `cephadm` introduces new commands that simplify or replace the manual `monmap` injection steps.
+5.  **Security Standards**: Changes to how monitor keyrings or authentication (`cephx`) are handled.

@@ -1,40 +1,42 @@
-This documentation file serves as the definitive guide for managing **Object Storage Device (OSD) Services** within a Ceph cluster using the `cephadm` orchestrator.
+This documentation file serves as the definitive guide for managing **Object Storage Devices (OSDs)** using the `cephadm` orchestrator. It covers the entire lifecycle of an OSD, from hardware discovery and deployment to monitoring, tuning, and removal.
 
 ### 1. Primary Purpose
-The file documents the lifecycle of OSDs—from hardware discovery and inventory scanning to deployment, automated memory tuning, and removal. It focuses on the **declarative nature of `cephadm`**, where the user defines a desired state (via OSD Specs) and the orchestrator ensures the physical hardware matches that state.
+The file documents how `cephadm` interacts with physical storage hardware to create, manage, and decommission Ceph OSD services. It explains how to automate OSD deployment at scale using declarative specifications rather than manual disk-by-disk configuration.
 
 ### 2. Key Topics Covered
-*   **Device Inventory**: How Ceph scans hosts to identify eligible storage devices.
-*   **Hardware Monitoring Integration**: Using `libstoragemgmt` to pull health data and control drive LEDs (Ident/Fault).
-*   **OSD Deployment**: Strategies for adding OSDs, including "all-available-devices" and host-specific additions.
-*   **OSD Specs (DriveGroups)**: Advanced YAML-based configurations to target specific hardware based on vendor, model, size, or rotational attributes.
-*   **OSD Removal & Replacement**: The workflow for draining data (PGs), zapping drives, and replacing failed units while preserving OSD IDs.
-*   **Memory Autotuning**: How `cephadm` dynamically calculates and sets `osd_memory_target`.
-*   **Disaster Recovery**: Procedures for activating existing OSDs after a host OS reinstallation.
+*   **Device Inventory**: Procedures for scanning hosts to identify available storage media and checking hardware health/LED status via `libstoragemgmt`.
+*   **OSD Deployment**: Methods for adding OSDs, ranging from simple one-line commands (using all available devices) to complex YAML-based "Drive Groups."
+*   **Declarative State**: Understanding how `cephadm` continuously reconciles the desired state, automatically turning new or wiped disks into OSDs.
+*   **OSD Removal & Replacement**: Safe workflows for draining data (PGs) from an OSD, stopping/starting the removal process, and replacing failed hardware while preserving OSD IDs.
+*   **Memory Autotuning**: How the orchestrator dynamically allocates RAM to OSD daemons based on total system memory and OSD count.
+*   **Advanced Filtering**: Using attributes like vendor, model, size, and rotational status to target specific disks for data, WAL, or DB roles.
+*   **OSD Activation**: Reconnecting existing OSDs to a cluster after a host OS reinstallation.
 
 ### 3. Technical Keywords
-*   **Commands**: `ceph orch device ls`, `ceph orch apply osd`, `ceph orch osd rm`, `ceph orch device zap`, `ceph cephadm osd activate`.
+*   **Orchestrator Commands**: `ceph orch device ls`, `ceph orch apply osd`, `ceph orch daemon add osd`, `ceph orch osd rm`, `ceph orch device zap`.
 *   **Configuration Options**: `mgr/cephadm/device_enhanced_scan`, `osd_memory_target_autotune`, `mgr/cephadm/autotune_memory_target_ratio`.
-*   **APIs/Tools**: `ceph-volume`, `libstoragemgmt` (LSM), `LVM`, `BlueStore`, `TPM2` (for LUKS2 encryption).
+*   **Components/Tools**: `ceph-volume`, `libstoragemgmt` (`lsmcli`), `BlueStore`, `LVM`, `LUKS2`, `TPM2`.
 *   **OSD Spec Fields**: `data_devices`, `db_devices`, `wal_devices`, `db_slots`, `osds_per_device`, `crush_device_class`.
+*   **Logic**: `unmanaged: true`, `host_pattern`, `filter_logic: OR/AND`.
 
 ### 4. Target Audience
-*   **Ceph Cluster Administrators**: Responsible for scaling storage and replacing hardware.
-*   **System Architects**: Designing hardware layouts and storage tiering (e.g., SSD for WAL/DB, HDD for Data).
-*   **Site Reliability Engineers (SREs)**: Automating cluster deployment and managing resource limits (RAM).
+*   **Ceph Administrators**: Managing storage clusters and scaling capacity.
+*   **Site Reliability Engineers (SREs)**: Automating hardware provisioning and handling disk failures.
+*   **Storage Architects**: Designing the physical layout and performance tiers (HDD vs. SSD vs. NVMe) of a cluster.
 
 ### 5. Related Concepts
-*   **Cephadm Orchestrator**: The underlying framework managing these services.
-*   **CRUSH Hierarchy**: How OSDs are organized for data placement.
-*   **Placement Groups (PGs)**: The logical units moved during OSD removal.
-*   **Host Management**: SSH keys and container registry logins required for `cephadm` to function.
+*   **Cephadm Orchestrator**: The underlying framework for managing Ceph services.
+*   **Drive Groups / OSDSpecs**: The high-level abstraction for hardware-to-OSD mapping.
+*   **CRUSH Hierarchy**: How OSDs are placed within failure domains (Host, Rack, etc.).
+*   **Placement Groups (PGs)**: The data units that must be "drained" before an OSD can be safely removed.
 
 ---
 
-### Update Triggers for AI Systems
+### Update Triggers for AI Maintenance
 This file should be updated if code changes occur in the following areas:
-1.  **Orchestrator CLI**: Changes to `ceph orch osd` or `ceph orch device` subcommands or flags.
-2.  **Ceph-Volume Logic**: If the criteria for what constitutes an "available" device changes (e.g., new partition types or filesystem detection).
-3.  **OSD Spec Schema**: If new filters are added to the `DriveGroupSpec` (e.g., targeting specific bus types or NVMe namespaces).
-4.  **Hardware Support**: If `libstoragemgmt` integration is expanded to support NVMe or if encryption standards (like TPM2) are updated.
-5.  **Memory Management**: If the algorithm for `osd_memory_target_autotune` is modified in the `mgr/cephadm` module.
+1.  **Orchestrator CLI**: If subcommands under `ceph orch osd` or `ceph orch device` are added, renamed, or deprecated.
+2.  **Ceph-Volume Evolution**: If the criteria for what constitutes an "available" device change (e.g., support for new filesystem types or partition schemes).
+3.  **OSDSpec Schema**: If new filters are added to the `DriveGroupSpec` Python class (e.g., filtering by firmware version or bus type).
+4.  **Hardware Support**: If `libstoragemgmt` integration is expanded to include NVMe or SAN LUNs.
+5.  **Security Features**: If new encryption or authentication methods (like further TPM2/LUKS enhancements) are implemented.
+6.  **Memory Management**: If the algorithm for `osd_memory_target` calculation is modified in the `mgr` daemon.

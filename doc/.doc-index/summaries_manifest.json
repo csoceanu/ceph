@@ -1,0 +1,281 @@
+{
+  "version": "1.0",
+  "files": {
+    "rados/api/python.rst": {
+      "hash": "322c57d80136fb0a5a316a6ffdf9d1b9999ba371c79455e3d11740f43d043e8a",
+      "generated": "2026-01-26T09:38:02.959023",
+      "summary_file": "rados-api-python.rst.summary.md"
+    },
+    "rados/troubleshooting/log-and-debug.rst": {
+      "hash": "f145abab5f280be626c43ceca567c6cdc0e5b763a50075022c063a7351fea1ee",
+      "generated": "2026-01-26T09:38:03.628924",
+      "summary_file": "rados-troubleshooting-log-and-debug.rst.summary.md"
+    },
+    "rados/operations/user-management.rst": {
+      "hash": "6484ca9d41b53e0f64ba9d47c27e4ac0e74384aa7061557c86a20f15c4f4df8c",
+      "generated": "2026-01-26T09:38:04.106837",
+      "summary_file": "rados-operations-user-management.rst.summary.md"
+    },
+    "rados/api/libcephsqlite.rst": {
+      "hash": "31199878cbe946089d7c7bd4b692fa62c7d0520a710c32778ddf3af3118701b3",
+      "generated": "2026-01-26T09:38:04.219268",
+      "summary_file": "rados-api-libcephsqlite.rst.summary.md"
+    },
+    "rados/operations/placement-groups.rst": {
+      "hash": "b0e52651a1e4cb88a40a7bed252149ec883c6089f22a536c7a26d6d121ea167a",
+      "generated": "2026-01-26T09:38:05.355593",
+      "summary_file": "rados-operations-placement-groups.rst.summary.md"
+    },
+    "rados/operations/add-or-rm-mons.rst": {
+      "hash": "4574dcadc6a88fb9075049db09f0ca77c9f61348dc88a582a198acc7692788b2",
+      "generated": "2026-01-26T09:38:10.070064",
+      "summary_file": "rados-operations-add-or-rm-mons.rst.summary.md"
+    },
+    "cephadm/operations.rst": {
+      "hash": "ed1111b6933f0daa6fe692dde5724644e7d70e7272fdfbe204ea45fd031a71cb",
+      "generated": "2026-01-26T09:38:11.065304",
+      "summary_file": "cephadm-operations.rst.summary.md"
+    },
+    "rados/operations/pools.rst": {
+      "hash": "d79771cab77d0e57e26c4d96b77f2f338dad3bcbb2eb9596c22187eea5f75d5b",
+      "generated": "2026-01-26T09:38:11.910710",
+      "summary_file": "rados-operations-pools.rst.summary.md"
+    },
+    "rados/configuration/bluestore-config-ref.rst": {
+      "hash": "49001aa4a5bf845743188aa25013068f99a82055e1affc1c6a1be92acf43a36d",
+      "generated": "2026-01-26T09:38:13.214816",
+      "summary_file": "rados-configuration-bluestore-config-ref.rst.summary.md"
+    },
+    "rados/configuration/ceph-conf.rst": {
+      "hash": "a9a8aae07961497b6a2eedcb7f1b49ad2df4f35e4e55bcdfaa48775fdb1cebcc",
+      "generated": "2026-01-26T09:38:13.440496",
+      "summary_file": "rados-configuration-ceph-conf.rst.summary.md"
+    },
+    "man/8/radosgw-admin.rst": {
+      "hash": "c5535f1189dd14c79013670669c29137e822c2e15bf3cf20c4eb8892e215c6d0",
+      "generated": "2026-01-26T09:38:18.252944",
+      "summary_file": "man-8-radosgw-admin.rst.summary.md"
+    },
+    "man/8/rados.rst": {
+      "hash": "37d8167ab6ae61366febb1e25551469dba274cb36425bb051ffc625731b5656b",
+      "generated": "2026-01-26T09:38:18.549076",
+      "summary_file": "man-8-rados.rst.summary.md"
+    },
+    "cephadm/troubleshooting.rst": {
+      "hash": "4ccec23cb5064860adf3f15924c362012dacf53050fb5f7ab99db7d2d5ffa441",
+      "generated": "2026-01-26T09:38:19.912510",
+      "summary_file": "cephadm-troubleshooting.rst.summary.md"
+    },
+    "man/8/osdmaptool.rst": {
+      "hash": "9ebd9c26cfa2d51ccd7fffff98db4aaac3606d879fa2c72172c4fd182d58dd62",
+      "generated": "2026-01-26T09:38:20.547034",
+      "summary_file": "man-8-osdmaptool.rst.summary.md"
+    },
+    "rados/operations/erasure-code.rst": {
+      "hash": "4633557b783c306ed87670fda8073be7272dd7ab545823c90a809d39e5fb3225",
+      "generated": "2026-01-26T09:38:21.325091",
+      "summary_file": "rados-operations-erasure-code.rst.summary.md"
+    },
+    "cephadm/install.rst": {
+      "hash": "303afafd827be5099964cd90f6857522bad176b357620c3403ee4ae2e51db7ba",
+      "generated": "2026-01-26T09:38:25.079142",
+      "summary_file": "cephadm-install.rst.summary.md"
+    },
+    "rados/operations/crush-map.rst": {
+      "hash": "5330d4a292d121a75b5971b6018afa315e43ba69204be87fbfdecb8e9ee7158e",
+      "generated": "2026-01-26T09:38:26.016106",
+      "summary_file": "rados-operations-crush-map.rst.summary.md"
+    },
+    "man/8/ceph-volume.rst": {
+      "hash": "0cbd9d2825c3a2a47f46d4bcd45aabc7a130c0d2753d17a28cc114fbd0516bfe",
+      "generated": "2026-01-26T09:38:26.490876",
+      "summary_file": "man-8-ceph-volume.rst.summary.md"
+    },
+    "rados/operations/erasure-code-lrc.rst": {
+      "hash": "2539472aedb6cdb1a407dc0b7158067c385255b0fadc122a2421e64a112957dc",
+      "generated": "2026-01-26T09:38:27.260288",
+      "summary_file": "rados-operations-erasure-code-lrc.rst.summary.md"
+    },
+    "rados/operations/stretch-mode.rst": {
+      "hash": "1bdbf6c56660c3f580a0020624b09562233cb516b19df95b0ad55a0db0938d3a",
+      "generated": "2026-01-26T09:38:28.345151",
+      "summary_file": "rados-operations-stretch-mode.rst.summary.md"
+    },
+    "man/8/crushtool.rst": {
+      "hash": "18e5c79f997877132a4e6df87663b922baa0c493ea4a7f0ac6c91ccc3a7118ab",
+      "generated": "2026-01-26T09:38:32.106789",
+      "summary_file": "man-8-crushtool.rst.summary.md"
+    },
+    "cephadm/services/nfs.rst": {
+      "hash": "8e05cadb72a4bc3149adad780390b83b11703a522c6e85c9315e1ddef7bb2ffa",
+      "generated": "2026-01-26T09:38:32.949913",
+      "summary_file": "cephadm-services-nfs.rst.summary.md"
+    },
+    "cephadm/services/monitoring.rst": {
+      "hash": "29168e5104d2182108d9ce64fe5b46d618869ee2f7b72e2671c3fd64453bf3a6",
+      "generated": "2026-01-26T09:38:34.342602",
+      "summary_file": "cephadm-services-monitoring.rst.summary.md"
+    },
+    "rados/operations/monitoring.rst": {
+      "hash": "893be8532d6772e4828d24b568a7cc4f21154825e20f149a852e3aa4c304ab81",
+      "generated": "2026-01-26T09:38:34.521149",
+      "summary_file": "rados-operations-monitoring.rst.summary.md"
+    },
+    "rados/operations/cache-tiering.rst": {
+      "hash": "aadb8a680431fb7df086d599e9bdd978038c7559e682a650dcf011f24765d78e",
+      "generated": "2026-01-26T09:38:36.314623",
+      "summary_file": "rados-operations-cache-tiering.rst.summary.md"
+    },
+    "cephadm/services/rgw.rst": {
+      "hash": "2bc63628c3e91260479471d3cbd6ea01f5569a97c73aab504b95818b7a21db98",
+      "generated": "2026-01-26T09:38:39.559731",
+      "summary_file": "cephadm-services-rgw.rst.summary.md"
+    },
+    "cephadm/services/index.rst": {
+      "hash": "ee08df279c5d0e253c2a21fdf4f7eb2bffe2e1092311345d252bb1f44cce5637",
+      "generated": "2026-01-26T09:38:39.999391",
+      "summary_file": "cephadm-services-index.rst.summary.md"
+    },
+    "rados/operations/monitoring-osd-pg.rst": {
+      "hash": "cdb6a8c3413ed685963a24b8a14db164bdaf8cecdce311622420d13de35c9e9f",
+      "generated": "2026-01-26T09:38:41.882028",
+      "summary_file": "rados-operations-monitoring-osd-pg.rst.summary.md"
+    },
+    "rados/configuration/mon-config-ref.rst": {
+      "hash": "69a63463db96da739c04c523832e9aac28ae0fd1fa2a1bd09d467ea1d789d8cb",
+      "generated": "2026-01-26T09:38:42.242966",
+      "summary_file": "rados-configuration-mon-config-ref.rst.summary.md"
+    },
+    "rados/operations/crush-map-edits.rst": {
+      "hash": "30c0123b5c53674150e63b2cc7639c662cccafebf0f5371bc236ea6b56707672",
+      "generated": "2026-01-26T09:38:43.813567",
+      "summary_file": "rados-operations-crush-map-edits.rst.summary.md"
+    },
+    "man/8/cephfs-shell.rst": {
+      "hash": "b4a130ee8fb151ce189a6cede83867a6c069ae48909c3907273becd752976e8d",
+      "generated": "2026-01-26T09:38:46.833703",
+      "summary_file": "man-8-cephfs-shell.rst.summary.md"
+    },
+    "architecture.rst": {
+      "hash": "998f8bf2b22611928a07e931e2a52177452f7c3d6d7605dd3a1284995ba2d387",
+      "generated": "2026-01-26T09:38:47.782325",
+      "summary_file": "architecture.rst.summary.md"
+    },
+    "man/8/rbd.rst": {
+      "hash": "41be328e82871e3ad1fc2e8968c41e0cdb9396c8876ad10fffd3d8e50c5fb702",
+      "generated": "2026-01-26T09:38:49.502563",
+      "summary_file": "man-8-rbd.rst.summary.md"
+    },
+    "rados/operations/control.rst": {
+      "hash": "95a887e83ffed60114c276abcb742d448725826614cc2c7b949a24e78d447219",
+      "generated": "2026-01-26T09:38:50.023959",
+      "summary_file": "rados-operations-control.rst.summary.md"
+    },
+    "cephadm/upgrade.rst": {
+      "hash": "b4fa98229ae2a07ceb5c6bea94e350c9c73e163e69a2bd82ddd2bd9a50c4e1ab",
+      "generated": "2026-01-26T09:38:50.636703",
+      "summary_file": "cephadm-upgrade.rst.summary.md"
+    },
+    "rados/configuration/auth-config-ref.rst": {
+      "hash": "251f7ff55a0fe7642956f2464eb8098372ba1233126b3f1dc9fdc3c127065e96",
+      "generated": "2026-01-26T09:38:54.573091",
+      "summary_file": "rados-configuration-auth-config-ref.rst.summary.md"
+    },
+    "rados/configuration/osd-config-ref.rst": {
+      "hash": "ad098fe47e1bb321bb31c48669be420585842a8771b257a406033747cdc14c26",
+      "generated": "2026-01-26T09:38:54.732212",
+      "summary_file": "rados-configuration-osd-config-ref.rst.summary.md"
+    },
+    "man/8/mount.ceph.rst": {
+      "hash": "6239fc9955d7c08186eada10fd2a341b8971f0e5905856453dad3e87527afc4b",
+      "generated": "2026-01-26T09:38:56.931274",
+      "summary_file": "man-8-mount.ceph.rst.summary.md"
+    },
+    "man/8/ceph-objectstore-tool.rst": {
+      "hash": "b1c50b63fa558fef61a8796db9973e37a99a1358501df78f1e5046f022527fd6",
+      "generated": "2026-01-26T09:38:57.540017",
+      "summary_file": "man-8-ceph-objectstore-tool.rst.summary.md"
+    },
+    "rados/operations/add-or-rm-osds.rst": {
+      "hash": "8092d63863475676b5999b5ff233105eee6dab218eb92ec35067bfd6fac80cca",
+      "generated": "2026-01-26T09:38:58.077457",
+      "summary_file": "rados-operations-add-or-rm-osds.rst.summary.md"
+    },
+    "cephadm/services/osd.rst": {
+      "hash": "21fdf559dc096759aa5efc09f7bf52e7e9ff4b3755db2629cbbdc788515e47f3",
+      "generated": "2026-01-26T09:39:01.384382",
+      "summary_file": "cephadm-services-osd.rst.summary.md"
+    },
+    "rados/configuration/mclock-config-ref.rst": {
+      "hash": "914cf855aa45935b7fc3255ab7f3188b4d133d6d684be28596a98c098db220dd",
+      "generated": "2026-01-26T09:39:02.496093",
+      "summary_file": "rados-configuration-mclock-config-ref.rst.summary.md"
+    },
+    "rados/troubleshooting/troubleshooting-osd.rst": {
+      "hash": "3360b2bb248bf7f78f2f1b15c4e16156b2408c4e8f74b9ebde525d8b24dbb0b7",
+      "generated": "2026-01-26T09:39:03.699156",
+      "summary_file": "rados-troubleshooting-troubleshooting-osd.rst.summary.md"
+    },
+    "rados/troubleshooting/troubleshooting-mon.rst": {
+      "hash": "d4f6db9c8f11647c0e602d5dc3466d68e646be8f4aad9e864e55a6451512c7c2",
+      "generated": "2026-01-26T09:39:04.913647",
+      "summary_file": "rados-troubleshooting-troubleshooting-mon.rst.summary.md"
+    },
+    "rados/configuration/filestore-config-ref.rst": {
+      "hash": "88b2d7e73dbe5c716f31ccf2efbca2cf7e10af6ff3f37ea5063e5753ed6fcad8",
+      "generated": "2026-01-26T09:39:05.209243",
+      "summary_file": "rados-configuration-filestore-config-ref.rst.summary.md"
+    },
+    "rados/configuration/network-config-ref.rst": {
+      "hash": "94cdcde870daf802677aa9fd4dd6de7ba1d04cb8a28a446c343c0ccd555198bd",
+      "generated": "2026-01-26T09:39:09.650356",
+      "summary_file": "rados-configuration-network-config-ref.rst.summary.md"
+    },
+    "rados/operations/health-checks.rst": {
+      "hash": "f94831a6f53637025b552681252e4b6294648b68f8990b226c32d381269a7d1a",
+      "generated": "2026-01-26T09:39:10.733055",
+      "summary_file": "rados-operations-health-checks.rst.summary.md"
+    },
+    "man/8/ceph.rst": {
+      "hash": "32a9102c10b5484aacaaeace00ab31d42118684fa4b517b2538ffaf59420bf0d",
+      "generated": "2026-01-26T09:39:10.734872",
+      "summary_file": "man-8-ceph.rst.summary.md"
+    },
+    "rados/operations/bluestore-migration.rst": {
+      "hash": "28c7dce80e86f7761ae63e3a701dfda49ea2c638f7d0cf27ad58816ad702d865",
+      "generated": "2026-01-26T09:39:12.525255",
+      "summary_file": "rados-operations-bluestore-migration.rst.summary.md"
+    },
+    "glossary.rst": {
+      "hash": "ff286ae1dbc7edaa7515b0910a769cbccd5f12ea5754c39ba43074e9e233b1cb",
+      "generated": "2026-01-26T09:39:12.656288",
+      "summary_file": "glossary.rst.summary.md"
+    },
+    "rados/api/librados-intro.rst": {
+      "hash": "ae19788c8dd38a85a4d94392c24432deef9529de20d95f343b497d20dee8f921",
+      "generated": "2026-01-26T09:39:17.563831",
+      "summary_file": "rados-api-librados-intro.rst.summary.md"
+    },
+    "cephadm/host-management.rst": {
+      "hash": "871e383e0745112d6b73224ec77d5fb24219f85e43485e6ad2206c313b0e8b6d",
+      "generated": "2026-01-26T09:39:17.792945",
+      "summary_file": "cephadm-host-management.rst.summary.md"
+    },
+    "rados/troubleshooting/troubleshooting-pg.rst": {
+      "hash": "4f0940d8b4990ae4de13fe7a4e622cc284520a9228a734c76e5c5df32da8d939",
+      "generated": "2026-01-26T09:39:18.041412",
+      "summary_file": "rados-troubleshooting-troubleshooting-pg.rst.summary.md"
+    },
+    "rados/operations/balancer.rst": {
+      "hash": "8f294dcabe10afe04e1add45768f0ef5606e2872bf9fe245a2b676995892e941",
+      "generated": "2026-01-26T09:39:19.459355",
+      "summary_file": "rados-operations-balancer.rst.summary.md"
+    },
+    "man/8/cephadm.rst": {
+      "hash": "83eca290e6464b7765d4da13f7ff2d7826454c3527012c32f339adbe10efb610",
+      "generated": "2026-01-26T09:39:19.572157",
+      "summary_file": "man-8-cephadm.rst.summary.md"
+    }
+  },
+  "updated": "2026-01-26T09:39:19.572183"
+}

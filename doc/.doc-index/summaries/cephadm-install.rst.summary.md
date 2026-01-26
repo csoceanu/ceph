@@ -1,44 +1,46 @@
-This documentation file, `cephadm/install.rst`, serves as the primary guide for deploying a new Ceph cluster using the `cephadm` orchestrator. It covers the end-to-end lifecycle of initial setup, from host preparation to the creation of the first monitor and the expansion of the cluster.
+### Documentation Summary: `cephadm/install.rst`
 
-### 1. Primary Purpose
-The file provides the authoritative instructions for **bootstrapping a new Ceph cluster**. It explains how to install the `cephadm` tool, prepare the first host, and execute the bootstrap process to establish a working management plane (Monitor and Manager daemons).
+#### 1. Primary Purpose
+The file serves as the definitive guide for deploying a new Ceph cluster from scratch using **cephadm**. It covers the entire lifecycle from initial host preparation and tool installation to bootstrapping the first node and expanding the cluster with additional services.
 
-### 2. Key Topics Covered
-*   **System Requirements**: Dependencies like Python 3.6+, Systemd, Container Engines (Podman/Docker), and LVM2.
-*   **Installation Methods**: Binary acquisition via distribution-specific package managers (`apt`, `dnf`, `zypper`) or manual `curl` downloads.
-*   **The Bootstrap Process**: Using `cephadm bootstrap` to initialize the first node, generate SSH keys, and create the `client.admin` keyring.
-*   **CLI Access**: Methods to access the Ceph shell via containers or host-installed packages.
-*   **Cluster Expansion**: Basic workflows for adding hosts, additional Monitors, and storage (OSDs).
-*   **Deployment Scenarios**: 
-    *   Single-host configurations for testing.
-    *   **Air-gapped/Isolated Environments**: Using custom/local container registries.
-    *   **Custom/Advanced SSH**: Using specific private keys or CA-signed SSH certificates for inter-node communication.
-*   **Resource Management**: OSD memory autotuning and converged infrastructure settings.
+#### 2. Key Topics Covered
+*   **System Requirements**: Hardware/software prerequisites (Python 3.6+, Systemd, Podman/Docker, LVM2).
+*   **Installation Methods**: Comparison of distribution-specific packages vs. the curl-based standalone executable.
+*   **Bootstrapping**: Detailed steps to initialize the first Monitor and Manager daemons.
+*   **Post-Bootstrap Configuration**: Enabling the Ceph CLI (via `shell` or `ceph-common`) and adding administrative labels.
+*   **Cluster Expansion**: Adding new hosts, deploying additional Monitors, and provisioning storage (OSDs).
+*   **Special Deployment Scenarios**: 
+    *   Single-host (non-production) setups.
+    *   Air-gapped (isolated) environments using custom/local registries.
+    *   Custom SSH configurations (user-specified keys or CA-signed certificates).
+*   **Performance Tuning**: Automatic OSD memory tuning and adjustments for hyperconverged infrastructure.
 
-### 3. Technical Keywords
-*   **Tools/Commands**: `cephadm`, `cephadm bootstrap`, `cephadm shell`, `ceph orch`, `podman`, `docker`, `ceph-common`.
-*   **Configuration Files**: `ceph.conf`, `ceph.pub`, `ceph.client.admin.keyring`, `initial-ceph.conf`.
-*   **Parameters**: `--mon-ip`, `--cluster-network`, `--ssh-user`, `--registry-json`, `--single-host-defaults`, `--ssh-signed-cert`.
-*   **Environment**: CIDR notation, Python 3.6+, LVM2, `journald`.
+#### 3. Technical Keywords
+*   **Commands**: `cephadm bootstrap`, `cephadm shell`, `cephadm add-repo`, `ceph orch host label add`, `ceph orch apply osd`.
+*   **Configuration Options**: `--mon-ip`, `--cluster-network`, `--ssh-user`, `--registry-json`, `--single-host-defaults`, `--ssh-signed-cert`.
+*   **Daemons/Services**: Monitor (MON), Manager (MGR), Object Storage Daemon (OSD).
+*   **APIs/Tools**: Orchestrator CLI (`ceph orch`), Podman, Docker, SSH, LVM2.
+*   **Files**: `/etc/ceph/ceph.conf`, `/etc/ceph/ceph.client.admin.keyring`, `ceph.pub`.
 
-### 4. Target Audience
-*   **System Administrators**: Responsible for deploying and managing storage infrastructure.
-*   **DevOps Engineers**: Integrating Ceph into automated deployment pipelines or containerized environments.
-*   **Site Reliability Engineers (SREs)**: Setting up production-grade clusters with specific security requirements (CA-signed keys, air-gapping).
+#### 4. Target Audience
+*   **System Administrators**: Responsible for initial Ceph setup and host management.
+*   **DevOps Engineers**: Automating storage deployments in containerized environments.
+*   **SREs**: Troubleshooting installation issues or configuring air-gapped clusters.
 
-### 5. Related Concepts
-*   **Ceph Orchestrator (cephadm)**: The underlying framework that manages the lifecycle of all Ceph services.
-*   **Containerization**: Since Ceph daemons run as containers, this relates to Podman/Docker lifecycle management.
-*   **RADOS**: The underlying storage architecture that is established during this install process.
-*   **Monitoring Stack**: Prometheus, Grafana, and Alertmanager (mentioned in the context of air-gapped image configuration).
+#### 5. Related Concepts
+*   **Ceph Orchestrator**: The underlying framework `cephadm` uses to manage services.
+*   **Containerization**: Heavy reliance on Podman/Docker for daemon isolation.
+*   **RADOS**: The base storage layer established during bootstrap.
+*   **Monitoring Stack**: Deployment of Prometheus, Grafana, and Alertmanager as part of the bootstrap process.
 
 ---
 
-### Maintenance Triggers: When to update this file
-An AI system should flag this file for updates if code changes occur in the following areas:
-1.  **Dependency Changes**: If the minimum Python version increases (currently 3.6) or if a new system dependency is added (e.g., moving away from LVM2).
-2.  **CLI Argument Changes**: If the `bootstrap` or `add-repo` subcommands gain new required arguments or if existing flags (like `--mon-ip`) are deprecated.
-3.  **Default Value Shifts**: If the default memory autotune ratio (currently 0.7) or default OSD settings change.
-4.  **Distribution Support**: If new Linux distributions are supported or if the package names (e.g., `centos-release-ceph-quincy`) change for new releases.
-5.  **Security/SSH Logic**: If the method for handling SSH keys or the directory structure for `/etc/ceph` is modified in the source code.
-6.  **Container Logic**: If the way `cephadm` interacts with registries or handles image pulling (e.g., `--registry-json` structure) is updated.
+### Update Triggers for AI Systems
+This file should be updated if code changes occur in the following areas:
+
+*   **Dependency Shifts**: Changes in minimum required Python versions, supported container runtimes (Podman/Docker), or mandatory system tools (LVM2).
+*   **Bootstrap Logic**: Changes to the `cephadm bootstrap` command-line arguments, default daemon placement, or the automated generation of SSH keys and config files.
+*   **Packaging & Distribution**: Updates to the URL structure for fetching `cephadm` via curl or changes in supported Linux distributions/package managers.
+*   **Security/Authentication**: Modifications to how SSH certificates or CA-signed keys are handled, or changes to container registry authentication flow.
+*   **Resource Management**: Adjustments to default memory autotuning ratios (`osd_memory_target_autotune`) or how hyperconverged flags affect resource allocation.
+*   **CLI Tooling**: Changes in how `cephadm shell` or `ceph-common` interact with the host or the container environment.

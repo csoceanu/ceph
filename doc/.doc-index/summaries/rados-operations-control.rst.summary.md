@@ -1,47 +1,46 @@
-This documentation file, `rados/operations/control.rst`, serves as a comprehensive reference for the command-line interface (CLI) used to manage and monitor a Ceph cluster.
+This documentation file, `rados/operations/control.rst`, serves as a comprehensive reference for the **Ceph CLI (Command Line Interface)**. It outlines the administrative commands used to monitor, configure, and manage a Ceph Storage Cluster.
 
 ### 1. Primary Purpose
-The file documents the **Control Commands** for the Ceph RADOS cluster. It acts as a manual for the `ceph` utility, explaining how to interact with various cluster subsystems (Monitors, OSDs, PGs, MDS, and Auth) to query status, modify configurations, and manage data placement.
+The file documents the syntax and usage of the `ceph` utility. It acts as a manual for operators to interact with various Ceph subsystems (Monitors, OSDs, PGs, MDS, and Auth) to maintain cluster health, manage data distribution, and troubleshoot issues.
 
 ### 2. Key Topics Covered
-*   **System Status**: Commands for global cluster health (`status`, `-s`, `-w`).
-*   **Monitor (MON) Subsystem**: Managing the quorum, checking monitor status, and dumping monitor maps.
-*   **OSD Subsystem**: 
-    *   Lifecycle management (creating, removing, marking `in`/`out`/`down`).
-    *   Map management (CRUSH maps, OSD maps).
-    *   Data balancing (reweighting by utilization, pg-upmap).
-    *   Maintenance (scrubbing, repairing, benchmarking).
-*   **Placement Group (PG) Subsystem**: Troubleshooting "stuck" PGs (inactive, unclean, stale) and manually fixing data loss.
-*   **Authentication (Auth)**: Managing keyrings and capabilities.
-*   **Pool Management**: Creating, deleting, renaming, and configuring pool-specific settings (size, `pg_num`).
-*   **MDS Subsystem**: Basic status and configuration for the Metadata Server.
+*   **Cluster Health & Status**: Monitoring the global state, quorum status, and real-time event logs.
+*   **Authentication (ceph auth)**: Managing keyrings and capabilities for cluster security.
+*   **Placement Groups (ceph pg)**: Diagnostic tools for PGs, including identifying "stuck" states (inactive, unclean, stale, undersized) and manual object recovery.
+*   **OSD Management (ceph osd)**: 
+    *   Lifecycle management (create, remove, up/down, in/out).
+    *   Data distribution via CRUSH (setting weights, moving buckets, device classes).
+    *   Storage pool operations (create, delete, rename, and parameter tuning).
+    *   Maintenance tasks (scrubbing, repairing, and throughput benchmarking).
+*   **Metadata Server (ceph mds)**: Basic status checks and runtime configuration overrides.
+*   **Monitor Subsystem (ceph mon)**: Quorum tracking and monitor map (monmap) extraction.
 
 ### 3. Technical Keywords
-*   **CLI Utility**: `ceph`, `ceph tell`, `osdmaptool`.
-*   **Commands**: `ceph status`, `ceph pg dump`, `ceph osd crush`, `ceph auth ls`, `ceph osd reweight-by-utilization`, `ceph quorum_status`.
-*   **Subsystems**: `mon`, `osd`, `pg`, `mds`, `auth`.
-*   **Concepts/States**: `quorum`, `CRUSH map`, `reweight`, `blocklist`, `scrub`, `inactive/unclean/stale/undersized`.
-*   **Formats**: `json`, `json-pretty`, `xml`, `plain`.
+*   **Utility**: `ceph`, `osdmaptool`, `jq`.
+*   **Core Commands**: `ceph status`, `ceph tell`, `ceph osd df`, `ceph pg dump`, `ceph osd crush`.
+*   **States/Flags**: `inactive`, `unclean`, `stale`, `degraded`, `pause`, `blocklist`.
+*   **Configuration/Maps**: `monmap`, `osdmap`, `crush map`, `mon_osd_report_timeout`.
+*   **Data Structures**: `Pools`, `Placement Groups (PGs)`, `CRUSH buckets`, `Quorum`.
 
 ### 4. Target Audience
-*   **Storage Administrators**: For day-to-day cluster operations and troubleshooting.
-*   **DevOps/SREs**: For automating cluster monitoring and management via JSON-formatted CLI output.
-*   **Testers**: Using commands like `blocklist` and `bench` for failure and performance testing.
+*   **Storage Administrators**: For daily operations and cluster maintenance.
+*   **SREs/DevOps Engineers**: For developing monitoring scripts and automation tools (specifically referencing the JSON output sections).
+*   **Support Engineers**: For troubleshooting data availability or performance bottlenecks.
 
 ### 5. Related Concepts
-*   **CRUSH Algorithm**: The underlying logic for data placement modified by `osd crush` commands.
-*   **RADOS**: The reliable autonomic distributed object store which these commands control.
-*   **Ceph Manager (mgr)**: Specifically the `balancer` module mentioned as a modern alternative to manual reweighting.
-*   **Monitor Quorum**: The consensus mechanism that ensures cluster consistency.
+*   **RADOS**: The underlying autonomous storage layer these commands control.
+*   **CRUSH Algorithm**: The mechanism for data placement managed via `osd crush` commands.
+*   **Ceph Manager (ceph-mgr)**: Mentioned as the modern alternative for balancing (via the `balancer` module).
+*   **CephX**: The authentication protocol managed via `ceph auth`.
 
 ---
 
-### Update Triggers for AI Systems
-This file should be updated whenever code changes occur in the following areas:
+### AI Update Triggers (When to update this file)
+An AI system should flag this file for updates if code changes occur in the following areas:
 
-1.  **CLI Argument Parser**: If new flags or subcommands are added to the `ceph` binary (e.g., new `ceph osd ...` or `ceph pg ...` arguments).
-2.  **Subsystem State Logic**: If new PG states are introduced beyond "inactive," "unclean," or "stale."
-3.  **CRUSH Map Hierarchy**: If the logic for bucket types or device classes (like the mentioned `hdd`, `ssd`, `qlc`) changes.
-4.  **Default Values**: If hardcoded defaults—such as the `max_osd` limit (currently 10,000) or the `mon_osd_report_timeout`—are modified in the source code.
-5.  **Output Formatting**: If the structure of the JSON output changes for commands like `pg dump` or `osd dump`, as this file explicitly recommends JSON for automation.
-6.  **Deprecation of Legacy Features**: If "legacy" features mentioned (like `reweight-by-utilization`) are officially superseded by newer modules (like the `mgr` balancer).
+1.  **CLI Command Registration**: If new subcommands are added to `src/mon/MonCommands.h` or if existing command arguments/syntax are deprecated.
+2.  **Subsystem State Logic**: If new Placement Group states are introduced or existing ones (like `stale` or `undersized`) are redefined.
+3.  **Default Value Changes**: If hardcoded defaults mentioned in the docs change (e.g., the `max_osd` default of 10,000 or the `pg dump_stuck` threshold of 300s).
+4.  **JSON Schema Changes**: Since the doc explicitly recommends JSON for automation, any change to the structure of `ceph osd dump --format json` or `ceph pg dump` should be reflected.
+5.  **CRUSH Evolution**: If new bucket types or device classes (beyond `hdd`, `ssd`, `qlc`) are added to the core CRUSH implementation.
+6.  **Deprecation of Legacy Features**: As noted with the `balancer` module replacing manual reweighting, any shift from manual CLI control to automated manager modules requires updating the "Note" or "Warning" sections.

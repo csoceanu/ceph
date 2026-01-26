@@ -1,42 +1,42 @@
-This documentation file serves as the manual page for `ceph-volume`, the primary utility used for deploying and managing Ceph Object Storage Daemons (OSDs).
+This documentation file serves as the manual page for `ceph-volume`, the primary CLI tool used to provision, manage, and inspect Ceph Object Storage Daemons (OSDs).
 
 ### 1. Primary Purpose
-The file documents the **`ceph-volume`** command-line tool, which is designed to provision, activate, and manage storage devices for Ceph OSDs. It focuses on using Logical Volume Manager (LVM) tags for device discovery and provides a migration path for legacy OSDs.
+The file documents the **management of physical and logical storage devices** for use within a Ceph cluster. It outlines how to transform raw disks or LVM (Logical Volume Manager) volumes into functional Ceph OSDs, replacing the legacy `ceph-disk` utility.
 
 ### 2. Key Topics Covered
-*   **Inventory Management**: Scanning and reporting on physical disk metadata (model, size, SSD/HDD status).
-*   **LVM Workflow**: The core lifecycle of an OSD using LVM, including:
-    *   `batch`: Automated mass provisioning of OSDs.
-    *   `prepare` / `activate`: The two-stage process for manual OSD setup and systemd integration.
-    *   `create`: A wrapper combining preparation and activation.
-    *   `zap`: Securely wiping devices or logical volumes.
-*   **Advanced LVM Operations**: Adding/migrating auxiliary devices like **Write Ahead Log (WAL)** and **BlueStore Database (DB)**.
-*   **Simple/Legacy Support**: Tools (`simple scan/activate`) to manage OSDs created by the deprecated `ceph-disk` utility or manual processes.
-*   **Systemd Integration**: How the tool interacts with systemd units to ensure OSDs persist across reboots.
+*   **Inventory Management**: How to scan and report on the host's physical disks.
+*   **LVM Workflow**: The primary method for OSD deployment using LVM tags for metadata persistence. 
+    *   *Sub-processes*: Batch provisioning, manual preparation (`prepare`), activation (`activate`), and combined creation (`create`).
+*   **Logical Volume Operations**: Adding Write Ahead Logs (WAL), DB volumes (for BlueStore), and migrating data between volumes.
+*   **Cleanup**: Procedures for "zapping" (wiping) devices to make them reusable.
+*   **Legacy Support ("Simple")**: A workflow to adopt OSDs created by older tools or manual processes into the `ceph-volume` management framework.
+*   **Systemd Integration**: How the tool interacts with systemd for persistence across reboots.
 
 ### 3. Technical Keywords
-*   **Core Commands**: `inventory`, `lvm`, `simple`, `batch`, `prepare`, `activate`, `zap`, `migrate`.
-*   **Configuration/APIs**: `--bluestore`, `--dmcrypt` (encryption), `--crush-device-class`, `--osds-per-device`.
-*   **Storage Components**: `logical volume (lv)`, `volume group (vg)`, `block.db`, `block.wal`, `BlueFS`.
-*   **Ceph Identifiers**: `osd-id`, `osd-fsid` (UUID).
-*   **Integration Points**: `systemd`, `LVM tags`, `/etc/ceph/osd/` (JSON metadata).
+*   **Subcommands**: `inventory`, `lvm`, `simple`, `batch`, `prepare`, `activate`, `zap`, `migrate`, `new-wal`, `new-db`.
+*   **Objectstores**: `bluestore` (default), `filestore` (implied legacy).
+*   **Configuration/Flags**: `--dmcrypt` (encryption), `--crush-device-class`, `--osds-per-device`, `--block-db-size`, `--block.wal`, `--osd-fsid`.
+*   **System Components**: `LVM tags`, `Logical Volumes (LV)`, `Volume Groups (VG)`, `systemd units`, `udev` (notably *not* used by this tool).
+*   **Data Types**: `JSON` (for reporting and metadata persistence).
 
 ### 4. Target Audience
-*   **Storage Administrators**: Managing Ceph cluster hardware and disk provisioning.
-*   **Site Reliability Engineers (SREs)**: Troubleshooting OSD boot/activation issues or disk failures.
-*   **Automation Developers**: Creating scripts or Ansible playbooks to deploy Ceph (the `batch` and `json` output options are key here).
+*   **Storage Administrators**: Who need to provision new storage nodes or replace failed drives.
+*   **Site Reliability Engineers (SREs)**: Automating cluster deployments via scripts or orchestration tools (like Ansible or Salt).
+*   **Developers**: Working on Ceph’s orchestration layer or storage backend.
 
 ### 5. Related Concepts
-*   **ceph-disk**: The legacy tool that `ceph-volume` replaces.
-*   **BlueStore**: The backend object store for Ceph OSDs discussed throughout the file.
-*   **LVM (Logical Volume Manager)**: The underlying Linux technology used for volume management.
-*   **CRUSH Hierarchy**: Related via the `--crush-device-class` flag which affects data placement.
-*   **dm-crypt**: The Linux kernel subsystem used when the `--dmcrypt` flag is invoked for encryption.
+*   **ceph-osd**: The actual daemon that `ceph-volume` prepares the storage for.
+*   **BlueStore**: The storage backend implementation that utilizes the `block.db` and `block.wal` devices mentioned.
+*   **CRUSH Hierarchy**: The tool allows assigning OSDs to specific device classes within the CRUSH map.
+*   **LVM2**: The underlying Linux technology used for volume management.
+*   **ceph-disk**: The deprecated predecessor; this documentation highlights the shift away from `udev` dependency.
+
+---
 
 ### Update Triggers for AI Systems
-This file should be updated if any of the following code changes occur:
-1.  **Subcommand Additions**: If a new module (beyond `lvm` or `simple`) is added to the `ceph-volume` CLI.
-2.  **Flag Modifications**: If new provisioning options are added (e.g., new encryption methods, support for new object stores beyond BlueStore, or new metadata flags).
-3.  **LVM Tagging Logic**: If the internal method for how Ceph identifies LVM volumes changes.
-4.  **Systemd Workflow**: If the way OSDs are "triggered" or "activated" at boot time is modified.
-5.  **Deprecation**: If legacy support for `simple` or `ceph-disk` formats is removed.
+This file should be updated if code changes occur in the following areas:
+1.  **CLI Argument Changes**: If new flags are added to `lvm batch` or `prepare` (e.g., new encryption formats or performance tuning parameters).
+2.  **New Objectstore Support**: If a new backend (beyond BlueStore) is introduced.
+3.  **Metadata Changes**: If the LVM tagging scheme or the JSON structure in `/etc/ceph/osd/` is modified.
+4.  **Lifecycle Management**: Changes to how systemd units are generated or how OSDs are triggered at boot.
+5.  **New Subcommands**: The addition of new top-level commands or subcommands within the `lvm` or `simple` namespaces.

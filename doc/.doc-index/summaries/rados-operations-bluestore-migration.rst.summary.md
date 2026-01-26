@@ -1,45 +1,45 @@
-This documentation file, `rados/operations/bluestore-migration.rst`, serves as the definitive guide for transitioning a Ceph cluster's underlying storage engine from the deprecated **Filestore** to the modern **BlueStore**.
+This documentation file, `rados/operations/bluestore-migration.rst`, serves as the definitive guide for transitioning a Ceph cluster's underlying object storage implementation from the deprecated **Filestore** to the modern **BlueStore** backend.
 
 ### 1. Primary Purpose
-The file documents the strategic and operational procedures for migrating OSDs (Object Storage Daemons) from Filestore to BlueStore. Since these two formats are fundamentally different, the file explains why in-place conversion is impossible and outlines three distinct methodologies to achieve the migration while maintaining data integrity and cluster availability.
+The file provides high-level strategies and step-by-step operational procedures for migrating OSDs (Object Storage Daemons) from Filestore to BlueStore. Since in-place conversion is impossible due to fundamental architecture differences, this document outlines how to leverage Ceph's native replication and recovery mechanisms to perform the swap safely.
 
 ### 2. Key Topics Covered
-*   **Deprecation Notice**: Alerts users that Filestore is unsupported as of the Ceph **Reef** release.
+*   **Deprecation Notice**: Formal warning that Filestore is unsupported as of the **Reef** release.
+*   **Default Behavior**: Guidance on deploying new or replacement OSDs (which default to BlueStore).
 *   **Migration Strategies**:
-    *   **"Mark-out" Replacement**: A device-by-device approach using Ceph's native replication to move data off an OSD before reprovisioning it.
-    *   **"Whole host" Replacement**: A more efficient strategy using a spare host or evacuated host to migrate data in large batches (host-by-host).
-    *   **Per-OSD Device Copy**: A low-network-traffic method using `ceph-objectstore-tool` to copy data locally between disks.
-*   **Operational Safety**: Detailed warnings regarding data destruction, CRUSH failure domains, and maintenance of data redundancy during the transition.
-*   **Verification**: Procedures to identify current object store types across the cluster.
+    *   **Mark-"out" Replacement**: A per-OSD approach using standard cluster healing. It is simple but causes high network traffic and double data migration.
+    *   **"Whole host" Replacement**: A host-level approach using a spare host or evacuated capacity. This is more efficient as data moves across the network only once.
+    *   **Per-OSD Device Copy**: A localized approach using `ceph-objectstore-tool` to copy data directly between disks on a single host. (Note: This is noted as partially unsupported/experimental).
 
 ### 3. Technical Keywords
-*   **Components/Tools**: `BlueStore`, `Filestore`, `OSD`, `ceph-volume`, `ceph-objectstore-tool`, `LVM`, `CRUSH map`.
-*   **Commands/APIs**: 
-    *   `ceph osd metadata` (to check storage type)
-    *   `ceph osd out` / `ceph osd in`
+*   **Components/APIs**: `BlueStore`, `Filestore`, `OSD`, `CRUSH map`, `LVM`.
+*   **Commands**: 
+    *   `ceph osd out` / `in`
     *   `ceph osd safe-to-destroy`
-    *   `ceph-volume lvm zap` / `ceph-volume lvm create`
+    *   `ceph-volume lvm create --bluestore`
+    *   `ceph-volume lvm zap`
     *   `ceph osd crush swap-bucket`
     *   `ceph osd purge`
-*   **Configuration/States**: `osd_objectstore`, `up`, `down`, `out`, `safe-to-destroy`.
+    *   `ceph-objectstore-tool`
+*   **Configuration/Metadata**: `osd_objectstore`, `osd-id`, `osd_id_retrieval`.
 
 ### 4. Target Audience
-*   **Ceph Administrators**: Those managing older clusters (pre-Reef) who need to upgrade to supported versions.
-*   **System Architects**: Planning cluster expansions or hardware refreshes.
-*   **Site Reliability Engineers (SREs)**: Automating the deprecation of legacy storage formats.
+*   **Storage Administrators**: Managing existing Ceph clusters that pre-date the BlueStore default.
+*   **Operations Teams**: Planning hardware refreshes or software upgrades to Ceph Reef or later versions.
+*   **DevOps Engineers**: Automating OSD lifecycle management.
 
 ### 5. Related Concepts
-*   **RADOS Operations**: General management of the Ceph storage pool.
-*   **Data Durability/Redundancy**: Understanding how replication and erasure coding protect data during OSD downtime.
-*   **CRUSH Hierarchy**: Managing how data is distributed across hosts, racks, and roots.
-*   **LVM Management**: Since `ceph-volume` interacts directly with Logical Volume Manager for OSD provisioning.
+*   **RADOS Operations**: General cluster maintenance and OSD management.
+*   **Data Durability/Redundancy**: Concepts of failure domains (host vs. rack) and replica health during migration.
+*   **Deployment Tools**: Relates heavily to `ceph-volume` and its orchestration of physical storage into OSDs.
+*   **Ceph Reef Release**: The version milestone that mandates this migration.
 
 ---
 
 ### Update Triggers for AI Maintenance
-An AI system should monitor and suggest updates to this file if the following code or environmental changes occur:
-*   **Command Line Changes**: If `ceph-volume` or `ceph-objectstore-tool` deprecates existing flags (like `--bluestore`) or introduces new, more efficient migration sub-commands.
-*   **Orchestration Evolution**: If `cephadm` or other orchestrators introduce automated "blue-green" OSD migration features that render manual "Mark-out" or "Whole host" steps obsolete.
-*   **Release Lifecycle**: If new Ceph releases remove Filestore code entirely (making it impossible to even boot a Filestore OSD), the migration instructions must change to "offline recovery" only.
-*   **Tooling Support**: If the "unsupported" `ceph-migrate-bluestore.bash` script is moved, promoted to a supported tool, or deprecated.
-*   **Metadata Changes**: If the way Ceph reports `osd_objectstore` in its metadata JSON changes, the `grep` examples will need adjustment.
+This file should be updated if any of the following code-level or architectural changes occur:
+1.  **Command Deprecations**: If `ceph-volume` flags change (e.g., if `--bluestore` becomes implicit and the flag is removed).
+2.  **Tooling Improvements**: If `ceph-objectstore-tool` or a new utility gains official support for "in-place" or "device-to-device" copying (addressing the current "unsupported" caveats).
+3.  **Filestore Removal**: If the Filestore code is completely stripped from the codebase, the migration guide may need to transition to a legacy recovery guide or be archived.
+4.  **Automation Changes**: If the `ceph-volume` LVM workflow changes how `osd-id` is reclaimed or how `zap` functions.
+5.  **CRUSH Logic**: If new bucket-swapping capabilities are added to the `ceph` CLI that simplify the "Whole host" replacement logic.

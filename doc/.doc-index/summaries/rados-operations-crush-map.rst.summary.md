@@ -1,39 +1,41 @@
-This documentation file, `rados/operations/crush-map.rst`, serves as the definitive guide to Ceph's **CRUSH (Controlled Replication Under Scalable Hashing)** algorithm and its operational configuration. It explains how Ceph determines data placement without a centralized lookup table, ensuring scalability and fault tolerance.
+This documentation file, `rados/operations/crush-map.rst`, is the definitive guide to Ceph’s **CRUSH (Controlled Replication Under Scalable Hashing)** algorithm and its operational configuration. It explains how Ceph determines data placement without a centralized metadata server, focusing on scalability and fault tolerance.
 
 ### 1. Primary Purpose
-The file documents the **CRUSH Map**, the internal data structure used to describe the cluster's physical topology and data placement policies. It provides instructions on how to define failure domains, manage the storage hierarchy, and tune the algorithm to ensure data durability and cluster performance.
+The file documents the **CRUSH Map**, the internal data structure used to map data to physical devices. It provides instructions for managing the cluster hierarchy, defining data placement rules, and tuning the algorithm to ensure high availability and performance across various failure domains.
 
 ### 2. Key Topics Covered
-*   **CRUSH Hierarchy & Buckets**: Definition of nodes (roots, regions, datacenters, racks, hosts) and leaves (OSDs).
-*   **Data Placement Rules**: How to create and manage rules for replicated and erasure-coded pools.
-*   **CRUSH Location Management**: How OSDs identify their place in the hierarchy (including custom location hooks).
-*   **Device Classes**: Segmenting storage by hardware type (HDD, SSD, NVMe) using shadow hierarchies.
-*   **Weights and Balancing**: Differences between standard CRUSH weights, *compat* weight sets, and *per-pool* weight sets.
-*   **Tunables**: Historical profiles (Argonaut to Jewel/Optimal) that adjust the algorithm's mathematical behavior to fix known mapping bugs.
-*   **Primary OSD Selection**: Techniques like "Primary Affinity" and custom rules to force specific hardware (e.g., SSDs) to handle primary read/write traffic.
+*   **CRUSH Location & Hierarchy**: How OSDs are organized into logical buckets (hosts, racks, rows, roots) to mirror physical topology.
+*   **Device Classes**: Categorizing storage by hardware type (HDD, SSD, NVMe) to target specific media via placement rules.
+*   **CRUSH Rules**: Defining policies for data replication (replicated pools) and data striping (erasure-coded pools).
+*   **Weight Sets**: Managing data balance through `compat` and `per-pool` weight optimizations to correct distribution skews.
+*   **Operational Management**: Commands for adding, moving, reweighting, and removing OSDs or buckets within the map.
+*   **Tunables**: Historical and version-specific algorithm adjustments (e.g., `straw2`, `chooseleaf_stable`) to improve mapping stability.
+*   **Primary Affinity**: Influencing which OSD in a set acts as the "Primary" for read/write operations to optimize performance.
 
 ### 3. Technical Keywords
-*   **APIs/Commands**: `ceph osd tree`, `ceph osd crush set`, `ceph osd crush rule create-replicated`, `ceph osd crush weight-set`, `ceph osd primary-affinity`.
+*   **APIs/Commands**: `ceph osd crush set`, `ceph osd tree`, `ceph osd crush rule create-replicated`, `ceph osd primary-affinity`, `ceph osd crush weight-set`.
 *   **Configuration Options**: `crush_location`, `crush_location_hook`, `osd_crush_update_on_start`, `mon_warn_on_legacy_crush_tunables`.
-*   **Data Structures**: `Buckets`, `Straw/Straw2` (bucket algorithms), `MSR Rules` (Multi-Step Retry).
-*   **Tunables**: `chooseleaf_stable`, `choose_total_tries`, `chooseleaf_vary_r`, `straw_calc_version`.
+*   **Data Structures**: `Buckets`, `Roots`, `Straw2` (algorithm), `MSR Rules` (Multi-Step Retry).
+*   **Concepts**: Failure Domains, Shadow Hierarchies, Device Classes, Weights, Tunables, Primary Affinity.
 
 ### 4. Target Audience
-*   **Cloud Architects**: Designing failure domains (rack-aware vs. host-aware) for high availability.
-*   **Storage Administrators**: Performing day-to-day operations like adding/removing OSDs or rebalancing data.
-*   **Performance Engineers**: Tuning primary affinity or device classes to optimize IOPS and throughput.
-*   **SREs/DevOps**: Automating OSD deployment using custom location hooks and configuration files.
+*   **Storage Administrators**: Responsible for designing cluster topology and ensuring data redundancy.
+*   **System Architects**: Designing failure domains (e.g., rack-aware or DC-aware clusters).
+*   **Site Reliability Engineers (SREs)**: Troubleshooting data imbalance or performance bottlenecks related to OSD utilization.
 
 ### 5. Related Concepts
-*   **Peering & Backfilling**: Changing CRUSH rules or weights triggers data movement (backfill).
-*   **Erasure Coding (EC)**: CRUSH rules for EC are typically managed via **Erasure Code Profiles**.
-*   **Ceph Manager (mgr) Balancer**: Automated weight adjustment often supersedes manual CRUSH weight-set management.
-*   **RADOS Pools**: Every pool is mapped to exactly one CRUSH rule.
+*   **Peering and Recovery**: CRUSH determines where data *should* be; peering ensures it *is* there.
+*   **The Balancer Module (`ceph-mgr`)**: Automatically manages the weight sets discussed in this file.
+*   **Erasure Coding**: Profiles for EC pools rely heavily on the CRUSH rules generated here.
+*   **RADOS Pools**: The high-level logical storage units that apply the CRUSH rules documented here.
 
-### When to update this file (for AI/Maintainers)
-This documentation should be updated if code changes occur in the following areas:
-1.  **New CRUSH Features**: If a new release introduces a feature bit (like `CRUSH_MSR` in the Squid release) or a new bucket algorithm.
-2.  **Topology Defaults**: If the default hierarchy types (e.g., adding `cloud-region` or `power-zone`) are modified in the source code.
-3.  **CLI Syntax**: If the `ceph osd crush` command subtree adds new arguments or changes existing parameter requirements.
-4.  **Tunable Profiles**: If a new "Optimal" profile is defined for a major Ceph release.
-5.  **Default Behaviors**: If the way OSDs auto-detect their `crush_location` or `device_class` changes.
+---
+
+### Triggering Updates: Guidelines for Developers
+This file should be updated if code changes involve:
+*   **New CRUSH Algorithms**: Adding a new bucket type (like the evolution from `straw` to `straw2`).
+*   **New Feature Bits**: Introduction of new tunables or feature flags (e.g., the `CRUSH_MSR` bit mentioned for the Squid release).
+*   **CLI Changes**: Any modifications to `ceph osd crush ...` command syntax or new subcommands.
+*   **Default Behavior Changes**: If the default failure domain, default bucket types, or the logic for `crush_location` auto-detection changes.
+*   **Hardware Classification**: Updates to how OSDs auto-detect device classes (HDD/SSD/NVMe).
+*   **Scalability Limits**: If new hierarchy depths or types are supported or modified.

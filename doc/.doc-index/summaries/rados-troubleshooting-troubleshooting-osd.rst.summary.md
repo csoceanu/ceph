@@ -1,43 +1,41 @@
-This documentation file, `troubleshooting-osd.rst`, serves as the primary diagnostic and remediation guide for Ceph **Object Storage Daemons (OSDs)**. It outlines the methodology for identifying, isolating, and fixing common OSD-related failures, performance bottlenecks, and resource constraints.
+This documentation file, `troubleshooting-osd.rst`, serves as the primary diagnostic and remediation guide for **Ceph Object Storage Daemons (OSDs)**. It is a critical resource for maintaining cluster health, managing maintenance windows, and resolving performance bottlenecks.
 
 ### 1. Primary Purpose
-The file provides a structured approach to troubleshooting OSDs within a RADOS cluster. It moves from preliminary infrastructure checks (Network/Monitors) to specific OSD failure scenarios, performance tuning, and the management of OSD states during maintenance.
+The file provides a systematic approach to identifying, diagnosing, and fixing issues related to OSDs. It covers everything from initial environmental checks (network and monitors) to specific failure scenarios like "flapping" OSDs, full disks, and slow I/O requests.
 
 ### 2. Key Topics Covered
-*   **Preliminary Infrastructure Validation**: Ensuring Monitor quorum and network integrity before diving into OSD-specific issues.
-*   **Data Collection Tools**: Methods for gathering telemetry via Ceph logs, the Admin Socket, `iostat`, `df`, and `dmesg`.
-*   **Maintenance Workflows**: Using `noout` flags to prevent unnecessary data rebalancing during planned downtime.
-*   **Startup Failures**: Troubleshooting why a `ceph-osd` daemon fails to initialize (threading limits, connection tracking, kernel versions).
-*   **Availability Issues**: Identifying "Down" OSDs and interpreting health alerts.
-*   **Capacity Management**: Handling "Full," "Backfill Full," and "Nearfull" states; adjusting fullness ratios.
-*   **Performance Bottlenecks**: Diagnosing slow/unresponsive OSDs, blocked requests, and the impact of co-resident processes or hardware issues.
-*   **Flapping OSDs**: Understanding and mitigating the "up/down" cycle caused by network instability.
-*   **mClock Scheduler**: Specific tuning for HDD-based clusters experiencing slow recovery or I/O.
+*   **Pre-flight Checks**: Verifying monitor quorum and network integrity before diving into OSD-specific issues.
+*   **Data Collection Tools**: Instructions for using Ceph logs, the Admin Socket, `iostat`, `df`, and `dmesg`.
+*   **Maintenance Workflows**: How to stop OSDs for hardware work without triggering aggressive cluster rebalancing (using `noout` flags).
+*   **Startup Failures**: Troubleshooting why a `ceph-osd` process fails to initialize (checking thread counts, `nf_conntrack` limits, and configuration paths).
+*   **Capacity Management**: Handling "Nearfull" and "Full" OSDs, including adjusting ratios and using the balancer.
+*   **Performance Optimization**: Diagnosing slow requests, identifying bottlenecks (RAM, Co-resident processes, Kernel versions), and debugging via `dump_historic_ops`.
+*   **Network Pathologies**: Detailed explanation of "Flapping" OSDs and the impact of public vs. cluster network split.
 
 ### 3. Technical Keywords
-*   **APIs/Commands**: `ceph health detail`, `ceph osd tree`, `ceph daemon {daemon-name} help`, `ceph osd set noout`, `ceph osd df`, `ceph daemon osd.<id> dump_historic_ops`.
-*   **Configuration Options**: `mon_osd_full_ratio`, `mon_osd_nearfull_ratio`, `osd_op_complaint_time`, `osd_op_num_shards_hdd`, `kernel.pid_max`, `nf_conntrack_max`.
-*   **Daemons/Components**: `ceph-osd`, `ceph-mgr` (balancer), BlueStore, FileStore (legacy), CRUSH buckets.
-*   **Performance Terms**: SyncFS, TCMalloc, suicide timeout, heartbeat failure, `queued_for_pg`, `op_commit`.
+*   **APIs/Commands**: `ceph health detail`, `ceph osd tree`, `ceph daemon {daemon-name} help`, `ceph osd set noout`, `ceph osd df`, `ceph osd set-group noout`.
+*   **Configuration Options**: `mon_osd_full_ratio`, `mon_osd_nearfull_ratio`, `osd_op_complaint_time`, `kernel.pid_max`, `nf_conntrack_max`, `osd_op_num_shards_hdd`.
+*   **System Tools**: `systemctl`, `iostat`, `dmesg`, `netstat`, `smartctl`, `sysctl`.
+*   **Internal States**: `up`, `down`, `in`, `out`, `degraded`, `queued_for_pg`, `slow requests`.
 
 ### 4. Target Audience
-*   **Storage Administrators**: For day-to-day cluster maintenance and incident response.
-*   **Site Reliability Engineers (SREs)**: To automate health monitoring and develop playbooks for OSD recovery.
-*   **System Architects**: To understand the hardware/network requirements (RAM, NIC bonding, drive ratios) to avoid performance pitfalls.
+*   **Ceph Cluster Administrators**: Responsible for day-to-day operations and emergency troubleshooting.
+*   **Storage Engineers**: Designing hardware layouts and tuning performance.
+*   **Site Reliability Engineers (SREs)**: Managing automated deployments and maintenance scripts.
 
 ### 5. Related Concepts
-*   **Monitor Quorum**: OSDs cannot function without a healthy monitor map.
-*   **CRUSH Algorithm**: Controls how data is rebalanced when OSDs are marked `out`.
-*   **Placement Groups (PGs)**: The logical units that become "degraded" or "undersized" when OSDs fail.
-*   **Networking (LACP/Bonding)**: Directly relates to preventing "Flapping OSDs."
-*   **BlueStore/FileStore**: The underlying storage backends that dictate how data is written to disk.
+*   **CRUSH Algorithm**: Specifically how failure domains and rebalancing behave when OSDs are removed.
+*   **Monitor (MON) Quorum**: The prerequisite for any OSD troubleshooting.
+*   **Placement Groups (PGs)**: How data is redistributed when OSDs fail or fill up.
+*   **Storage Backends**: References to **BlueStore** (current standard) and **FileStore** (legacy/deprecated).
+*   **mClock Scheduler**: QoS management for I/O operations.
 
 ---
 
-### Maintenance Triggers: When to Update This File
-This file should be updated by an AI or developer if code changes occur in the following areas:
-1.  **Default Value Changes**: If the default thresholds for `full_ratio` (95%) or `nearfull_ratio` (85%) are modified in the source.
-2.  **CLI Deprecations**: If commands like `ceph osd set noout` are superseded by newer `ceph-mgr` modules or different syntax.
-3.  **New Backend Logic**: If a new storage backend is introduced or if **FileStore** support is completely removed from the codebase.
-4.  **Scheduler Logic**: If the **mClock** scheduler parameters or the way OSD shards are calculated changes.
-5.  **Log/Event Evolution**: If the internal states of an operation (e.g., `dispatched`, `reached_pg`) are renamed or if new telemetry events are added to the Messenger layer.
+### Maintenance Note for AI Systems
+This file should be updated if code changes occur in the following areas:
+1.  **Default Thresholds**: If the default `full`, `nearfull`, or `backfillfull` ratios are changed in the source.
+2.  **Command Syntax**: If `ceph-mgr` or the CLI introduces new ways to handle flags (e.g., changes to `noout` or `noup` behavior).
+3.  **Default Sharding**: Changes to OSD threading models or shard defaults (like the `osd_op_num_shards_hdd` logic mentioned for mClock).
+4.  **Deprecations**: When legacy support (like FileStore or specific kernel versions) is officially removed from the codebase.
+5.  **New Diagnostic Hooks**: If new admin socket commands or performance counters are added to help debug slow requests.

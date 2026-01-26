@@ -1,47 +1,39 @@
-This documentation file, `rados/operations/user-management.rst`, serves as the definitive guide for managing identities and access control within a Ceph Storage Cluster. It details the **Cephx** authentication system, user types, and the granular "capability" (caps) system used to authorize actions across different Ceph daemons.
+This documentation file, `rados/operations/user-management.rst`, is the definitive guide for managing identities and access control within a Ceph Storage Cluster. It explains the relationship between users, keys, and capabilities (permissions) required to interact with Ceph daemons (MON, OSD, MDS, MGR).
 
 ### 1. Primary Purpose
-The file documents how to manage **Ceph Client users**, specifically focusing on their **authentication** (proving identity via secret keys) and **authorization** (defining what they can do via capabilities). It provides instructions for cluster administrators to create, modify, and delete users, and explains how clients use keyrings to interact with the cluster securely.
+The file documents the **Cephx authentication and authorization system**. It provides instructions for cluster administrators on how to create, modify, and delete users, manage their secret keys via keyrings, and define granular access permissions (capabilities) for various storage resources.
 
 ### 2. Key Topics Covered
-*   **User Concept**: Definitions of users as system actors or individuals; the `TYPE.ID` nomenclature (e.g., `client.admin`).
-*   **Authorization (Capabilities/Caps)**: Detailed syntax for granting permissions to specific daemons:
-    *   **Monitors (mon)**: Access to cluster maps and auth operations.
-    *   **OSDs (osd)**: Read/write/execute permissions for specific pools, namespaces, or application tags.
-    *   **Managers (mgr)**: Permissions for specific modules or command prefixes.
-    *   **MDS (mds)**: Access for CephFS clients.
-*   **Capability Profiles**: Pre-defined permission sets (e.g., `profile rbd`, `profile bootstrap-osd`, `profile simple-rados-client`).
-*   **Logical Partitioning**: Use of **Pools** and **Namespaces** to segregate data and restrict user access.
-*   **User Management Operations**: CLI commands to list (`ls`), get (`get`), add (`add`), and delete (`del`) users.
-*   **Keyring Management**: Procedures for creating keyring files, importing/exporting keys, and managing local client authentication files.
-*   **Security & Limitations**: Warnings regarding plaintext key storage and the lack of in-flight message encryption.
+*   **User Concept**: Definitions of "types" (usually `client`) and IDs (e.g., `client.admin`).
+*   **Authorization (Capabilities)**: Syntax and logic for "caps" that govern access to Monitors, OSDs, Managers, and Metadata Servers.
+*   **Storage Segregation**: How permissions relate to Pools, Namespaces, and Application Tags.
+*   **User Management Operations**: CLI procedures for listing (`ls`), creating (`add`, `get-or-create`), modifying (`caps`), and deleting (`del`) users.
+*   **Keyring Management**: Using `ceph-authtool` to create and manage local keyring files and importing/exporting keys between clients and the cluster.
+*   **Security Architecture**: Best practices for key storage, key rotation, and the limitations of the Cephx protocol (e.g., lack of in-transit encryption).
 
 ### 3. Technical Keywords
-*   **APIs/Tools**: `ceph auth`, `ceph-authtool`, `librados`.
-*   **Commands**: `ceph auth get-or-create`, `ceph auth caps`, `ceph auth import`, `ceph auth rotate`.
-*   **Configuration/Options**: `--id`, `--user`, `--name`, `-n`, `--keyring`, `CEPH_ARGS` (environment variable).
-*   **Daemons**: `mon`, `osd`, `mgr`, `mds`.
-*   **Access Specifiers**: `r`, `w`, `x`, `class-read`, `class-write`, `*`, `all`.
-*   **Profiles**: `bootstrap-osd`, `bootstrap-mds`, `rbd`, `fs-client`, `role-definer`.
+*   **APIs/Protocols**: `cephx`, `librados`.
+*   **Commands**: `ceph auth`, `ceph-authtool`, `rbd map`, `ceph-volume`, `cephadm`.
+*   **Configuration Options**: `keyring`, `CEPH_ARGS`, `--id`, `--name`, `--caps`.
+*   **Capability Keywords**: `allow`, `r`, `w`, `x`, `class-read`, `class-write`, `profile`, `pool`, `namespace`.
+*   **Profiles**: `profile osd`, `profile rbd`, `profile bootstrap-osd`, `profile simple-rados-client`.
 
 ### 4. Target Audience
-*   **Ceph Cluster Administrators**: Responsible for cluster security and user provisioning.
-*   **DevOps/System Engineers**: Integrating applications with Ceph storage.
-*   **Security Auditors**: Understanding the Ceph permissions model and its limitations.
+*   **Storage Administrators**: Responsible for cluster security and user provisioning.
+*   **System Integrators**: Developers connecting external applications (like OpenStack, Kubernetes, or custom `librados` apps) to Ceph.
+*   **DevOps/SREs**: Automating deployment and key distribution using tools like `cephadm`.
 
 ### 5. Related Concepts
-*   **Cephx**: The underlying authentication protocol.
-*   **CRUSH Map**: Retrievable only by users with `mon 'allow r'` caps.
-*   **RADOS Gateway (RGW)**: Acts as a Ceph client itself; has its own internal user management for S3/Swift users.
-*   **CephFS**: Uses POSIX semantics but relies on Cephx for client-to-MDS/OSD communication.
-*   **Block Devices (RBD)**: Requires specific profiles for image manipulation and blacklisting.
+*   **Cephx Config Reference**: Deep dive into authentication settings.
+*   **RADOS Gateway (RGW)**: While RGW uses Ceph users to talk to the cluster, it has a separate user management system for its own S3/Swift end-users.
+*   **CephFS Client Auth**: Specific authorization logic for filesystem access.
+*   **Ceph Architecture**: High-level details on how Ceph handles high-availability authentication.
 
----
-
-### Update Triggers for AI Maintenance
-Update this file if code changes occur in the following areas:
-1.  **CLI Syntax**: If the `ceph auth` command or its subcommands (add, caps, ls) are modified.
-2.  **Capability Logic**: If new access specifiers (beyond `r, w, x, class-read`) or new matchers (e.g., beyond `pool`, `namespace`, `network`) are added to the authorization engine.
-3.  **New Profiles**: If the Ceph source code introduces new pre-defined capability profiles (e.g., for new manager modules or daemon types).
-4.  **Security Protocols**: If Ceph introduces in-flight encryption or changes the `cephx` handshake.
-5.  **Default Paths**: If the default search paths for keyrings (currently `/etc/ceph/`) are changed.
+### Update Triggers for AI Systems
+This file should be updated if code changes occur in the following areas:
+1.  **New Daemon Types**: If a new daemon (beyond mon, osd, mds, mgr) is added to the architecture.
+2.  **Capability Syntax**: If the parser for capabilities is modified to support new filters, operators, or keywords (e.g., new network CIDR restrictions).
+3.  **New Profiles**: If new predefined capability profiles (like `profile rbd`) are introduced in the source code.
+4.  **CLI Changes**: If the `ceph auth` or `ceph-authtool` command-line interfaces are modified (new flags or deprecated subcommands).
+5.  **Keyring Defaults**: If the default search paths or naming conventions for `.keyring` files change.
+6.  **Security Protocols**: If Ceph adds support for message encryption in transit or changes the underlying `cephx` handshake.

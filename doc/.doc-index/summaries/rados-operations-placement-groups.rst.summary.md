@@ -1,48 +1,41 @@
-### 1. Primary Purpose
-This documentation serves as the authoritative guide for **Placement Groups (PGs)** in a Ceph cluster. It explains the architectural role of PGs as an abstraction layer between logical pools and physical OSDs, provides instructions for managing PG counts via manual configuration or the automated **PG Autoscaler**, and outlines operational procedures for troubleshooting, scrubbing, and prioritizing data recovery.
+This documentation file, `rados/operations/placement-groups.rst`, is the definitive guide for managing **Placement Groups (PGs)** in a Ceph cluster. It explains the architectural necessity of PGs for scaling and provides operational instructions for managing data distribution, durability, and health.
 
----
+### 1. Primary Purpose
+The file documents the lifecycle, management, and optimization of Placement Groups. It serves as both a conceptual overview (explaining why PGs exist) and an operational manual (detailing how to use the PG Autoscaler, manually tune PG counts, and troubleshoot stuck PGs).
 
 ### 2. Key Topics Covered
-*   **PG Architecture**: Mapping of RADOS objects to PGs and PGs to OSDs; the purpose of PGs in scaling and metadata management.
-*   **PG Autoscaler**: Operational modes (`on`, `off`, `warn`), viewing recommendations, and understanding the scaling threshold.
-*   **Capacity Planning**: Setting `target_size_bytes` or `target_size_ratio` to help the cluster pre-calculate ideal PG counts.
-*   **Bulk Pools**: The `bulk` flag for large pools to ensure high initial PG counts for performance.
-*   **Placement Tuning**: Use of `pg_num_min`, `pg_num_max`, and `mon_target_pg_per_osd`.
-*   **Data Durability & Recovery**: Impact of PG counts on recovery speed and data safety; forcing/prioritizing backfill and recovery.
-*   **Maintenance & Integrity**: Manual scrubbing (shallow and deep), checking for "stuck" PGs, and handling "unfound" lost objects.
-
----
+*   **The PG Autoscaler**: Detailed explanation of `on`, `warn`, and `off` modes; how it calculates recommendations based on pool usage and target sizes.
+*   **Pool Parameters**: Configuration of `pg_num`, `pgp_num`, `target_size_bytes`, and `target_size_ratio`.
+*   **Scaling Thresholds**: How the system decides when to trigger a split or merge of PGs.
+*   **The "Bulk" Flag**: A special designation for large pools to ensure they start with an appropriate number of PGs to prevent performance bottlenecks.
+*   **Data Durability & Recovery**: The mathematical relationship between OSD counts, PG counts, and the risk of data loss during hardware failure.
+*   **Operational Commands**: Procedures for scrubbing PGs, prioritizing backfill/recovery, and handling "unfound" objects.
+*   **PG Map/Status**: How to interpret `autoscale-status` and `pg dump` outputs.
 
 ### 3. Technical Keywords
-*   **Configuration Options**: `pg_autoscale_mode`, `osd_pool_default_pg_autoscale_mode`, `mon_target_pg_per_osd`, `pg_num_min`, `pg_num_max`, `target_size_bytes`, `target_size_ratio`, `recovery_priority`.
-*   **Commands**: `ceph osd pool autoscale-status`, `ceph pg dump`, `ceph pg map`, `ceph pg scrub`, `ceph pg force-recovery`, `ceph pg mark_unfound_lost`.
-*   **Concepts**: `pg_num` vs `pgp_num`, CRUSH roots/subtrees, `bulk` flag, `bias`, `effective ratio`, `backfill`, `peering`.
-*   **PG States**: `inactive`, `undersized`, `stale`, `unclean`, `degraded`.
-
----
+*   **APIs/Properties**: `pg_autoscale_mode`, `pg_num`, `pgp_num`, `target_size_bytes`, `target_size_ratio`, `pg_num_min`, `pg_num_max`, `recovery_priority`, `bulk`.
+*   **CLI Commands**: `ceph osd pool autoscale-status`, `ceph pg dump_stuck`, `ceph tell {pg-id} scrub`, `ceph pg force-recovery`, `ceph osd pool set {pool} bulk`.
+*   **Configuration Options**: `osd_pool_default_pg_autoscale_mode`, `mon_target_pg_per_osd`, `mon_max_pg_per_osd`.
+*   **Internal States**: `inactive`, `undersized`, `stale`, `degraded`, `remap`, `backfill`.
 
 ### 4. Target Audience
-*   **Storage Administrators**: Responsible for cluster health, performance tuning, and capacity planning.
-*   **SREs/DevOps**: Automating cluster deployments and managing resource utilization.
-*   **Support Engineers**: Troubleshooting data unavailability, stuck PGs, or performance degradation during recovery.
-
----
+*   **Storage Administrators**: Who need to optimize cluster performance and balance data across OSDs.
+*   **System Architects**: Designing Ceph clusters who need to calculate initial PG counts and durability risks.
+*   **SREs/Troubleshooters**: Diagnosing performance issues or data availability problems (e.g., stuck PGs, unfound objects).
 
 ### 5. Related Concepts
-*   **CRUSH Maps/Rules**: PGs rely on CRUSH to determine physical placement; issues arise if pools span multiple CRUSH roots.
-*   **RADOS**: The underlying object store that PGs organize.
-*   **Ceph Manager (MGR)**: The module responsible for running the PG Autoscaler.
-*   **BlueStore/FileStore**: Underlying OSD storage backends that influence resource consumption per PG.
-*   **Backfill/Recovery**: The internal processes triggered when `pg_num` or cluster topology changes.
+*   **CRUSH Algorithm**: PGs are the input to CRUSH for determining physical OSD placement.
+*   **RADOS Objects**: PGs are the logical containers/aggregators for individual objects.
+*   **Ceph Pools**: The logical layer directly above PGs; PGs are subsets of pools.
+*   **OSD (Object Storage Daemons)**: The physical layer where PG data is stored and replicated.
 
 ---
 
-### Maintenance Triggers: When to Update this File
-This file must be updated if code changes occur in the following areas:
-1.  **Autoscaler Logic**: Changes to the scaling threshold formulas (currently power-of-two based), the dynamic reduction of thresholds for scaling up, or how `BIAS` is calculated.
-2.  **CLI Changes**: Addition, removal, or renaming of `ceph osd pool` or `ceph pg` subcommands.
-3.  **Default Values**: Updates to `mon_target_pg_per_osd` or the default `pg_autoscale_mode`.
-4.  **Health Checks**: Addition of new health codes related to PG overcommitment or target size conflicts (e.g., `POOL_TARGET_SIZE_BYTES_OVERCOMMITTED`).
-5.  **New Flags**: Introduction of new pool-level flags similar to `bulk` that influence PG distribution or lifecycle.
-6.  **Architecture Shifts**: Any change in how objects map to PGs or how PGs map to OSDs (e.g., shifting away from the power-of-two requirement).
+### Update Triggers (When to update this file)
+This file should be updated if code changes occur in the following areas:
+1.  **Autoscaler Logic**: If the mathematical formula for calculating `NEW PG_NUM` changes or if new calculation variables (like new ratios or biases) are added to the Manager module.
+2.  **PG States**: If new PG states are introduced or if the definition of "stuck" PGs is modified in the Monitor.
+3.  **Default Values**: If hardcoded defaults for `mon_target_pg_per_osd` or the default scaling threshold (currently 3.0) are changed.
+4.  **CLI Changes**: If the output format of `autoscale-status` changes (e.g., adding a new column) or if new `ceph pg` subcommands are added.
+5.  **BlueStore/OSD Backend**: If changes to the OSD backend alter the recommended number of PGs per OSD (as seen when Filestore was deprecated).
+6.  **New Pool Flags**: If new pool-level flags (similar to `bulk`) are introduced that affect PG behavior or initial placement.
