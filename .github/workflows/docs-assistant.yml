@@ -45,7 +45,23 @@ jobs:
           ref: ${{ steps.pr_info.outputs.head_ref || github.ref }}
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
-          
+
+      # ========== RESOURCE MONITORING (BEFORE) ==========
+      - name: 📊 Resources (before)
+        run: |
+          echo "========== SYSTEM INFO =========="
+          echo "CPU cores: $(nproc)"
+          cat /proc/cpuinfo | grep "model name" | head -1
+          echo ""
+          echo "========== MEMORY =========="
+          free -h
+          echo ""
+          echo "========== DISK =========="
+          df -h /
+          echo ""
+          echo "========== START TIME =========="
+          date
+
       - name: Documentation Assistant
         uses: csoceanu/code-to-docs@main
         with:
@@ -58,3 +74,16 @@ jobs:
           docs-subfolder: ${{ secrets.DOCS_SUBFOLDER }}
           comment-body: ${{ github.event.comment.body }}
           docs-base-branch: ${{ secrets.DOCS_BASE_BRANCH || 'main' }}
+
+      # ========== RESOURCE MONITORING (AFTER) ==========
+      - name: 📊 Resources (after)
+        if: always()
+        run: |
+          echo "========== END TIME =========="
+          date
+          echo ""
+          echo "========== MEMORY (AFTER) =========="
+          free -h
+          echo ""
+          echo "========== DISK (AFTER) =========="
+          df -h /
