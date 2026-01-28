@@ -17,6 +17,13 @@ jobs:
       (contains(github.event.comment.body, '[review-docs]') || 
        contains(github.event.comment.body, '[update-docs]'))
     steps:
+      # ========== JOB START ==========
+      - name: ⏱️ Job started
+        run: |
+          echo "========== JOB START TIME =========="
+          date
+          echo "Job ID: ${{ github.run_id }}"
+
       - name: Get PR information
         id: pr_info
         if: github.event.issue.pull_request
@@ -46,20 +53,20 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
 
-      # ========== RESOURCE MONITORING (BEFORE) ==========
-      - name: 📊 Resources (before)
+      # ========== RESOURCE MONITORING (BEFORE ACTION) ==========
+      - name: 📊 Resources (before action)
         run: |
           echo "========== SYSTEM INFO =========="
           echo "CPU cores: $(nproc)"
           cat /proc/cpuinfo | grep "model name" | head -1
           echo ""
-          echo "========== MEMORY =========="
+          echo "========== MEMORY (BEFORE) =========="
           free -h
           echo ""
-          echo "========== DISK =========="
+          echo "========== DISK (BEFORE) =========="
           df -h /
           echo ""
-          echo "========== START TIME =========="
+          echo "========== ACTION START TIME =========="
           date
 
       - name: Documentation Assistant
@@ -75,11 +82,11 @@ jobs:
           comment-body: ${{ github.event.comment.body }}
           docs-base-branch: ${{ secrets.DOCS_BASE_BRANCH || 'main' }}
 
-      # ========== RESOURCE MONITORING (AFTER) ==========
-      - name: 📊 Resources (after)
+      # ========== JOB END ==========
+      - name: ⏱️ Job completed
         if: always()
         run: |
-          echo "========== END TIME =========="
+          echo "========== JOB END TIME =========="
           date
           echo ""
           echo "========== MEMORY (AFTER) =========="
