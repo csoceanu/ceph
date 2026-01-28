@@ -33,6 +33,9 @@ jobs:
           echo ""
           echo "========== DISK (START) =========="
           df -h /
+          echo ""
+          echo "========== CPU LOAD (START) =========="
+          uptime
 
       - name: Get PR information
         id: pr_info
@@ -88,3 +91,6 @@ jobs:
           echo ""
           echo "========== DISK (END) =========="
           df -h /
+          echo ""
+          echo "========== CPU LOAD (END) =========="
+          uptime
