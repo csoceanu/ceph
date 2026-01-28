@@ -18,11 +18,21 @@ jobs:
        contains(github.event.comment.body, '[update-docs]'))
     steps:
       # ========== JOB START ==========
-      - name: ⏱️ Job started
+      - name: 📊 Job started (resources)
         run: |
           echo "========== JOB START TIME =========="
           date
           echo "Job ID: ${{ github.run_id }}"
+          echo ""
+          echo "========== SYSTEM INFO =========="
+          echo "CPU cores: $(nproc)"
+          cat /proc/cpuinfo | grep "model name" | head -1
+          echo ""
+          echo "========== MEMORY (START) =========="
+          free -h
+          echo ""
+          echo "========== DISK (START) =========="
+          df -h /
 
       - name: Get PR information
         id: pr_info
@@ -53,22 +63,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
 
-      # ========== RESOURCE MONITORING (BEFORE ACTION) ==========
-      - name: 📊 Resources (before action)
-        run: |
-          echo "========== SYSTEM INFO =========="
-          echo "CPU cores: $(nproc)"
-          cat /proc/cpuinfo | grep "model name" | head -1
-          echo ""
-          echo "========== MEMORY (BEFORE) =========="
-          free -h
-          echo ""
-          echo "========== DISK (BEFORE) =========="
-          df -h /
-          echo ""
-          echo "========== ACTION START TIME =========="
-          date
-
       - name: Documentation Assistant
         uses: csoceanu/code-to-docs@main
         with:
@@ -83,14 +77,14 @@ jobs:
           docs-base-branch: ${{ secrets.DOCS_BASE_BRANCH || 'main' }}
 
       # ========== JOB END ==========
-      - name: ⏱️ Job completed
+      - name: 📊 Job completed (resources)
         if: always()
         run: |
           echo "========== JOB END TIME =========="
           date
           echo ""
-          echo "========== MEMORY (AFTER) =========="
+          echo "========== MEMORY (END) =========="
           free -h
           echo ""
-          echo "========== DISK (AFTER) =========="
+          echo "========== DISK (END) =========="
           df -h /
