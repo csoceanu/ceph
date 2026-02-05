@@ -4,7 +4,7 @@
 Cephadm
 =======
 
-``cephadm`` is a utility that is used to manage a Ceph cluster. 
+``cephadm`` is a powerful utility that is used to deploy and manage a Ceph cluster. 
 
 Here is a list of some of the things that ``cephadm`` can do:
 
