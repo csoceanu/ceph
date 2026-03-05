@@ -13,30 +13,10 @@ jobs:
   docs-assistant:
     runs-on: ubuntu-latest
     if: |
-      github.event.issue.pull_request && 
-      (contains(github.event.comment.body, '[review-docs]') || 
+      github.event.issue.pull_request &&
+      (contains(github.event.comment.body, '[review-docs]') ||
        contains(github.event.comment.body, '[update-docs]'))
     steps:
-      # ========== JOB START ==========
-      - name: 📊 Job started (resources)
-        run: |
-          echo "========== JOB START TIME =========="
-          date
-          echo "Job ID: ${{ github.run_id }}"
-          echo ""
-          echo "========== SYSTEM INFO =========="
-          echo "CPU cores: $(nproc)"
-          cat /proc/cpuinfo | grep "model name" | head -1
-          echo ""
-          echo "========== MEMORY (START) =========="
-          free -h
-          echo ""
-          echo "========== DISK (START) =========="
-          df -h /
-          echo ""
-          echo "========== CPU LOAD (START) =========="
-          uptime
-
       - name: Get PR information
         id: pr_info
         if: github.event.issue.pull_request
@@ -46,16 +26,16 @@ jobs:
           PR_NUMBER=${{ github.event.issue.number }}
           echo "Extracting PR information for PR #$PR_NUMBER"
           PR_DATA=$(gh api repos/${{ github.repository }}/pulls/$PR_NUMBER)
-          
+
           HEAD_REF=$(echo "$PR_DATA" | jq -r '.head.ref')
           HEAD_REPO=$(echo "$PR_DATA" | jq -r '.head.repo.full_name')
           BASE_REF=$(echo "$PR_DATA" | jq -r '.base.ref')
-          
+
           echo "head_ref=$HEAD_REF" >> $GITHUB_OUTPUT
           echo "head_repo=$HEAD_REPO" >> $GITHUB_OUTPUT
           echo "base_ref=$BASE_REF" >> $GITHUB_OUTPUT
           echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
-          
+
           echo "PR info extracted: #$PR_NUMBER, base: $BASE_REF, head: $HEAD_REF"
 
       - name: Checkout PR Code
@@ -78,19 +58,3 @@ jobs:
           docs-subfolder: ${{ secrets.DOCS_SUBFOLDER }}
           comment-body: ${{ github.event.comment.body }}
           docs-base-branch: ${{ secrets.DOCS_BASE_BRANCH || 'main' }}
-
-      # ========== JOB END ==========
-      - name: 📊 Job completed (resources)
-        if: always()
-        run: |
-          echo "========== JOB END TIME =========="
-          date
-          echo ""
-          echo "========== MEMORY (END) =========="
-          free -h
-          echo ""
-          echo "========== DISK (END) =========="
-          df -h /
-          echo ""
-          echo "========== CPU LOAD (END) =========="
-          uptime
