@@ -1,3 +1,4 @@
+--------
 ========
 Tentacle
 ========
@@ -104,6 +105,11 @@ RGW
 Cephadm
 -------
 
+* Cephadm now requires Podman 3.0 or newer. This update improves security and
+  provides better support for rootless containers.
+* Automated container health monitoring is now enabled by default for all Ceph
+  daemons. Cephadm will periodically check container health, report issues, and
+  automatically attempt to restart unhealthy containers.
 * A new cephadm-managed ``mgmt-gateway`` service provides a single, TLS-terminated
   entry point for Ceph management endpoints such as the Dashboard and the monitoring
   stack. The gateway is implemented as an nginx-based reverse proxy that fronts Prometheus,
@@ -671,3 +677,5 @@ Upgrading from Pre-Reef Releases (like Quincy)
 ----------------------------------------------
 
 You **must** first upgrade to Reef (18.2.z) or Squid (19.2.z) before upgrading to Tentacle.
+
+--------------------
