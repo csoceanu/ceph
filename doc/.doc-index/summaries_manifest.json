@@ -610,7 +610,157 @@
       "hash": "91fda3877d693d837ffeb6ac312473fc910eb3a03e82fe9757303d1bfa1aec06",
       "generated": "2026-03-05T13:45:18.271519",
       "summary_file": "radosgw-s3-cpp.rst.summary.md"
+    },
+    "dev/developer_guide/testing_integration_tests/tests-integration-testing-teuthology-intro.rst": {
+      "hash": "7335982d37935c8bc6af573aed9c7edf2b0e66304133095a17ab77730806d368",
+      "generated": "2026-03-05T13:57:12.799670",
+      "summary_file": "dev-developer_guide-testing_integration_tests-tests-integration-testing-teuthology-intro.rst.summary.md"
+    },
+    "dev/radosgw/s3_compliance.rst": {
+      "hash": "f3dc71161b7769870ea127ae85ab36355f0b5565ececf58e0edca6c23f5e29df",
+      "generated": "2026-03-05T13:57:12.973757",
+      "summary_file": "dev-radosgw-s3_compliance.rst.summary.md"
+    },
+    "dev/radosgw/admin/adminops_nonimplemented.rst": {
+      "hash": "a0348b011cd4d1596d72bcf320d46ea240cecc63ff8a8cf3f1d9cfe4e09f8919",
+      "generated": "2026-03-05T13:57:13.629455",
+      "summary_file": "dev-radosgw-admin-adminops_nonimplemented.rst.summary.md"
+    },
+    "dev/developer_guide/dash-devel.rst": {
+      "hash": "9853d6d760fad92e174041835c1532591682cae96504c4f4bef0e663ffd0b55e",
+      "generated": "2026-03-05T13:57:14.803156",
+      "summary_file": "dev-developer_guide-dash-devel.rst.summary.md"
+    },
+    "dev/msgr2.rst": {
+      "hash": "3553855fe46b2a91c1dfa9b6f975b3d0ec61d7462881dd5274c4d8fbecebc0db",
+      "generated": "2026-03-05T13:57:15.639102",
+      "summary_file": "dev-msgr2.rst.summary.md"
+    },
+    "dev/perf_histograms.rst": {
+      "hash": "fe6b5acab353e9373f9b2bfa3e68182dfdbca0c6cf0edb048abec2b2e59d15c3",
+      "generated": "2026-03-05T13:57:18.737414",
+      "summary_file": "dev-perf_histograms.rst.summary.md"
+    },
+    "dev/osd_internals/mclock_wpq_cmp_study.rst": {
+      "hash": "494d458f040a93373933b92dd345a3976af20943b32b6cf26970cd88b965d7a8",
+      "generated": "2026-03-05T13:57:18.993764",
+      "summary_file": "dev-osd_internals-mclock_wpq_cmp_study.rst.summary.md"
+    },
+    "dev/config.rst": {
+      "hash": "e8d8f657f2d8178d54891593889dcdf1e80f844d7ea88ccd94c07b1d50dfe4f2",
+      "generated": "2026-03-05T13:57:19.630182",
+      "summary_file": "dev-config.rst.summary.md"
+    },
+    "dev/libcephfs_proxy.rst": {
+      "hash": "bfffa1108bf3c96037a777442faf8bec277a3744f2b9981c03495405ceb95bb0",
+      "generated": "2026-03-05T13:57:20.975234",
+      "summary_file": "dev-libcephfs_proxy.rst.summary.md"
+    },
+    "dev/cputrace.rst": {
+      "hash": "63ce5864c688445d173363a82c72020253bc07976a790852c8d79c6778fcf552",
+      "generated": "2026-03-05T13:57:21.181399",
+      "summary_file": "dev-cputrace.rst.summary.md"
+    },
+    "dev/cephadm/design/storage_devices_and_osds.rst": {
+      "hash": "70a308820789fdc5eccb8950d9061b0b881dbf97ffc3efe8e72fd86056c03dc9",
+      "generated": "2026-03-05T13:57:24.513596",
+      "summary_file": "dev-cephadm-design-storage_devices_and_osds.rst.summary.md"
+    },
+    "dev/cephfs-mirroring.rst": {
+      "hash": "0e3b323ae415dd9dd5aedd7c467ac553b76b6f67890561227c08c9ea1603f986",
+      "generated": "2026-03-05T13:57:27.279972",
+      "summary_file": "dev-cephfs-mirroring.rst.summary.md"
+    },
+    "dev/seastore.rst": {
+      "hash": "8b0b70a94cb1db2a931b8b6e4383039f55a6c2b030afeca7d1903763de78ab43",
+      "generated": "2026-03-05T13:57:27.519352",
+      "summary_file": "dev-seastore.rst.summary.md"
+    },
+    "dev/osd_internals/erasure_coding/proposals.rst": {
+      "hash": "78b09078dd4d79ae72c61687c092685e51ed744676ef3e05708c5ff348edbe1e",
+      "generated": "2026-03-05T13:57:27.950408",
+      "summary_file": "dev-osd_internals-erasure_coding-proposals.rst.summary.md"
+    },
+    "dev/osd_internals/erasure_coding/enhancements.rst": {
+      "hash": "0afec85e95f729fdffc8e29b2ee5dc3a6085699159aa020a52412a1985a55c98",
+      "generated": "2026-03-05T13:57:28.320173",
+      "summary_file": "dev-osd_internals-erasure_coding-enhancements.rst.summary.md"
+    },
+    "dev/developer_guide/testing_integration_tests/tests-integration-testing-teuthology-workflow.rst": {
+      "hash": "240f255b4726f1978b817f14d0e2a124ccb0d7f294c8ef764f933ffde5a463bc",
+      "generated": "2026-03-05T13:57:32.124997",
+      "summary_file": "dev-developer_guide-testing_integration_tests-tests-integration-testing-teuthology-workflow.rst.summary.md"
+    },
+    "dev/ceph_krb_auth.rst": {
+      "hash": "d1cd47f2dde1170d41c17a230035971680a72a0436631114decb6f15a9758ecb",
+      "generated": "2026-03-05T13:57:34.488391",
+      "summary_file": "dev-ceph_krb_auth.rst.summary.md"
+    },
+    "dev/cephadm/developing-cephadm.rst": {
+      "hash": "9f7396e3a7a58a3d1fea73c37f352f17813a8a0fa7b23f943216cae116b176bc",
+      "generated": "2026-03-05T13:57:34.774167",
+      "summary_file": "dev-cephadm-developing-cephadm.rst.summary.md"
+    },
+    "dev/mon-osdmap-prune.rst": {
+      "hash": "5e7c8537f496abce0cbb32bca7d797afe71cdde7d77fa9c445e37356e756175f",
+      "generated": "2026-03-05T13:57:35.443180",
+      "summary_file": "dev-mon-osdmap-prune.rst.summary.md"
+    },
+    "dev/osd_internals/erasure_coding/direct_reads.rst": {
+      "hash": "86d3ee8d66ad4cb45067c408b76a33cbe153141c4d0cf7a62743d9cc55868759",
+      "generated": "2026-03-05T13:57:35.985870",
+      "summary_file": "dev-osd_internals-erasure_coding-direct_reads.rst.summary.md"
+    },
+    "dev/cephx.rst": {
+      "hash": "62af790e0df0524b1ef5979b4197b3e38b02b67a8683432b03a9be7715beadce",
+      "generated": "2026-03-05T13:57:39.838782",
+      "summary_file": "dev-cephx.rst.summary.md"
+    },
+    "dev/crimson/index.rst": {
+      "hash": "1d5a4eaafe6039a16c692338c61e4d1959505a9d75adfdec39bfe52666e403ce",
+      "generated": "2026-03-05T13:57:40.654386",
+      "summary_file": "dev-crimson-index.rst.summary.md"
+    },
+    "dev/deduplication.rst": {
+      "hash": "2783ce16ac9074f98d2cae3c1a4f40997202a1fe4d06e6dfd8739254b53c7e5b",
+      "generated": "2026-03-05T13:57:42.445058",
+      "summary_file": "dev-deduplication.rst.summary.md"
+    },
+    "dev/crimson/poseidonstore.rst": {
+      "hash": "0af25d5fcaf4b1da1dc5ce56f3d59df645477b92b8922b905419fcbd3667528f",
+      "generated": "2026-03-05T13:57:43.325323",
+      "summary_file": "dev-crimson-poseidonstore.rst.summary.md"
+    },
+    "dev/pool-migration-design.rst": {
+      "hash": "29fbacb5ef966cafb3333864c32622fc3c8faee4b8d3f5f45d54f58263413898",
+      "generated": "2026-03-05T13:57:44.056926",
+      "summary_file": "dev-pool-migration-design.rst.summary.md"
+    },
+    "dev/cephx_protocol.rst": {
+      "hash": "75c5a858f1013d3c1bc80ceda39cee9275f12686cbf24b6a24000ca773257283",
+      "generated": "2026-03-05T13:57:47.323470",
+      "summary_file": "dev-cephx_protocol.rst.summary.md"
+    },
+    "dev/kclient.rst": {
+      "hash": "f91af418c7fa64568b49ec6226594a6333d6372545bac19d38d240e1386eed1c",
+      "generated": "2026-03-05T13:57:48.090194",
+      "summary_file": "dev-kclient.rst.summary.md"
+    },
+    "dev/osd_internals/manifest.rst": {
+      "hash": "b8d5ffa20ecf8311403a944ddf0d072954067640d9cdb54b72961a9bb8e95327",
+      "generated": "2026-03-05T13:57:48.795594",
+      "summary_file": "dev-osd_internals-manifest.rst.summary.md"
+    },
+    "dev/developer_guide/basic-workflow.rst": {
+      "hash": "54273431926fe7b11964f68190e9d2572dcd464d0450f5693d5987f561ce4c2a",
+      "generated": "2026-03-05T13:57:49.532621",
+      "summary_file": "dev-developer_guide-basic-workflow.rst.summary.md"
+    },
+    "dev/developer_guide/essentials.rst": {
+      "hash": "9928ecc8e46e72c8a08f306d74bc7d16dcccbe07ea650938b3ec33ef2a9f39f8",
+      "generated": "2026-03-05T13:57:50.170390",
+      "summary_file": "dev-developer_guide-essentials.rst.summary.md"
     }
   },
-  "updated": "2026-03-05T13:45:18.271549"
+  "updated": "2026-03-05T13:57:50.170419"
 }
