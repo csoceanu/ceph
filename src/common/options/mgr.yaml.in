@@ -205,6 +205,17 @@ options:
   default: 0
   services:
   - mgr
+- name: mon_pool_quota_max_object_size_warn
+  type: bool
+  level: advanced
+  desc: raise POOL_OBJECT_SIZE_QUOTA health warning when any object approaches the per-pool max_object_size quota
+  long_desc: When enabled, the cluster will raise a POOL_OBJECT_SIZE_QUOTA health
+    warning if any object in a pool with a max_object_size quota set exceeds 85% of
+    the configured limit. This helps operators identify large objects before writes
+    are rejected.
+  default: true
+  services:
+  - mgr
 - name: mon_cache_target_full_warn_ratio
   type: float
   level: advanced
