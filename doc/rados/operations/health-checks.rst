@@ -425,7 +425,8 @@ in order to free up space in the cluster.  One subtle situation is that the
 ``rados bench`` tool may have been used to test one or more pools' performance,
 and the resulting RADOS objects were not subsequently cleaned up.  You may
 check for this by invoking ``rados ls`` against each pool and looking for
-objects with names beginning with ``bench`` or other job names.  These may
+objects with names beginning with ``bench`` or other job names.  See also
+``POOL_OBJECT_SIZE_QUOTA`` for identifying large objects.  These may
 then be manually but very, very carefully deleted in order to reclaim capacity.
 
 OSD_BACKFILLFULL
@@ -627,8 +628,20 @@ If you opt to raise the pool quota, run the following commands:
 
    ceph osd pool set-quota <poolname> max_objects <num-objects>
    ceph osd pool set-quota <poolname> max_bytes <num-bytes>
+   ceph osd pool set-quota <poolname> max_object_size <num-bytes>
 
 If not, delete some existing data to reduce utilization.
+
+POOL_OBJECT_SIZE_QUOTA
+______________________
+
+One or more objects in a pool are approaching or have exceeded the
+per-pool ``max_object_size`` quota. This health check is raised when any
+object exceeds 85% of the configured limit, helping operators identify
+large objects before writes are rejected with ``-EFBIG``.
+
+To adjust this threshold, see the :confval:`mon_pool_quota_max_object_size_warn`
+configuration option.
 
 BLUEFS_SPILLOVER
 ________________
@@ -1466,6 +1479,7 @@ forms:
 
    ceph osd pool set-quota <pool> max_bytes <bytes>
    ceph osd pool set-quota <pool> max_objects <objects>
+   ceph osd pool set-quota <pool> max_object_size <bytes>
 
 To disable a quota, set the quota value to ``0``.
 
@@ -1484,6 +1498,7 @@ forms:
 
    ceph osd pool set-quota <pool> max_bytes <bytes>
    ceph osd pool set-quota <pool> max_objects <objects>
+   ceph osd pool set-quota <pool> max_object_size <bytes>
 
 To disable a quota, set the quota value to 0.
 

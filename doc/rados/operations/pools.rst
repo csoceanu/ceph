@@ -243,12 +243,13 @@ pool by running the following command:
 Setting Pool Quotas
 ===================
 
-To set quotas for the maximum number of bytes or the maximum number of
-RADOS objects per pool, run a command of the following form:
+To set quotas for the maximum number of bytes, the maximum number of
+RADOS objects per pool, or the maximum size of a single RADOS object, 
+run a command of the following form:
 
 .. prompt:: bash $
 
-   ceph osd pool set-quota {pool-name} [max_objects {obj-count}] [max_bytes {bytes}]
+   ceph osd pool set-quota {pool-name} [max_objects {obj-count}] [max_bytes {bytes}] [max_object_size {bytes}]
 
 For example:
 
@@ -256,8 +257,8 @@ For example:
 
    ceph osd pool set-quota data max_objects 10000
 
-To remove a quota, set its value to ``0``.  Note that you may set a quota only
-for bytes or only for RADOS objects, or you can set both.
+To remove a quota, set its value to ``0``.  Note that you may set a quota for
+bytes, RADOS objects, or maximum object size, or any combination thereof.
 
 
 Deleting a Pool
@@ -280,7 +281,7 @@ deleting those rules.
 
 .. prompt:: bash $
 
-   ceph osd pool get {pool-name} crush_rule
+   ceph osd pool get {pool-name} {crush_rule}
 
 For example, if the custom rule is "123", check all pools to see whether they
 use the rule by running the following command:
@@ -909,4 +910,3 @@ Here are the break downs of the argument:
 .. _Erasure Coding with Overwrites: ../erasure-code#erasure-coding-with-overwrites
 .. _Block Device Commands: ../../../rbd/rados-rbd-cmds/#create-a-block-device-pool
 .. _pgcalc: ../pgcalc
-
