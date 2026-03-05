@@ -1222,7 +1222,7 @@ Subcommand ``set-quota`` sets object or byte limit on pool.
 
 Usage::
 
-	ceph osd pool set-quota <poolname> max_objects|max_bytes <val>
+	ceph osd pool set-quota <poolname> max_objects|max_bytes|max_object_size <val>
 
 Subcommand ``stats`` obtain stats from all pools, or from specified pool.
 

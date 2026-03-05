@@ -630,6 +630,25 @@ If you opt to raise the pool quota, run the following commands:
 
 If not, delete some existing data to reduce utilization.
 
+POOL_OBJECT_SIZE_QUOTA
+______________________
+
+One or more pools have objects approaching or exceeding the configured per-pool
+``max_object_size`` quota.
+
+By default, a health warning is raised if any object in a pool exceeds 85% of
+the configured limit. This behavior is controlled by the
+:confval:`mon_pool_quota_max_object_size_warn` option.
+
+To set or adjust the maximum object size for a pool, run the following command:
+
+.. prompt:: bash #
+
+   ceph osd pool set-quota <poolname> max_object_size <value>
+
+If an object exceeds the quota, writes that would further increase its size will
+be rejected with an ``-EFBIG`` error.
+
 BLUEFS_SPILLOVER
 ________________
 
