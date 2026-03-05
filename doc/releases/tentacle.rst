@@ -1,3 +1,4 @@
+--------
 ========
 Tentacle
 ========
@@ -125,6 +126,11 @@ Cephadm
   cephadm-signed certificates, and raises health warnings when certificates are invalid, expiring or misconfigured.
   With certmgr, cephadm-signed certificates are available across all cephadm-managed services, providing
   secure defaults out of the box.
+* The minimum supported Podman version has been increased to 3.0.0. This update provides
+  better security and improved support for rootless containers.
+* Automated container health monitoring is now enabled by default. Cephadm will periodically
+  perform health checks on containerized daemons and can automatically restart containers
+  that are identified as unhealthy.
     
 CephFS
 ------
@@ -671,3 +677,5 @@ Upgrading from Pre-Reef Releases (like Quincy)
 ----------------------------------------------
 
 You **must** first upgrade to Reef (18.2.z) or Squid (19.2.z) before upgrading to Tentacle.
+
+--------------------

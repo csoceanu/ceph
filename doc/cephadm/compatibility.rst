@@ -1,4 +1,3 @@
-
 ===========================
 Compatibility and Stability
 ===========================
@@ -36,9 +35,9 @@ This table shows which version pairs are expected to work or not work together:
 
 .. warning:: 
 
-   To use Podman with Ceph Pacific, you must use **a version of Podman that
-   is 2.0.0 or higher**. However, **Podman version 2.2.1 does not work with
-   Ceph Pacific**.
+   To use Podman with recent Ceph releases, you must use **a version of Podman 
+   that is 3.0.0 or higher** to ensure better security and rootless container 
+   support. However, **Podman version 2.2.1 does not work with Ceph Pacific**.
    
    "Kubic stable" is known to work with Ceph Pacific, but it must be run
    with a newer kernel.
