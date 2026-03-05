@@ -14419,8 +14419,8 @@ bool OSDMonitor::prepare_command_impl(MonOpRequestRef op,
 
     string field;
     cmd_getval(cmdmap, "field", field);
-    if (field != "max_objects" && field != "max_bytes") {
-      ss << "unrecognized field '" << field << "'; should be 'max_bytes' or 'max_objects'";
+    if (field != "max_objects" && field != "max_bytes" && field != "max_object_size") {
+      ss << "unrecognized field '" << field << "'; should be 'max_bytes', 'max_objects', or 'max_object_size'";
       err = -EINVAL;
       goto reply_no_propose;
     }
@@ -14432,7 +14432,7 @@ bool OSDMonitor::prepare_command_impl(MonOpRequestRef op,
     int64_t value;
     if (field == "max_objects") {
       value = strict_si_cast<uint64_t>(val, &tss);
-    } else if (field == "max_bytes") {
+    } else if (field == "max_bytes" || field == "max_object_size") {
       value = strict_iecstrtoll(val, &tss);
     } else {
       ceph_abort_msg("unrecognized option");
@@ -14448,6 +14448,8 @@ bool OSDMonitor::prepare_command_impl(MonOpRequestRef op,
       pi->quota_max_objects = value;
     } else if (field == "max_bytes") {
       pi->quota_max_bytes = value;
+    } else if (field == "max_object_size") {
+      pi->quota_max_object_size = value;
     } else {
       ceph_abort_msg("unrecognized option");
     }
