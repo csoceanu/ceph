@@ -77,8 +77,8 @@
       "summary_file": "rados-operations-erasure-code.rst.summary.md"
     },
     "cephadm/install.rst": {
-      "hash": "3340a5cdbe747488a2038ea79328ae485b53395d4e61d053b54fdcdd0c111c96",
-      "generated": "2026-01-26T10:27:40.495857",
+      "hash": "303afafd827be5099964cd90f6857522bad176b357620c3403ee4ae2e51db7ba",
+      "generated": "2026-03-05T13:18:18.902789",
       "summary_file": "cephadm-install.rst.summary.md"
     },
     "rados/operations/crush-map.rst": {
@@ -300,7 +300,107 @@
       "hash": "d1902d6f0b65602a0274d394cce3e5c80416e7eff8156e5e051b4e499586493f",
       "generated": "2026-01-26T09:48:11.889205",
       "summary_file": "install-manual-freebsd-deployment.rst.summary.md"
+    },
+    "releases/bobtail.rst": {
+      "hash": "55448d86b05d2f28294366c4d7ce71073688bca1b9c4b9d3025dd251c24b364c",
+      "generated": "2026-03-05T13:17:58.252341",
+      "summary_file": "releases-bobtail.rst.summary.md"
+    },
+    "releases/jewel.rst": {
+      "hash": "e76e5c4a47b3dcf25f9298f6a2a422dd2a1ac9647b08b3971451d0a4e2b18127",
+      "generated": "2026-03-05T13:18:00.458461",
+      "summary_file": "releases-jewel.rst.summary.md"
+    },
+    "releases/octopus.rst": {
+      "hash": "7761105656bb6d1c1fde59583cf9971acb56612a06c108a21bee7685cbed183c",
+      "generated": "2026-03-05T13:18:00.699773",
+      "summary_file": "releases-octopus.rst.summary.md"
+    },
+    "releases/mimic.rst": {
+      "hash": "dc4152ae839f29e185c3035bd1b6de8fcb8d82e121700cedee734a0f1bf79b3d",
+      "generated": "2026-03-05T13:18:00.748798",
+      "summary_file": "releases-mimic.rst.summary.md"
+    },
+    "releases/dumpling.rst": {
+      "hash": "8fc015f97ce27692c8ee1c2d392bbc0e47eb1c4dcfedd01d9a0ec1d106758139",
+      "generated": "2026-03-05T13:18:02.188464",
+      "summary_file": "releases-dumpling.rst.summary.md"
+    },
+    "releases/infernalis.rst": {
+      "hash": "da63b8d24288c519694022244aeae5e8563363d6d5d9aaa5d4d9cccc74a9409a",
+      "generated": "2026-03-05T13:18:05.628158",
+      "summary_file": "releases-infernalis.rst.summary.md"
+    },
+    "releases/index.rst": {
+      "hash": "aaabdc3283edc020592bca3f8e07dd33019443b592fdf2266d361ba6b056c470",
+      "generated": "2026-03-05T13:18:06.629405",
+      "summary_file": "releases-index.rst.summary.md"
+    },
+    "releases/cuttlefish.rst": {
+      "hash": "56ddfe1377518bd24f516fdc3bb8ef5deb45742700f05e820ffe67d553f2f867",
+      "generated": "2026-03-05T13:18:09.989278",
+      "summary_file": "releases-cuttlefish.rst.summary.md"
+    },
+    "releases/nautilus.rst": {
+      "hash": "c51795582b82ad06f8507bc65a11f41cbcac9626f67d992f001e91023ace690f",
+      "generated": "2026-03-05T13:18:10.412311",
+      "summary_file": "releases-nautilus.rst.summary.md"
+    },
+    "releases/quincy.rst": {
+      "hash": "44cd649ee1439d62526666df7a0cf2094601ed5b11eeae80f65e0d0870950766",
+      "generated": "2026-03-05T13:18:10.911551",
+      "summary_file": "releases-quincy.rst.summary.md"
+    },
+    "releases/tentacle.rst": {
+      "hash": "9331e1de1191042f5961ee6153f50e35734b1379e2f01089a59fd5a9a90bfe8e",
+      "generated": "2026-03-05T13:18:12.144657",
+      "summary_file": "releases-tentacle.rst.summary.md"
+    },
+    "releases/reef.rst": {
+      "hash": "8f7b1f01ff8d6702f13baafd774802eb354776dbe2c0f31008b2cb66f9f53895",
+      "generated": "2026-03-05T13:18:15.472796",
+      "summary_file": "releases-reef.rst.summary.md"
+    },
+    "releases/firefly.rst": {
+      "hash": "047310dde480b0c04862ed964314c6307491c56c0a99181c83055a166f90087e",
+      "generated": "2026-03-05T13:18:18.101576",
+      "summary_file": "releases-firefly.rst.summary.md"
+    },
+    "releases/squid.rst": {
+      "hash": "327935740ea343a428ee2e87b546cee0e063235acdc049670fc899954f4c476c",
+      "generated": "2026-03-05T13:18:18.967140",
+      "summary_file": "releases-squid.rst.summary.md"
+    },
+    "releases/kraken.rst": {
+      "hash": "3278425925bc57d5d9cb2916d4252b738fe047e8a0ee23a3d047eba604273031",
+      "generated": "2026-03-05T13:18:19.225797",
+      "summary_file": "releases-kraken.rst.summary.md"
+    },
+    "releases/emperor.rst": {
+      "hash": "06f6e511c78b4e11c57090c40be9301221084a138e205e1535c5038bd0e80704",
+      "generated": "2026-03-05T13:18:23.982391",
+      "summary_file": "releases-emperor.rst.summary.md"
+    },
+    "releases/giant.rst": {
+      "hash": "6d51a9affd9d49f5b0ea94fb7951f933de478b54b745acf3bcc4c3008d873a1b",
+      "generated": "2026-03-05T13:18:26.414802",
+      "summary_file": "releases-giant.rst.summary.md"
+    },
+    "releases/pacific.rst": {
+      "hash": "b5f426eab28d49e0b5bebebb8fe8e74bf4af4182423c8a5f17fd522e334a1cc5",
+      "generated": "2026-03-05T13:18:27.197553",
+      "summary_file": "releases-pacific.rst.summary.md"
+    },
+    "releases/hammer.rst": {
+      "hash": "77b47b49b01e1feb79378e960633474b785cc51addf50179833226a1166a457a",
+      "generated": "2026-03-05T13:18:27.416565",
+      "summary_file": "releases-hammer.rst.summary.md"
+    },
+    "releases/luminous.rst": {
+      "hash": "f5bd1b5117b22ad9d5dff57a3bda3e4af8e7a6fe1de20ff43ce3bf95db446d47",
+      "generated": "2026-03-05T13:18:27.657452",
+      "summary_file": "releases-luminous.rst.summary.md"
     }
   },
-  "updated": "2026-01-26T10:27:40.495891"
+  "updated": "2026-03-05T13:18:27.657484"
 }
