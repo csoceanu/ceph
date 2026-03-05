@@ -400,7 +400,217 @@
       "hash": "f5bd1b5117b22ad9d5dff57a3bda3e4af8e7a6fe1de20ff43ce3bf95db446d47",
       "generated": "2026-03-05T13:18:27.657452",
       "summary_file": "releases-luminous.rst.summary.md"
+    },
+    "cephfs/administration.rst": {
+      "hash": "c3487b95995e3aa1c8221d33f32092a221c69df055732d1b3f8a8ff6667a2d67",
+      "generated": "2026-03-05T13:44:23.435036",
+      "summary_file": "cephfs-administration.rst.summary.md"
+    },
+    "rbd/rbd-mirroring.rst": {
+      "hash": "f2aa11747448986a5dfe52d4b1ba5989975a6ceab6ddd62e0be25565d1aba810",
+      "generated": "2026-03-05T13:44:23.512955",
+      "summary_file": "rbd-rbd-mirroring.rst.summary.md"
+    },
+    "radosgw/config-ref.rst": {
+      "hash": "4a152e492823534fab179b05b61fbd92ab7386a0082f58a014a965e157bf6204",
+      "generated": "2026-03-05T13:44:23.595276",
+      "summary_file": "radosgw-config-ref.rst.summary.md"
+    },
+    "cephfs/fs-volumes.rst": {
+      "hash": "720e172ffc6974707f53d14816527d985ad5daea9aedcdfdee3d715e388ff07e",
+      "generated": "2026-03-05T13:44:24.845586",
+      "summary_file": "cephfs-fs-volumes.rst.summary.md"
+    },
+    "mgr/modules.rst": {
+      "hash": "4ca7b4c1fae978bdbe86cfd46f61c96d000fd479917fff195c1fd043dab5b8c9",
+      "generated": "2026-03-05T13:44:25.163802",
+      "summary_file": "mgr-modules.rst.summary.md"
+    },
+    "rbd/rbd-kubernetes.rst": {
+      "hash": "1993144dcec0dd0a4aa92352af3b949f6d4e740865bfd021772c90824d690219",
+      "generated": "2026-03-05T13:44:29.782711",
+      "summary_file": "rbd-rbd-kubernetes.rst.summary.md"
+    },
+    "radosgw/notifications.rst": {
+      "hash": "4c9cba7a6f1dc5256a45576fd886097bb30a691c6a4ee6db734aa9f9e6e423c9",
+      "generated": "2026-03-05T13:44:30.180582",
+      "summary_file": "radosgw-notifications.rst.summary.md"
+    },
+    "cephfs/client-auth.rst": {
+      "hash": "8bee4ea9df1b141b818dedd292546726999b3952fc4dde9dcb264dfbc57f2c85",
+      "generated": "2026-03-05T13:44:30.831977",
+      "summary_file": "cephfs-client-auth.rst.summary.md"
+    },
+    "radosgw/cloud-restore.rst": {
+      "hash": "2c03241a9984d01fcd05f6dd8d042769a8295031eefb3ba90de84c1b68dba810",
+      "generated": "2026-03-05T13:44:31.215452",
+      "summary_file": "radosgw-cloud-restore.rst.summary.md"
+    },
+    "mgr/dashboard.rst": {
+      "hash": "513259a88c1f89c8ae159563bb7fbf619e047ad9e116806f5164b9a14ae220b6",
+      "generated": "2026-03-05T13:44:32.617612",
+      "summary_file": "mgr-dashboard.rst.summary.md"
+    },
+    "mgr/smb.rst": {
+      "hash": "2ed9c98bccb2405966ac57172a774bdd8fdb77f5e89c015142c17b44c02ee113",
+      "generated": "2026-03-05T13:44:37.340039",
+      "summary_file": "mgr-smb.rst.summary.md"
+    },
+    "radosgw/multisite.rst": {
+      "hash": "c06f7f3de6124b5e8cf1a0f7f024463b93c26594eecb38088727579e5d3895aa",
+      "generated": "2026-03-05T13:44:38.156660",
+      "summary_file": "radosgw-multisite.rst.summary.md"
+    },
+    "cephfs/troubleshooting.rst": {
+      "hash": "78bdfe9a7b223acc64a569387c343a2b321e59fa905e3eaaa516646c30c35e92",
+      "generated": "2026-03-05T13:44:38.919449",
+      "summary_file": "cephfs-troubleshooting.rst.summary.md"
+    },
+    "radosgw/vault.rst": {
+      "hash": "b651bea90c545c017307bb6f518cb12f62aa18f455b1579c59322cb996c1a44b",
+      "generated": "2026-03-05T13:44:39.606656",
+      "summary_file": "radosgw-vault.rst.summary.md"
+    },
+    "radosgw/lua-scripting.rst": {
+      "hash": "bc7a6491c698b75853450219d7e6f308f1460be2d4d72d34ed74dad5c0f6e4c9",
+      "generated": "2026-03-05T13:44:39.954447",
+      "summary_file": "radosgw-lua-scripting.rst.summary.md"
+    },
+    "cephfs/multimds.rst": {
+      "hash": "f50bceae1b0c0b14b87a9559c832eeaf3f972967464c32596d0117aa31b1dabc",
+      "generated": "2026-03-05T13:44:43.906457",
+      "summary_file": "cephfs-multimds.rst.summary.md"
+    },
+    "cephfs/cephfs-mirroring.rst": {
+      "hash": "2631ba31370345fc9cc11f7d11e919dd7b4ba7f5608e8483320c6ecad8845544",
+      "generated": "2026-03-05T13:44:43.909348",
+      "summary_file": "cephfs-cephfs-mirroring.rst.summary.md"
+    },
+    "rbd/rbd-live-migration.rst": {
+      "hash": "43d4e4ade3121231e8fe5f9ae758cf7bcb5815a69877facba34339a85887753f",
+      "generated": "2026-03-05T13:44:44.554885",
+      "summary_file": "rbd-rbd-live-migration.rst.summary.md"
+    },
+    "radosgw/cloud-transition.rst": {
+      "hash": "d2c0c54aace59d7549490bdd2c088cbd6dec1e10f75c250c78f2d24507c5ce7a",
+      "generated": "2026-03-05T13:44:45.932231",
+      "summary_file": "radosgw-cloud-transition.rst.summary.md"
+    },
+    "radosgw/s3/objectops.rst": {
+      "hash": "fdf1e6ac6d5279de4b99178fbf62a13f2b9b56809889229e11421ef93396214f",
+      "generated": "2026-03-05T13:44:46.880002",
+      "summary_file": "radosgw-s3-objectops.rst.summary.md"
+    },
+    "rbd/rbd-snapshot.rst": {
+      "hash": "59814e6024a108e3d9f93df1c7809e4d4cecd0cdab7a0191903390fab265f04c",
+      "generated": "2026-03-05T13:44:50.440079",
+      "summary_file": "rbd-rbd-snapshot.rst.summary.md"
+    },
+    "radosgw/multisite-sync-policy.rst": {
+      "hash": "0e41bc8e1ead70d0965f005a25cd3e2637e321c6bce9c77b324b31b4540f980d",
+      "generated": "2026-03-05T13:44:50.552414",
+      "summary_file": "radosgw-multisite-sync-policy.rst.summary.md"
+    },
+    "mgr/prometheus.rst": {
+      "hash": "c51c55e1af6daa74ff134d91ceafd02a7dac3986fdf393e3a9aac7a3641476f7",
+      "generated": "2026-03-05T13:44:51.424955",
+      "summary_file": "mgr-prometheus.rst.summary.md"
+    },
+    "rbd/rbd-nomad.rst": {
+      "hash": "4d5e633ab900921c4f7741e625356ebc02c6d17edf32dbb0afbb5fb68256ae8a",
+      "generated": "2026-03-05T13:44:51.825255",
+      "summary_file": "rbd-rbd-nomad.rst.summary.md"
+    },
+    "radosgw/s3/bucketops.rst": {
+      "hash": "28109697a27b3896a4ebc64cd4032036435d8f156f5f1760c8641e52a77cb444",
+      "generated": "2026-03-05T13:44:54.713305",
+      "summary_file": "radosgw-s3-bucketops.rst.summary.md"
+    },
+    "radosgw/swift/containerops.rst": {
+      "hash": "1a5c89b30ee622cd4133e293d782f6af75c1cef01c93ac451c3cf43a08ac7b19",
+      "generated": "2026-03-05T13:44:56.147091",
+      "summary_file": "radosgw-swift-containerops.rst.summary.md"
+    },
+    "mgr/telemetry.rst": {
+      "hash": "eef205f3ba8a6d9640b2e9f50122ffa460586aa0cd957375cddd885f4f11009e",
+      "generated": "2026-03-05T13:44:56.387007",
+      "summary_file": "mgr-telemetry.rst.summary.md"
+    },
+    "radosgw/admin.rst": {
+      "hash": "df5e839545836ffeffe2ead250005480f0d6cbe7750c72c1fd017c02ed1dfe30",
+      "generated": "2026-03-05T13:44:59.525594",
+      "summary_file": "radosgw-admin.rst.summary.md"
+    },
+    "cephfs/disaster-recovery-experts.rst": {
+      "hash": "9501e2d36c85ac74965832515b6893a3c7377be0924067f12409df33493f1f72",
+      "generated": "2026-03-05T13:45:00.235766",
+      "summary_file": "cephfs-disaster-recovery-experts.rst.summary.md"
+    },
+    "radosgw/s3select.rst": {
+      "hash": "b8441440339a89207e35493f4063e9bce38a8695ced0e5f9bff827160f698f4f",
+      "generated": "2026-03-05T13:45:00.319477",
+      "summary_file": "radosgw-s3select.rst.summary.md"
+    },
+    "mgr/orchestrator_modules.rst": {
+      "hash": "5364c5434e6d5d21b8d4a4f4c7ae0fc0a0c4f06703307ea1c5bc602048c7b4ad",
+      "generated": "2026-03-05T13:45:02.373736",
+      "summary_file": "mgr-orchestrator_modules.rst.summary.md"
+    },
+    "radosgw/s3/ruby.rst": {
+      "hash": "1dced63f959027e959e700e30e924e70b2c20fbe40581a32ae4a7eb90a9ee216",
+      "generated": "2026-03-05T13:45:02.847941",
+      "summary_file": "radosgw-s3-ruby.rst.summary.md"
+    },
+    "rbd/rados-rbd-cmds.rst": {
+      "hash": "e07955e60cf98098fe52b7bdcdd935be4a6686ea10f5c6d9923f8db7b4f49c9f",
+      "generated": "2026-03-05T13:45:05.837636",
+      "summary_file": "rbd-rados-rbd-cmds.rst.summary.md"
+    },
+    "mgr/nfs.rst": {
+      "hash": "13225bf64798e5e11abbd1b3c93545131b2ed5cdc282736c4b7be4fd5b8c62e7",
+      "generated": "2026-03-05T13:45:06.032174",
+      "summary_file": "mgr-nfs.rst.summary.md"
+    },
+    "radosgw/adminops.rst": {
+      "hash": "480cd08940454f0c074354e1d99067d6220e0b1a7a9ad1b1b25a6d7df280726c",
+      "generated": "2026-03-05T13:45:07.546770",
+      "summary_file": "radosgw-adminops.rst.summary.md"
+    },
+    "radosgw/STS.rst": {
+      "hash": "005deacbfa2a75c1ddaa5345ee92da279b26bdd6ef8658a185854be2979eadc7",
+      "generated": "2026-03-05T13:45:08.450202",
+      "summary_file": "radosgw-STS.rst.summary.md"
+    },
+    "radosgw/role.rst": {
+      "hash": "17f52710e199377f951235e44094db14a6668a637cd1a169d46f4dc7b54637f3",
+      "generated": "2026-03-05T13:45:12.146488",
+      "summary_file": "radosgw-role.rst.summary.md"
+    },
+    "radosgw/nfs.rst": {
+      "hash": "ff371fe19cfc73d12121ef8ac04daea0ba99a03f41736755be6acab10c59123f",
+      "generated": "2026-03-05T13:45:12.904694",
+      "summary_file": "radosgw-nfs.rst.summary.md"
+    },
+    "rbd/rbd-openstack.rst": {
+      "hash": "0e6b4eebd774ef0ad76677e669f777cce1b3e658265530c316fb3b727708d24b",
+      "generated": "2026-03-05T13:45:12.934841",
+      "summary_file": "rbd-rbd-openstack.rst.summary.md"
+    },
+    "rbd/libvirt.rst": {
+      "hash": "44c79830564f72ac332261ff7f207218018b3714643d4a7d6d6641ef230725fb",
+      "generated": "2026-03-05T13:45:13.449055",
+      "summary_file": "rbd-libvirt.rst.summary.md"
+    },
+    "radosgw/session-tags.rst": {
+      "hash": "16ad5c1953938693a855e1b3c276f2e123e6d274aa512ab13272325cf477f32b",
+      "generated": "2026-03-05T13:45:14.973077",
+      "summary_file": "radosgw-session-tags.rst.summary.md"
+    },
+    "radosgw/s3/cpp.rst": {
+      "hash": "91fda3877d693d837ffeb6ac312473fc910eb3a03e82fe9757303d1bfa1aec06",
+      "generated": "2026-03-05T13:45:18.271519",
+      "summary_file": "radosgw-s3-cpp.rst.summary.md"
     }
   },
-  "updated": "2026-03-05T13:18:27.657484"
+  "updated": "2026-03-05T13:45:18.271549"
 }
