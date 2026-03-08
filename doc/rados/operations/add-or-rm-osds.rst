@@ -324,6 +324,26 @@ When you are finished observing, press Ctrl-C to exit.
    sometimes be preferable to use the above reweight command.
 
 
+Draining Pools during OSD Removal
+---------------------------------
+
+When removing OSDs, you can prioritize which pools are drained first by setting
+a ``drain_priority``. Pools with a higher priority value (up to 100) will be
+drained before pools with a lower or default (0) priority.
+
+To set the drain priority for a pool:
+
+.. prompt:: bash $
+
+   ceph osd pool set {pool-name} drain_priority {value}
+
+To check the drain status of a pool:
+
+.. prompt:: bash $
+
+   ceph osd pool drain-status {pool-name}
+
+
 Stopping the OSD
 ----------------
 

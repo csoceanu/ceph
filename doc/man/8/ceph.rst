@@ -41,7 +41,7 @@ Synopsis
 
 | **ceph** **osd** **crush** [ *add* \| *add-bucket* \| *create-or-move* \| *dump* \| *get-tunable* \| *link* \| *move* \| *remove* \| *rename-bucket* \| *reweight* \| *reweight-all* \| *reweight-subtree* \| *rm* \| *rule* \| *set* \| *set-tunable* \| *show-tunables* \| *tunables* \| *unlink* ] ...
 
-| **ceph** **osd** **pool** [ *create* \| *delete* \| *get* \| *get-quota* \| *ls* \| *mksnap* \| *rename* \| *rmsnap* \| *set* \| *set-quota* \| *stats* ] ...
+| **ceph** **osd** **pool** [ *create* \| *delete* \| *drain-status* \| *get* \| *get-quota* \| *ls* \| *mksnap* \| *rename* \| *rmsnap* \| *set* \| *set-quota* \| *stats* ] ...
 
 | **ceph** **osd** **pool** **application** [ *disable* \| *enable* \| *get* \| *rm* \| *set* ] ...
 
@@ -246,7 +246,7 @@ Usage::
 
 
 Subcommand ``assimilate-conf`` to assimilate options from stdin, and return a
-new, minimal conf file
+new, minimal_conf file
 
 Usage::
 
@@ -1153,11 +1153,17 @@ Usage::
 
 	ceph osd pool delete <poolname> {<poolname>} {--yes-i-really-really-mean-it}
 
+Subcommand ``drain-status`` shows the current status of data drain for a pool.
+
+Usage::
+
+	ceph osd pool drain-status <poolname>
+
 Subcommand ``get`` gets pool parameter <var>.
 
 Usage::
 
-	ceph osd pool get <poolname> size|min_size|pg_num|pgp_num|crush_rule|write_fadvise_dontneed
+	ceph osd pool get <poolname> size|min_size|pg_num|pgp_num|crush_rule|write_fadvise_dontneed|drain_priority
 
 Only for tiered pools::
 
@@ -1215,7 +1221,7 @@ Usage::
 	cache_target_dirty_high_ratio|
 	cache_target_full_ratio|cache_min_flush_age|cache_min_evict_age|
 	min_read_recency_for_promote|write_fadvise_dontneed|hit_set_grade_decay_rate|
-	hit_set_search_last_n
+	hit_set_search_last_n|drain_priority
 	<val> {--yes-i-really-mean-it}
 
 Subcommand ``set-quota`` sets object or byte limit on pool.
