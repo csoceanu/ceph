@@ -441,22 +441,22 @@ The output now resembles the below example::
    TOTAL  5.5 PiB  1.2 PiB  4.3 PiB   4.3 PiB      78.32
 
    --- POOLS ---
-   POOL                         ID   PGS   STORED   (DATA)   (OMAP)  OBJECTS     USED   (DATA)   (OMAP)  %USED  MAX AVAIL  QUOTA OBJECTS  QUOTA BYTES  DIRTY  USED COMPR  UNDER COMPR
-   .mgr                         11     1  558 MiB  558 MiB      0 B      141  1.6 GiB  1.6 GiB      0 B      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   cephfs_meta                  13  1024  166 GiB  206 MiB  166 GiB   14.59M  499 GiB  618 MiB  498 GiB   2.74    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   cephfs_data                  14  1024      0 B      0 B      0 B    1.17G      0 B      0 B      0 B      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   cephfsECvol                  19  2048  2.8 PiB  2.8 PiB   17 KiB    1.81G  3.5 PiB  3.5 PiB   21 KiB  83.79    561 TiB            N/A          N/A    N/A         0 B          0 B
-   .nfs                         20    32  9.7 KiB  2.2 KiB  7.5 KiB       61  118 KiB   96 KiB   22 KiB      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   testbench                    71    32   12 GiB   12 GiB  2.3 KiB    3.14k   37 GiB   37 GiB  6.9 KiB      0    234 TiB            N/A          N/A    N/A         0 B          0 B
-   default.rgw.buckets.data     76  2048  482 TiB  482 TiB      0 B  132.09M  643 TiB  643 TiB      0 B  47.85    526 TiB            N/A          N/A    N/A     312 MiB      623 MiB
-   .rgw.root                    97     1  1.4 KiB  1.4 KiB      0 B        4   48 KiB   48 KiB      0 B      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   default.rgw.log              98   256  3.6 KiB  3.6 KiB      0 B      209  408 KiB  408 KiB      0 B      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   default.rgw.control          99     1      0 B      0 B      0 B        8      0 B      0 B      0 B      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   default.rgw.meta            100   128  3.8 KiB  3.2 KiB    671 B       20  194 KiB  192 KiB  2.0 KiB      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   default.rgw.buckets.index   101   256  4.2 MiB      0 B  4.2 MiB       33   13 MiB      0 B   13 MiB      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   default.rgw.buckets.non-ec  102   128  5.6 MiB      0 B  5.6 MiB       13   17 MiB      0 B   17 MiB      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
-   kubedata                    104   256   63 GiB   63 GiB      0 B   17.65k  188 GiB  188 GiB      0 B   0.03    234 TiB            N/A       20 TiB    N/A         0 B          0 B
-   kubemeta                    105   256  241 MiB  241 MiB  278 KiB      166  723 MiB  722 MiB  833 KiB      0    5.8 TiB            N/A          N/A    N/A         0 B          0 B
+   POOL                         ID   PGS   STORED   (DATA)   (OMAP)  OBJECTS     USED   (DATA)   (OMAP)  %USED  MAX AVAIL  QUOTA OBJECTS  QUOTA BYTES  QUOTA MAX OBJ SIZE  DIRTY  USED COMPR  UNDER COMPR
+   .mgr                         11     1  558 MiB  558 MiB      0 B      141  1.6 GiB  1.6 GiB      0 B      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   cephfs_meta                  13  1024  166 GiB  206 MiB  166 GiB   14.59M  499 GiB  618 MiB  498 GiB   2.74    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   cephfs_data                  14  1024      0 B      0 B      0 B    1.17G      0 B      0 B      0 B      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   cephfsECvol                  19  2048  2.8 PiB  2.8 PiB   17 KiB    1.81G  3.5 PiB  3.5 PiB   21 KiB  83.79    561 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   .nfs                         20    32  9.7 KiB  2.2 KiB  7.5 KiB       61  118 KiB   96 KiB   22 KiB      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   testbench                    71    32   12 GiB   12 GiB  2.3 KiB    3.14k   37 GiB   37 GiB  6.9 KiB      0    234 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   default.rgw.buckets.data     76  2048  482 TiB  482 TiB      0 B  132.09M  643 TiB  643 TiB      0 B  47.85    526 TiB            N/A          N/A                 N/A    N/A     312 MiB      623 MiB
+   .rgw.root                    97     1  1.4 KiB  1.4 KiB      0 B        4   48 KiB   48 KiB      0 B      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   default.rgw.log              98   256  3.6 KiB  3.6 KiB      0 B      209  408 KiB  408 KiB      0 B      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   default.rgw.control          99     1      0 B      0 B      0 B        8      0 B      0 B      0 B      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   default.rgw.meta            100   128  3.8 KiB  3.2 KiB    671 B       20  194 KiB  192 KiB  2.0 KiB      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   default.rgw.buckets.index   101   256  4.2 MiB      0 B  4.2 MiB       33   13 MiB      0 B   13 MiB      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   default.rgw.buckets.non-ec  102   128  5.6 MiB      0 B  5.6 MiB       13   17 MiB      0 B   17 MiB      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
+   kubedata                    104   256   63 GiB   63 GiB      0 B   17.65k  188 GiB  188 GiB      0 B   0.03    234 TiB            N/A       20 TiB              10 MiB    N/A         0 B          0 B
+   kubemeta                    105   256  241 MiB  241 MiB  278 KiB      166  723 MiB  722 MiB  833 KiB      0    5.8 TiB            N/A          N/A                 N/A    N/A         0 B          0 B
 
 
 
@@ -497,6 +497,7 @@ depending on the number of replicas, clones, and snapshots.
   to this pool.
 - **QUOTA OBJECTS:** The number of quota objects.
 - **QUOTA BYTES:** The number of bytes in the quota objects.
+- **QUOTA MAX OBJ SIZE:** The maximum size allowed for a single object in the pool.
 - **DIRTY:** The number of objects in the cache pool that have been written to
   the cache pool but have not yet been flushed to the base pool. This field is
   available only when cache tiering is in use.

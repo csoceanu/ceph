@@ -105,13 +105,13 @@ available space on the file system used by the Monitor
 database (normally ``/var/lib/ceph/<fsid>/mon.<monid>``) drops below the
 threshold :confval:`mon_data_avail_warn` (default: 30%).
 
-This alert might indicate that some other process or user on the system is
+This alert might indicate some other process or user on the system is
 filling up the file system used by the Monitor. It might also indicate that the
 Monitor database is too large (see ``MON_DISK_BIG`` below).  Another common
 scenario is that Ceph logging subsystem levels have been raised for
 troubleshooting purposes without subsequent return to default levels.  Ongoing
 verbose logging can easily fill up the files system containing ``/var/log``. If
-you trim logs that are currently open, remember to restart or instruct your
+ you trim logs that are currently open, remember to restart or instruct your
 syslog or other daemon to re-open the log file. Another common dynamic is
 that users or processes have written a large amount of data to ``/tmp``
 or ``/var/tmp``, which may be on the same filesystem.
@@ -627,6 +627,7 @@ If you opt to raise the pool quota, run the following commands:
 
    ceph osd pool set-quota <poolname> max_objects <num-objects>
    ceph osd pool set-quota <poolname> max_bytes <num-bytes>
+   ceph osd pool set-quota <poolname> max_object_size <size>
 
 If not, delete some existing data to reduce utilization.
 
@@ -675,7 +676,7 @@ To see how much space is free for BlueFS, run the following command:
    ceph daemon osd.123 bluestore bluefs device info
 
 This will output up to three values: ``BDEV_DB free``, ``BDEV_SLOW free``, and
-``bluestore max free``. ``BDEV_DB`` and ``BDEV_SLOW`` report the amount
+``bluestore max free``. ``BDEV_DB`` and ``BDEV_SLOW report the amount
 of space that has been acquired by BlueFS and is now considered free. The value
 ``bluestore max free`` indicates the ability of BlueStore to relinquish
 more space to BlueFS. It is normal for this value to differ from the amount of
@@ -1466,6 +1467,7 @@ forms:
 
    ceph osd pool set-quota <pool> max_bytes <bytes>
    ceph osd pool set-quota <pool> max_objects <objects>
+   ceph osd pool set-quota <pool> max_object_size <size>
 
 To disable a quota, set the quota value to ``0``.
 
@@ -1484,12 +1486,30 @@ forms:
 
    ceph osd pool set-quota <pool> max_bytes <bytes>
    ceph osd pool set-quota <pool> max_objects <objects>
+   ceph osd pool set-quota <pool> max_object_size <size>
 
 To disable a quota, set the quota value to 0.
 
 Other thresholds that can raise the two health checks above are
 ``mon_osd_nearfull_ratio`` and ``mon_osd_full_ratio``. For details and
 resolution, see :ref:`storage-capacity` and :ref:`no-free-drive-space`.
+
+POOL_OBJECT_SIZE_QUOTA
+______________________
+
+One or more pools have an object that is approaching or has exceeded the
+per-pool ``max_object_size`` quota. This health check is raised when an object's
+size reaches 85% of the configured limit, helping operators identify large
+objects before writes are rejected with an ``-EFBIG`` error.
+
+To adjust the ``max_object_size`` quota for a pool, run the following command:
+
+.. prompt:: bash $
+
+   ceph osd pool set-quota <poolname> max_object_size <size>
+
+To disable this health check, set the ``mon_pool_quota_max_object_size_warn``
+configuration option to ``false``.
 
 OBJECT_MISPLACED
 ________________
