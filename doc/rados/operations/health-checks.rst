@@ -105,7 +105,7 @@ available space on the file system used by the Monitor
 database (normally ``/var/lib/ceph/<fsid>/mon.<monid>``) drops below the
 threshold :confval:`mon_data_avail_warn` (default: 30%).
 
-This alert might indicate that some other process or user on the system is
+This alert might indicate some other process or user on the system is
 filling up the file system used by the Monitor. It might also indicate that the
 Monitor database is too large (see ``MON_DISK_BIG`` below).  Another common
 scenario is that Ceph logging subsystem levels have been raised for
@@ -630,6 +630,14 @@ If you opt to raise the pool quota, run the following commands:
 
 If not, delete some existing data to reduce utilization.
 
+POOL_OBJECT_SIZE_QUOTA
+______________________
+
+One or more pools have an object that is approaching the configured
+``max_object_size`` quota. This health check is raised when any object
+exceeds 85% of the configured limit. This alert is controlled by the
+:confval:`mon_pool_quota_max_object_size_warn` configuration option.
+
 BLUEFS_SPILLOVER
 ________________
 
@@ -711,6 +719,7 @@ following command:
 The fragmentation score is given in a [0-1] range:
 
 - [0.0 .. 0.4] tiny fragmentation
+- [0.4 .. 0.7] small, acceptable fragmentation
 - [0.4 .. 0.7] small, acceptable fragmentation
 - [0.7 .. 0.9] considerable, but safe fragmentation
 - [0.9 .. 1.0] severe fragmentation, might impact BlueFS' ability to get space from BlueStore
