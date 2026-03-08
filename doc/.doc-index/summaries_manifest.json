@@ -77,8 +77,8 @@
       "summary_file": "rados-operations-erasure-code.rst.summary.md"
     },
     "cephadm/install.rst": {
-      "hash": "303afafd827be5099964cd90f6857522bad176b357620c3403ee4ae2e51db7ba",
-      "generated": "2026-03-05T13:18:18.902789",
+      "hash": "3340a5cdbe747488a2038ea79328ae485b53395d4e61d053b54fdcdd0c111c96",
+      "generated": "2026-03-08T13:26:12.910353",
       "summary_file": "cephadm-install.rst.summary.md"
     },
     "rados/operations/crush-map.rst": {
@@ -762,5 +762,5 @@
       "summary_file": "dev-developer_guide-essentials.rst.summary.md"
     }
   },
-  "updated": "2026-03-05T13:57:50.170419"
+  "updated": "2026-03-08T13:26:12.910390"
 }
