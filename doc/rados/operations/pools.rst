@@ -335,6 +335,11 @@ of the following form:
 
    ceph osd pool stats [{pool-name}]
 
+To show the drain status for a specific pool, run the following command:
+
+.. prompt:: bash $
+
+   ceph osd pool drain-status {pool-name}
 
 Making a Snapshot of a Pool
 ===========================
@@ -606,6 +611,14 @@ You may set values for the following keys:
    :Type: Integer
    :Default: ``0``
 
+.. _drain_priority:
+
+.. describe:: drain_priority
+
+   :Description: Sets the priority for data drain during OSD removal. A higher value indicates that the pool should be drained first.
+   :Type: Integer
+   :Valid Range: ``0`` to ``100``
+   :Default: ``0``
 
 Getting Pool Values
 ===================
@@ -714,6 +727,13 @@ You may get values of the following keys:
 ``recovery_op_priority``
 
 :Description: See recovery_op_priority_.
+
+:Type: Integer
+
+
+``drain_priority``
+
+:Description: See drain_priority_.
 
 :Type: Integer
 
@@ -909,4 +929,3 @@ Here are the break downs of the argument:
 .. _Erasure Coding with Overwrites: ../erasure-code#erasure-coding-with-overwrites
 .. _Block Device Commands: ../../../rbd/rados-rbd-cmds/#create-a-block-device-pool
 .. _pgcalc: ../pgcalc
-

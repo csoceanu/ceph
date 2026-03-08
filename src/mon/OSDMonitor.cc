@@ -6684,6 +6684,46 @@ bool OSDMonitor::preprocess_command(MonOpRequestRef op)
       }
     }
     r = 0;
+  } else if (prefix == "osd pool drain-status") {
+    string pool_name;
+    cmd_getval(cmdmap, "pool", pool_name);
+
+    int64_t poolid = osdmap.lookup_pg_pool_name(pool_name);
+    if (poolid < 0) {
+      ceph_assert(poolid == -ENOENT);
+      ss << "unrecognized pool '" << pool_name << "'";
+      r = -ENOENT;
+      goto reply;
+    }
+    const pg_pool_t *p = osdmap.get_pg_pool(poolid);
+    const pool_stat_t* pstat = mon.mgrstatmon()->get_pool_stat(poolid);
+
+    if (f) {
+      f->open_object_section("drain_status");
+      f->dump_string("pool_name", pool_name);
+      f->dump_unsigned("pool_id", poolid);
+      f->dump_int("drain_priority", p->drain_priority);
+      f->dump_bool("drain_active", p->drain_priority > 0);
+      if (pstat) {
+        const object_stat_sum_t& sum = pstat->stats.sum;
+        f->dump_int("remaining_objects", sum.num_objects);
+        f->dump_int("remaining_bytes", sum.num_bytes);
+      }
+      f->close_section();
+      f->flush(rdata);
+    } else {
+      stringstream rs;
+      rs << "drain status for pool '" << pool_name << "':\n"
+         << "  drain priority : " << p->drain_priority << "\n"
+         << "  drain active   : " << (p->drain_priority > 0 ? "yes" : "no") << "\n";
+      if (pstat) {
+        const object_stat_sum_t& sum = pstat->stats.sum;
+        rs << "  remaining objs : " << sum.num_objects << "\n"
+           << "  remaining bytes: " << byte_u_t(sum.num_bytes) << "\n";
+      }
+      rdata.append(rs.str());
+    }
+    r = 0;
   } else if (prefix == "osd pool get-quota") {
     string pool_name;
     cmd_getval(cmdmap, "pool", pool_name);
@@ -9067,6 +9107,16 @@ int OSDMonitor::prepare_command_pool_set(const cmdmap_t& cmdmap,
       ss << "expecting value 'true', 'false', '0', or '1'";
       return -EINVAL;
     }
+  } else if (var == "drain_priority") {
+    if (interr.length()) {
+      ss << "error parsing integer value '" << val << "': " << interr;
+      return -EINVAL;
+    }
+    if (n < 0 || n > 100) {
+      ss << "drain_priority must be between 0 and 100";
+      return -EINVAL;
+    }
+    p.drain_priority = n;
   } else if (pool_opts_t::is_opt_name(var)) {
     bool unset = val == "unset";
     if (var == "compression_mode") {
