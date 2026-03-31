@@ -1541,6 +1541,7 @@ public:
 
   uint64_t quota_max_bytes = 0; ///< maximum number of bytes for this pool
   uint64_t quota_max_objects = 0; ///< maximum number of objects for this pool
+  float quota_warning_threshold = 0.8; ///< emit warning when usage exceeds this ratio (0.0-1.0, default 0.8)
 
   /*
    * Pool snaps (global to this pool).  These define a SnapContext for
@@ -1903,6 +1904,15 @@ public:
   }
   uint64_t get_quota_max_objects() {
     return quota_max_objects;
+  }
+
+  void set_quota_warning_threshold(float t) {
+    if (t < 0.0) t = 0.0;
+    if (t > 1.0) t = 1.0;
+    quota_warning_threshold = t;
+  }
+  float get_quota_warning_threshold() {
+    return quota_warning_threshold;
   }
 
   void set_last_force_op_resend(uint64_t t) {
