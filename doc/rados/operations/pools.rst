@@ -259,6 +259,15 @@ For example:
 To remove a quota, set its value to ``0``.  Note that you may set a quota only
 for bytes or only for RADOS objects, or you can set both.
 
+To configure the warning threshold at which a cluster health warning is
+emitted as a pool approaches its quota, run a command of the following form:
+
+.. prompt:: bash $
+
+   ceph osd pool set-quota {pool-name} warning_threshold {0-100}
+
+The default warning threshold is ``80`` (i.e., 80% of the quota).
+
 
 Deleting a Pool
 ===============
