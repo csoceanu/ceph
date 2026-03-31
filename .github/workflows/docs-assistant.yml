@@ -13,8 +13,8 @@ jobs:
   docs-assistant:
     runs-on: ubuntu-latest
     if: |
-      github.event.issue.pull_request &&
-      (contains(github.event.comment.body, '[review-docs]') ||
+      github.event.issue.pull_request && 
+      (contains(github.event.comment.body, '[review-docs]') || 
        contains(github.event.comment.body, '[update-docs]'))
     steps:
       - name: Get PR information
@@ -26,16 +26,16 @@ jobs:
           PR_NUMBER=${{ github.event.issue.number }}
           echo "Extracting PR information for PR #$PR_NUMBER"
           PR_DATA=$(gh api repos/${{ github.repository }}/pulls/$PR_NUMBER)
-
+          
           HEAD_REF=$(echo "$PR_DATA" | jq -r '.head.ref')
           HEAD_REPO=$(echo "$PR_DATA" | jq -r '.head.repo.full_name')
           BASE_REF=$(echo "$PR_DATA" | jq -r '.base.ref')
-
+          
           echo "head_ref=$HEAD_REF" >> $GITHUB_OUTPUT
           echo "head_repo=$HEAD_REPO" >> $GITHUB_OUTPUT
           echo "base_ref=$BASE_REF" >> $GITHUB_OUTPUT
           echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
-
+          
           echo "PR info extracted: #$PR_NUMBER, base: $BASE_REF, head: $HEAD_REF"
 
       - name: Checkout PR Code
@@ -45,11 +45,13 @@ jobs:
           ref: ${{ steps.pr_info.outputs.head_ref || github.ref }}
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
-
+          
       - name: Documentation Assistant
         uses: csoceanu/code-to-docs@main
         with:
-          gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
+          model-api-base: ${{ secrets.MODEL_API_BASE }}
+          model-api-key: ${{ secrets.MODEL_API_KEY }}
+          model-name: ${{ secrets.MODEL_NAME }}
           docs-repo-url: ${{ secrets.DOCS_REPO_URL }}
           github-token: ${{ secrets.GH_PAT }}
           pr-number: ${{ github.event.issue.number }}
