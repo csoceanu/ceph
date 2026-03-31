@@ -1,105 +1,118 @@
 # RADOS Documentation Index
 
 ## Overview
-This documentation covers the Reliable Autonomic Distributed Object Store (RADOS), the heart of the Ceph storage cluster. It provides technical guidance on cluster architecture, daemon configuration (Monitors, OSDs, Managers), data placement strategies (CRUSH, Placement Groups), and the various APIs (librados, SQLite VFS) used to interact directly with the object store.
+This documentation area covers RADOS (Reliable Autonomic Distributed Object Store), the core foundation of the Ceph Storage Cluster. It provides comprehensive guides on architectural daemons (OSDs, Monitors, Managers), cluster configuration (networking, authentication, storage backends), operational management (CRUSH maps, pools, placement groups), and the `librados` API for application development.
 
 ## Files Summary
-*   **rados/index.rst**: The entry point for RADOS documentation, outlining the cluster foundation and core daemon types.
-*   **rados/api/librados-intro.rst**: A high-level guide to the `librados` API, including installation for C, C++, Python, Java, and PHP.
-*   **rados/api/libradospp.rst**: Placeholder for the C++ specific `librados` documentation.
-*   **rados/api/objclass-sdk.rst**: Describes the SDK for building Ceph Object Classes (CLS) out-of-tree.
-*   **rados/api/python.rst**: Detailed reference for the `rados` Python module and its object-oriented interface.
-*   **rados/api/index.rst**: Index of all available Storage Cluster APIs.
-*   **rados/api/libcephsqlite.rst**: Documentation for the SQLite VFS that allows storing SQLite databases directly on RADOS.
-*   **rados/api/librados.rst**: Reference for the low-level C `librados` API and asynchronous I/O operations.
-*   **rados/configuration/msgr2.rst**: Explains the Messenger v2 protocol, including encryption, secure modes, and port 3300.
-*   **rados/configuration/mclock-config-ref.rst**: Detailed guide on the mClock scheduler for Quality of Service (QoS) management.
-*   **rados/configuration/journal-ref.rst**: Reference for legacy Filestore journaling settings (deprecated).
-*   **rados/configuration/general-config-ref.rst**: Reference for general daemon settings like admin sockets and file descriptor limits.
-*   **rados/configuration/mon-config-ref.rst**: Comprehensive guide on Monitor configuration, Paxos, and quorum requirements.
-*   **rados/configuration/bluestore-config-ref.rst**: Technical reference for the BlueStore backend, including cache tuning and device management.
-*   **rados/configuration/storage-devices.rst**: Overview of OSD backends (BlueStore vs. Filestore) and hardware roles.
-*   **rados/configuration/filestore-config-ref.rst**: Reference for legacy Filestore settings (deprecated in Reef).
-*   **rados/configuration/ceph-conf.rst**: Guide on the global configuration system, metavariables, and the Monitor config database.
-*   **rados/configuration/network-config-ref.rst**: Guidelines for public and cluster network configuration, including IP table rules.
+
+### Core Configuration
+*   **rados/index.rst**: High-level entry point for the Ceph Storage Cluster documentation.
+*   **rados/configuration/ceph-conf.rst**: Detailed explanation of the `ceph.conf` structure, configuration sources (central database, file, env), and metavariable expansion.
+*   **rados/configuration/common.rst**: Standard settings for node names, data paths, and cluster naming conventions.
+*   **rados/configuration/general-config-ref.rst**: Reference for admin sockets, PID files, and file descriptor limits.
+
+### Networking & Protocol
+*   **rados/configuration/network-config-ref.rst**: Guide to public and cluster network separation, port ranges, and firewall (IP Tables) requirements.
+*   **rados/configuration/msgr2.rst**: Documentation for the Messenger v2 protocol, including encryption, compression, and port 3300 requirements.
+*   **rados/configuration/mon-lookup-dns.rst**: Instructions for using DNS SRV records for monitor discovery.
+
+### Storage Backends & Devices
+*   **rados/configuration/storage-devices.rst**: Overview of OSD storage devices and the transition from FileStore to BlueStore.
+*   **rados/configuration/bluestore-config-ref.rst**: Configuration for BlueStore devices (WAL, DB), cache autotuning, compression, and checksums.
+*   **rados/configuration/bluestore-migration.rst**: Strategies for migrating legacy FileStore OSDs to BlueStore.
+*   **rados/configuration/filestore-config-ref.rst**: Legacy configuration for FileStore (deprecated).
+*   **rados/configuration/journal-ref.rst**: Reference for FileStore journaling settings (deprecated).
+*   **rados/operations/devices.rst**: Management of physical devices, LED control, and failure prediction (SMART).
+
+### Authentication & Authorization
 *   **rados/configuration/auth-config-ref.rst**: Reference for CephX authentication, keyrings, and message signing.
-*   **rados/configuration/mon-lookup-dns.rst**: Instructions for using DNS SRV records for Monitor discovery.
-*   **rados/configuration/osd-config-ref.rst**: Reference for OSD daemon configuration, scrubbing, and operations.
-*   **rados/configuration/index.rst**: Navigation index for all RADOS configuration categories.
-*   **rados/configuration/common.rst**: Common settings for nodes, heartbeats, and basic cluster identification.
-*   **rados/configuration/mon-osd-interaction.rst**: Explains how OSDs and Monitors monitor each other through heartbeats and reports.
-*   **rados/configuration/pool-pg-config-ref.rst**: Reference for Pool, Placement Group, and CRUSH default settings.
-*   **rados/troubleshooting/troubleshooting-pg.rst**: Guide for resolving stuck PGs, unfound objects, and data inconsistencies.
-*   **rados/troubleshooting/troubleshooting-mon.rst**: Steps for diagnosing Monitor quorum issues and clock skews.
-*   **rados/troubleshooting/community.rst**: Information on Ceph mailing lists and community support channels.
-*   **rados/troubleshooting/log-and-debug.rst**: Instructions for adjusting subsystem log levels and using log rotation.
-*   **rados/troubleshooting/memory-profiling.rst**: Guide for using TCMalloc and Valgrind Massif for memory analysis.
-*   **rados/troubleshooting/troubleshooting-osd.rst**: Diagnostics for slow OSDs, disk failures, and fullness issues.
-*   **rados/troubleshooting/cpu-profiling.rst**: Instructions for using `oprofile` to analyze daemon CPU usage.
-*   **rados/troubleshooting/index.rst**: Navigation index for RADOS troubleshooting guides.
-*   **rados/man/index.rst**: Index for RADOS-related manual pages.
-*   **rados/operations/erasure-code-jerasure.rst**: Details for the Jerasure erasure code plugin and techniques.
-*   **rados/operations/user-management.rst**: Guide for CephX user creation, capabilities (caps), and authorization.
-*   **rados/operations/balancer.rst**: Instructions for the Manager balancer module (upmap, crush-compat modes).
-*   **rados/operations/pools.rst**: Detailed management guide for pools, including quotas and snapshots.
-*   **rados/operations/monitoring.rst**: High-level cluster monitoring commands and health status interpretation.
-*   **rados/operations/erasure-code-lrc.rst**: Documentation for the Locally Repairable Code (LRC) plugin.
-*   **rados/operations/cache-tiering.rst**: Guide for cache tiering configurations (deprecated in Reef).
-*   **rados/operations/erasure-code.rst**: Core concepts of erasure-coded pools, overhead, and overwrites.
-*   **rados/operations/erasure-code-profile.rst**: How to create and manage erasure code profiles.
-*   **rados/operations/change-mon-elections.rst**: Explains Monitor election strategies (classic, disallow, connectivity).
-*   **rados/operations/devices.rst**: Management of physical devices, health monitoring, and failure prediction.
-*   **rados/operations/add-or-rm-osds.rst**: Manual procedures for expanding or shrinking OSD count.
-*   **rados/operations/crush-map.rst**: In-depth explanation of the CRUSH algorithm, buckets, and hierarchy.
-*   **rados/operations/crush-map-edits.rst**: Guide for manual CRUSH map decompilation and editing.
-*   **rados/operations/stretch-mode.rst**: Configuration for multi-site stretch clusters and tiebreaker monitors.
-*   **rados/operations/erasure-code-shec.rst**: Details for the Shingled Erasure Code (SHEC) plugin.
-*   **rados/operations/upmap.rst**: Technical guide for `pg-upmap` and offline OSD map optimization.
-*   **rados/operations/data-placement.rst**: Overview of the relationship between Pools, PGs, and CRUSH.
-*   **rados/operations/pg-states.rst**: Definitions for all possible Placement Group states (e.g., active, clean, peering).
-*   **rados/operations/control.rst**: Reference for administrative control commands.
-*   **rados/operations/monitoring-osd-pg.rst**: Detailed diagnostics for OSD and PG health.
-*   **rados/operations/placement-groups.rst**: Detailed guide on PG autoscaling, target sizes, and bulk flags.
-*   **rados/operations/index.rst**: Navigation index for cluster operations and data placement.
-*   **rados/operations/pg-concepts.rst**: Glossary of core PG terms (Acting Set, Up Set, Peering).
-*   **rados/operations/health-checks.rst**: Comprehensive list of health check identifiers and their meanings.
-*   **rados/operations/read-balancer.rst**: Guide for the primary/read balancer introduced in Reef.
-*   **rados/operations/erasure-code-clay.rst**: Documentation for the CLAY (coupled-layer) erasure code plugin.
-*   **rados/operations/add-or-rm-mons.rst**: Manual procedures for adding or removing Monitors and changing IPs.
-*   **rados/operations/erasure-code-isa.rst**: Reference for the ISA-L erasure code plugin.
-*   **rados/operations/bluestore-migration.rst**: Strategies for migrating Filestore OSDs to BlueStore.
-*   **rados/operations/operating.rst**: Basics of starting/stopping daemons using systemd.
-*   **rados/operations/pgcalc/index.rst**: The underlying logic for the PG calculator tool.
+*   **rados/operations/user-management.rst**: Guide to managing users, capabilities (caps), and RADOS namespaces.
+
+### Cluster Topology & Placement
+*   **rados/operations/crush-map.rst**: Core documentation for the CRUSH algorithm, hierarchy (buckets), and rules.
+*   **rados/operations/crush-map-edits.rst**: Advanced guide for manual CRUSH map decompilation and editing.
+*   **rados/operations/data-placement.rst**: High-level overview of how pools, PGs, and CRUSH interact.
+*   **rados/operations/stretch-mode.rst**: Configuration for clusters spanning multiple data centers with tiebreaker monitors.
+*   **rados/operations/upmap.rst**: Using `pg-upmap` for manual data distribution fine-tuning.
+*   **rados/operations/balancer.rst**: Management of the `ceph-mgr` balancer module for PG distribution.
+*   **rados/operations/read-balancer.rst**: Operating the primary affinity balancer to optimize read performance.
+
+### Pool & Placement Group (PG) Management
+*   **rados/operations/pools.rst**: Comprehensive guide to creating pools, setting replicas, quotas, and application associations.
+*   **rados/operations/placement-groups.rst**: Detailed management of PGs, including the PG autoscaler (`pg_autoscale_mode`).
+*   **rados/operations/pg-concepts.rst**: Glossary and concepts including Peering, Acting Sets, and Up Sets.
+*   **rados/operations/pg-states.rst**: Exhaustive list of PG states (clean, degraded, peering, etc.).
+*   **rados/operations/pgcalc/index.rst**: Logic and formulas used for calculating optimal PG counts.
+
+### Erasure Coding (EC)
+*   **rados/operations/erasure-code.rst**: Basics of EC pools, overwrites, and optimizations.
+*   **rados/operations/erasure-code-profile.rst**: How to manage and set EC profiles.
+*   **rados/operations/erasure-code-[jerasure, isa, lrc, shec, clay].rst**: Specific plugin documentation for different EC techniques.
+
+### Cluster Operations & Monitoring
+*   **rados/configuration/mon-config-ref.rst**: Monitor-specific configuration, Paxos consensus, and quorum requirements.
+*   **rados/configuration/osd-config-ref.rst**: OSD-specific settings, including scrubbing and DMClock QoS.
+*   **rados/configuration/mclock-config-ref.rst**: Detailed reference for mClock-based QoS profiles (Balanced, High Client Ops, etc.).
+*   **rados/configuration/mon-osd-interaction.rst**: Internal heartbeat and failure reporting mechanisms between OSDs and Monitors.
+*   **rados/operations/operating.rst**: Basics of starting/stopping daemons via `systemd`.
+*   **rados/operations/control.rst**: CLI command reference for managing cluster subsystems.
+*   **rados/operations/monitoring.rst**: High-level tools for checking cluster health and usage.
+*   **rados/operations/monitoring-osd-pg.rst**: Techniques for monitoring OSD and PG specific health.
+*   **rados/operations/health-checks.rst**: List and explanation of all cluster health check codes (e.g., OSD_DOWN).
+*   **rados/operations/cache-tiering.rst**: Configuration for cache tiers (deprecated).
+*   **rados/operations/change-mon-elections.rst**: Configuring monitor election strategies (Classic, Disallow, Connectivity).
+
+### Development & APIs
+*   **rados/api/index.rst**: Entry point for RADOS developers.
+*   **rados/api/librados-intro.rst**: Introduction to the `librados` library for C, C++, Python, Java, and PHP.
+*   **rados/api/librados.rst**: C language specific API bindings and examples.
+*   **rados/api/python.rst**: Python language specific API bindings and usage.
+*   **rados/api/libcephsqlite.rst**: Documentation for the SQLite VFS implementation on top of RADOS.
+*   **rados/api/objclass-sdk.rst**: SDK for creating custom Object Classes (CLS) to extend Ceph.
+
+### Troubleshooting
+*   **rados/troubleshooting/index.rst**: Troubleshooting entry point.
+*   **rados/troubleshooting/log-and-debug.rst**: Adjusting log levels and interpreting debug output.
+*   **rados/troubleshooting/troubleshooting-mon.rst**: Resolving quorum, clock skew, and monmap issues.
+*   **rados/troubleshooting/troubleshooting-osd.rst**: Resolving OSD startup failures, full OSDs, and performance bottlenecks.
+*   **rados/troubleshooting/troubleshooting-pg.rst**: Resolving peering failures and unfound objects.
+*   **rados/troubleshooting/memory-profiling.rst**: Instructions for heap profiling with TCMalloc.
+*   **rados/troubleshooting/cpu-profiling.rst**: Instructions for CPU profiling with OProfile.
 
 ## Code Changes That Would Require Documentation Updates
-*   **Messenger Protocol**: Modifications to `msgr2` wire format, new encryption modes, or changing default ports (3300/6789).
-*   **OSD Backends**: Removal of Filestore code, changes to BlueStore's RocksDB sharding, or introducing new object store types.
-*   **mClock Scheduler**: Adjustments to QoS profiles (`balanced`, `high_client_ops`), or changing the way IOPS capacities are determined.
-*   **CRUSH Algorithm**: Adding new bucket types, changing the `straw2` implementation, or adding new `step` types to CRUSH rules.
-*   **Monitor Election Logic**: New election strategies beyond `connectivity` or changes to Paxos synchronization roles.
-*   **PG Autoscaler**: Modifying the scaling threshold (default 3.0), changing the power-of-two rounding logic, or new pool flags (like `bulk`).
-*   **Health Checks**: Adding or removing health check IDs in `mon` or `mgr`, or changing warning thresholds (e.g., `mon_data_size_warn`).
-*   **API Changes**: Adding new functions to `librados.h`, changing the `rados_t` handle structure, or updating the SQLite VFS interface.
-*   **Authentication**: Changes to CephX reclaim behavior, or introducing new auth profiles.
-*   **Erasure Coding**: Adding new plugins, updating the CLAY/SHEC math, or changing default `k` and `m` values.
-*   **Balancer**: Changes to `upmap` or `read-balancer` logic, or new Manager balancer modules.
-*   **Stretch Mode**: Changing how tiebreaker monitors are handled or adding support for EC pools in stretch mode.
+
+*   **Config System:** Adding, renaming, or deprecating global or daemon-specific configuration options in `Common.cc` or `config_opts.h`.
+*   **CLI Changes:** Modifying the output format of `ceph status`, `ceph osd df`, or `ceph pg dump` (affects monitoring/troubleshooting docs).
+*   **New Daemons:** Introduction of new daemon types beyond MON, OSD, MGR, and MDS.
+*   **Protocol Versions:** Updates to the Messenger protocol (msgr2) or additions of new connection/encryption modes.
+*   **Storage Engines:** Significant changes to BlueStore (e.g., new device types, sharding logic) or the introduction of a new backend like SeaStore.
+*   **mClock/QoS:** Changes to the default mClock profiles or the introduction of new QoS scheduling buckets.
+*   **CRUSH Algorithm:** Adding new bucket types, straw2 algorithm changes, or new CRUSH rule steps.
+*   **Erasure Coding:** New EC plugins or changes to existing ones (e.g., CLAY, SHEC).
+*   **Health Checks:** Adding new health check identifiers (identifiers in `HealthMonitor.cc`) or changing the thresholds for existing ones.
+*   **API Changes:** Modifications to the `librados` public headers (`librados.h`, `librados.hpp`) or the Python/Java/PHP wrappers.
+*   **Stretch Mode:** Changes to the election strategies or the logic for degraded stretch mode peering.
+*   **Manager Modules:** Updates to core modules like `balancer`, `pg_autoscaler`, or `devicehealth`.
 
 ## Key Technical Concepts
-*   **Daemons**: `ceph-mon`, `ceph-osd`, `ceph-mgr`, `ceph-mds`, `radosgw`.
-*   **Storage Backend**: BlueStore, Filestore, RocksDB, WAL, DB device, `osd_memory_target`.
-*   **Data Placement**: CRUSH, Placement Group (PG), Pool, `pg_num`, `pgp_num`, `upmap`.
-*   **Networking**: Public Network, Cluster Network, msgr2, `mon_host`.
-*   **Availability**: Quorum, Paxos, Peering, Acting Set, Up Set, Tiebreaker Monitor.
-*   **Scheduling**: mClock, DMClock, IOPS, QoS Profiles.
-*   **Erasure Coding**: `k` (data chunks), `m` (coding chunks), Jerasure, ISA-L, SHEC, CLAY, LRC.
-*   **Security**: CephX, Keyring, Capabilities (caps), Message Signing.
-*   **Monitoring**: `ceph status`, `ceph health`, Cluster Log, `df`, `osd tree`.
+
+*   **Daemons:** OSD (Object Storage Daemon), MON (Monitor), MGR (Manager), MDS (Metadata Server).
+*   **Data Structures:** Cluster Map, Monmap, OSDMap, PGMap, CRUSH Map.
+*   **Placement Logic:** CRUSH (Controlled Replication Under Scalable Hashing), Placement Group (PG), Pool, Namespace, Device Class, Primary Affinity.
+*   **OSD Backend:** BlueStore, WAL (Write-Ahead Log), DB device, RocksDB sharding, FileStore (Legacy).
+*   **Network:** Public Network, Cluster Network, msgr2 protocol, port 3300, port 6789.
+*   **State Machine:** Peering, Recovery, Backfill, Scrubbing (Light/Deep), Quorum, Epoch.
+*   **QoS:** DMClock, mClock profiles (balanced, high_client_ops).
+*   **Security:** CephX, Keyring, Capabilities (Caps).
+*   **Operations:** `pg_autoscale_mode`, `upmap`, `pg-upmap-primary`, `stretch-mode`.
+*   **Health Codes:** `OSD_DOWN`, `MON_DOWN`, `PG_DEGRADED`, `OSD_FULL`, `MON_CLOCK_SKEW`.
 
 ## Related Components
-*   **RBD (Ceph Block Device)**: Relies on RADOS for image storage and snapshots.
-*   **CephFS (Ceph File System)**: Uses RADOS for data and metadata (via MDS).
-*   **RGW (RADOS Gateway)**: Translates S3/Swift requests into librados calls.
-*   **Cephadm**: The orchestrator used to deploy and manage the RADOS daemons documented here.
-*   **RocksDB**: The underlying key/value store for BlueStore and Monitor metadata.
-*   **TCMalloc**: The memory allocator used by Ceph daemons (important for memory profiling).
+
+*   **Cephadm/Orchestrator:** Used for deployment (referenced in bootstrap and device management).
+*   **CephFS:** Uses RADOS for data and metadata storage.
+*   **RBD (Ceph Block Device):** Built on top of `librados`.
+*   **RGW (RADOS Gateway):** Uses RADOS for object storage and index/metadata (namespaces, omap).
+*   **RocksDB:** Embedded within BlueStore and Monitors for metadata storage.
+*   **Systemd:** Used for daemon management.
+*   **Smartmontools:** Used for device health scraping.
