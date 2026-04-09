@@ -399,8 +399,48 @@ void HealthMonitor::tick()
   if (check_mutes()) {
     changed = true;
   }
+  check_slow_osd_recovery();
   if (changed) {
     propose_pending();
+  }
+}
+
+void HealthMonitor::check_slow_osd_recovery()
+{
+  if (!mon.is_leader()) {
+    return;
+  }
+
+  auto min_rate = g_conf().get_val<double>("osd_recovery_min_rate_mb");
+  if (min_rate <= 0) {
+    return;  // check disabled
+  }
+
+  const auto& osdmap = mon.osdmon()->osdmap;
+  std::vector<std::string> slow_osds;
+
+  for (int i = 0; i < osdmap.get_max_osd(); i++) {
+    if (!osdmap.is_up(i)) {
+      continue;
+    }
+    // Check recovery rate from PG stats
+    auto recovery_rate_mb = mon.pgservice->get_osd_recovery_rate_mb(i);
+    if (recovery_rate_mb >= 0 && recovery_rate_mb < min_rate) {
+      std::ostringstream ss;
+      ss << "osd." << i << " at " << recovery_rate_mb << " MB/s";
+      slow_osds.push_back(ss.str());
+    }
+  }
+
+  if (!slow_osds.empty()) {
+    auto& checks = leader_checks;
+    std::ostringstream ss;
+    ss << slow_osds.size() << " OSD(s) recovering slowly";
+    auto& d = checks.add("SLOW_OSD_RECOVERY", HEALTH_WARN, ss.str(),
+                          slow_osds.size());
+    for (const auto& osd_msg : slow_osds) {
+      d.detail.push_back(osd_msg);
+    }
   }
 }
 

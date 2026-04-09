@@ -2,6 +2,18 @@
 ---
 
 options:
+- name: osd_recovery_min_rate_mb
+  type: float
+  level: advanced
+  desc: minimum acceptable OSD recovery rate in MB/s before triggering SLOW_OSD_RECOVERY health warning
+  long_desc: When OSD recovery rate drops below this threshold, a HEALTH_WARN is emitted
+    to alert administrators. Set to 0 to disable the check.
+  default: 10.0
+  see_also:
+  - osd_max_backfills
+  - osd_recovery_sleep
+  flags:
+  - runtime
 - name: osd_numa_prefer_iface
   type: bool
   level: advanced

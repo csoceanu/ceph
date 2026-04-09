@@ -58,6 +58,7 @@ public:
   void encode_full(MonitorDBStore::TransactionRef t) override { }
 
   void tick() override;
+  void check_slow_osd_recovery();
 
   void gather_all_health_checks(health_check_map_t *all);
   health_status_t get_health_status(
