@@ -1550,6 +1550,20 @@ To see the location of a specific OSD, run a command of the following form:
 
    ceph osd find osd.<id>
 
+SLOW_OSD_RECOVERY
+_________________
+
+One or more OSDs are recovering at a rate slower than the threshold defined
+by :confval:`osd_recovery_min_rate_mb` (default: 10.0). This health check
+is intended to alert administrators to recovery rates that might be
+unacceptably low.
+
+To disable this check, set the threshold to 0:
+
+.. prompt:: bash $
+
+   ceph config set global osd_recovery_min_rate_mb 0
+
 PG_NOT_SCRUBBED
 _______________
 

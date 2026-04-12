@@ -93,7 +93,7 @@ How Ceph Calculates Data Usage
 The ``usage`` value reflects the *actual* amount of raw storage used. The ``xxx
 GB / xxx GB`` value means the amount available (the lesser number) of the
 overall storage capacity of the cluster. The notional number reflects the size
-of the stored data before it is replicated, cloned or snapshotted. Therefore,
+of the stored data before it is replicated, cloned or snaphotted. Therefore,
 the amount of data actually stored typically exceeds the notional amount
 stored, because Ceph creates replicas of the data and may also use storage
 capacity for cloning and snapshotting.
@@ -294,6 +294,26 @@ following command to the mgr:
             "last": 0.791
         },
         ...
+
+OSD Recovery Performance Checks
+-------------------------------
+
+Ceph monitors the recovery rate of OSDs. If an OSD's recovery rate drops below a
+specified threshold, a health check (a ``HEALTH_WARN``) is raised.
+
+By default, a recovery rate that drops below 10 MB/s raises a ``SLOW_OSD_RECOVERY``
+health check. For example::
+
+    HEALTH_WARN 1 OSD(s) recovering slowly
+
+In the output of the ``ceph health detail`` command, you can see which OSDs are
+recovering slowly and at what rate::
+
+    [WRN] SLOW_OSD_RECOVERY: 1 OSD(s) recovering slowly
+        osd.0 at 5.0 MB/s
+
+The threshold is controlled by the ``osd_recovery_min_rate_mb`` configuration
+option. Setting this value to ``0`` disables the check.
 
 .. _rados-monitoring-muting-health-checks:
 
