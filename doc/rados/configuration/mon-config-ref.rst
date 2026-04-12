@@ -298,6 +298,7 @@ by setting it in the ``[mon]`` section of the configuration file.
 .. confval:: mon_health_to_clog
 .. confval:: mon_health_to_clog_tick_interval
 .. confval:: mon_health_to_clog_interval
+.. confval:: mon_pg_imbalance_threshold
 
 .. index:: Ceph Storage Cluster; capacity planning, Ceph Monitor; capacity planning
 

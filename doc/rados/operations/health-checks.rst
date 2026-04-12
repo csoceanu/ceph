@@ -1349,6 +1349,27 @@ For more information, see :ref:`choosing-number-of-placement-groups` and
 :ref:`pg-autoscaler`.
 
 
+PG_IMBALANCE
+____________
+
+The distribution of Placement Groups (PGs) across OSDs is significantly
+unbalanced. This health check is raised when the number of PGs on any OSD
+deviates from the cluster average by more than the threshold defined by
+:confval:`mon_pg_imbalance_threshold` (default: 0.30, or 30%).
+
+An unbalanced PG distribution can lead to suboptimal data distribution,
+where some OSDs approach their capacity limits while others remain
+underutilized, potentially affecting performance and cluster stability.
+
+To adjust the threshold, run the following command:
+
+.. prompt:: bash #
+
+   ceph config set global mon_pg_imbalance_threshold <fraction>
+
+Setting the threshold to 0 disables this health check.
+
+
 POOL_TARGET_SIZE_BYTES_OVERCOMMITTED
 ____________________________________
 

@@ -295,6 +295,22 @@ following command to the mgr:
         },
         ...
 
+PG Distribution Checks
+----------------------
+
+Ceph monitors the distribution of placement groups (PGs) across OSDs. If the
+number of PGs on any OSD deviates from the cluster average by more than a
+specified threshold, a ``PG_IMBALANCE`` health warning is raised.
+
+By default, a deviation of more than 30% triggers this warning. Here is an
+example of the output from the ``ceph health detail`` command::
+
+    [WRN] PG_IMBALANCE: PG distribution is unbalanced: osd.1 deviates 35.0% from mean (threshold: 30.0%)
+        average PGs per OSD: 100.0, worst deviation: osd.1
+
+The threshold is controlled by the ``mon_pg_imbalance_threshold`` configuration
+setting (default is ``0.30``). To disable this check, set the value to ``0``.
+
 .. _rados-monitoring-muting-health-checks:
 
 

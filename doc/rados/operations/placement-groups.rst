@@ -466,7 +466,7 @@ copies of all objects in the PG.
 An OSD assigned to a PG is not owned exclusively by that PG; rather, the OSD is
 shared with other PGs either from the same pool or from other pools. In our
 example, OSD #2 is shared by Placement Group #1 and Placement Group #2. If OSD
-#2 fails, then Placement Group #2 must restore copies of objects (by making use
+#2 fails, then Placement Group #1 and Placement Group #2 must restore copies of objects (by making use
 of OSD #3).
 
 When the number of PGs increases, several consequences ensue. The new PGs are
@@ -537,7 +537,7 @@ In such a cluster, the number of PGs has almost no effect on data durability.
 Whether there are 128 PGs per OSD or 8192 PGs per OSD, the recovery will be no
 slower or faster.
 
-However, an increase in the number of OSDs can increase the speed of recovery.
+But an increase in the number of OSDs can increase the speed of recovery.
 Suppose our Ceph cluster is expanded from 10 OSDs to 20 OSDs.  Each OSD now
 participates in only ~75 PGs rather than ~150 PGs. All 19 remaining OSDs will
 still be required to replicate the same number of objects in order to recover.
@@ -604,15 +604,11 @@ As long as there are one or two orders of magnitude more PGs than OSDs, the
 distribution is likely to be even. For example: 256 PGs for 3 OSDs, 512 PGs for
 10 OSDs, or 1024 PGs for 10 OSDs.
 
-However, uneven data distribution can emerge due to factors other than the
-ratio of PGs to OSDs. For example, since CRUSH does not take into account the
-size of the RADOS objects, the presence of a few very large RADOS objects can
-create an imbalance. Suppose that one million 4 KB RADOS objects totaling 4 GB
-are evenly distributed among 1024 PGs on 10 OSDs. These RADOS objects will
-consume 4 GB / 10 = 400 MB on each OSD. If a single 400 MB RADOS object is then
-added to the pool, the three OSDs supporting the PG in which the RADOS object
-has been placed will each be filled with 400 MB + 400 MB = 800 MB but the seven
-other OSDs will still contain only 400 MB.
+If the distribution of PGs across OSDs is uneven, the cluster can raise a
+``PG_IMBALANCE`` health warning. This is controlled by the
+``mon_pg_imbalance_threshold`` configuration option (default: ``0.30``). If the
+PG count on any OSD deviates from the cluster average by more than this
+fraction, the warning is triggered. Set to ``0`` to disable this check.
 
 .. _resource usage:
 
