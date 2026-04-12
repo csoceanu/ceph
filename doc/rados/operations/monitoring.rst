@@ -295,6 +295,20 @@ following command to the mgr:
         },
         ...
 
+PG Imbalance
+------------
+
+If the number of PGs on any OSD deviates from the cluster average by more
+than the threshold defined in ``mon_pg_imbalance_threshold`` (default:
+``0.30``), a ``PG_IMBALANCE`` health warning is raised. For example::
+
+    HEALTH_WARN PG distribution is unbalanced: osd.10 deviates 35.2% from mean (threshold: 30.0%)
+
+The ``ceph health detail`` command provides additional information,
+including the average number of PGs per OSD and the OSD with the greatest
+deviation. To disable this check, set ``mon_pg_imbalance_threshold`` to
+``0``.
+
 .. _rados-monitoring-muting-health-checks:
 
 

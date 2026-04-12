@@ -1314,6 +1314,20 @@ help. To do so, run a command of the following form:
 
 For more information, see :ref:`choosing-number-of-placement-groups`.
 
+PG_IMBALANCE
+____________
+
+The distribution of Placement Groups (PGs) across OSDs is uneven. This health
+check is raised when the number of PGs on one or more OSDs deviates from the
+cluster average by more than the fraction specified by
+:confval:`mon_pg_imbalance_threshold` (default: 0.30, or 30%).
+
+To disable this warning, set the threshold to 0:
+
+.. prompt:: bash #
+
+   ceph config set global mon_pg_imbalance_threshold 0
+
 POOL_TOO_MANY_PGS
 _________________
 
