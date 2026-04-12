@@ -337,7 +337,7 @@ This health check might indicate a bug: please open a Ceph bug report if you
 think you have encountered a bug.
 
 However, if you believe the error is transient, you may restart your Manager
-daemon(s) or use ``ceph mgr fail`` on the active daemon in order to force
+daemon(s) or use ``ceph mgr "fail"`` on the active daemon in order to force
 failover to another daemon.
 
 OSDs
@@ -606,6 +606,21 @@ unreachable OSDs from communicating with Ceph clients properly.
 
 Even though these unreachable OSDs are in ``up`` state, RADOS clients
 will hang till TCP timeout before erroring out due to this inconsistency.
+
+SLOW_OSD_RECOVERY
+_________________
+
+One or more OSDs are recovering at a rate below the minimum acceptable
+threshold. This health check is raised if the OSD recovery rate drops below
+the value of :confval:`osd_recovery_min_rate_mb` (default: 10.0 MB/s).
+Setting this value to 0 will disable the check.
+
+To see the current recovery rate for the affected OSD(s), run the following
+command:
+
+.. prompt:: bash #
+
+   ceph health detail
 
 POOL_FULL
 _________

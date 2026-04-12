@@ -438,6 +438,7 @@ perform well in a degraded state.
 .. confval:: osd_recovery_sleep_degraded_ssd
 .. confval:: osd_recovery_sleep_degraded_hybrid
 .. confval:: osd_recovery_priority
+.. confval:: osd_recovery_min_rate_mb
 
 Tiering
 =======
