@@ -2836,6 +2836,35 @@ void PGMap::get_health_checks(
     }
   }
 
+  // PG_IMBALANCE - warn when PG distribution across OSDs is highly uneven
+  auto pg_imbalance_threshold = cct->_conf.get_val<double>("mon_pg_imbalance_threshold");
+  if (num_in > 1 && pg_imbalance_threshold > 0 && sum_pg_up > 0) {
+    auto avg_per_osd = static_cast<double>(sum_pg_up) / num_in;
+    double max_deviation = 0;
+    int worst_osd = -1;
+    for (int i = 0; i < osdmap.get_max_osd(); i++) {
+      if (!osdmap.is_in(i)) continue;
+      auto pg_count = pg_map.get_num_pg_by_osd(i);
+      double deviation = std::abs(pg_count - avg_per_osd) / avg_per_osd;
+      if (deviation > max_deviation) {
+        max_deviation = deviation;
+        worst_osd = i;
+      }
+    }
+    if (max_deviation > pg_imbalance_threshold) {
+      ostringstream ss;
+      ss << "PG distribution is unbalanced: osd." << worst_osd
+         << " deviates " << std::fixed << std::setprecision(1)
+         << (max_deviation * 100) << "% from mean"
+         << " (threshold: " << (pg_imbalance_threshold * 100) << "%)";
+      auto& d = checks->add("PG_IMBALANCE", HEALTH_WARN, ss.str(), 1);
+      ostringstream detail;
+      detail << "average PGs per OSD: " << std::fixed << std::setprecision(1)
+             << avg_per_osd << ", worst deviation: osd." << worst_osd;
+      d.detail.push_back(detail.str());
+    }
+  }
+
   // TOO_FEW_OSDS
   auto warn_too_few_osds = cct->_conf.get_val<bool>("mon_warn_on_too_few_osds");
   auto osd_pool_default_size = cct->_conf.get_val<uint64_t>("osd_pool_default_size");
