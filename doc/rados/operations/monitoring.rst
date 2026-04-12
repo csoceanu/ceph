@@ -295,6 +295,26 @@ following command to the mgr:
         },
         ...
 
+Recovery Performance Checks
+---------------------------
+
+Ceph monitors the recovery rate of OSDs. If the recovery rate of an OSD falls
+below a configurable threshold, a health check (a ``HEALTH_WARN``) is raised.
+
+By default, a recovery rate that falls below 10 MB/s raises a
+``SLOW_OSD_RECOVERY`` health warning. For example::
+
+    HEALTH_WARN 1 OSD(s) recovering slowly
+
+In the output of the ``ceph health detail`` command, you can see which OSDs are
+recovering slowly and at what rate. For example::
+
+    [WRN] SLOW_OSD_RECOVERY: 1 OSD(s) recovering slowly
+        osd.0 at 5 MB/s
+
+The threshold for this check is controlled by the ``osd_recovery_min_rate_mb``
+configuration option. Set this to ``0`` to disable the check.
+
 .. _rados-monitoring-muting-health-checks:
 
 

@@ -984,6 +984,21 @@ this may be done for specific OSDs or a given mask, for example:
    ceph config set class:ssd bluestore_slow_ops_warn_lifetime 300
    ceph config set class:ssd bluestore_slow_ops_warn_threshold 5
 
+SLOW_OSD_RECOVERY
+_________________
+
+One or more OSDs are recovering at a rate slower than the threshold defined by
+:confval:`osd_recovery_min_rate_mb` (default: 10.0 MB/s). When the OSD recovery
+rate drops below this threshold, a health warning is emitted.
+
+To adjust the threshold, run the following command:
+
+.. prompt:: bash #
+
+   ceph config set global osd_recovery_min_rate_mb <value>
+
+To disable this check, set the value to 0.
+
 Device health
 -------------
 
