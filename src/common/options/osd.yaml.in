@@ -2,6 +2,21 @@
 ---
 
 options:
+- name: osd_scrub_priority
+  type: int
+  level: advanced
+  desc: set the priority for scrub operations relative to client IO
+  long_desc: Controls the IO scheduling priority for scrub operations. Lower values
+    give scrubs lower priority, reducing impact on client IO. Range 1-63, where 1 is
+    lowest priority and 63 is highest.
+  default: 5
+  min: 1
+  max: 63
+  see_also:
+  - osd_scrub_sleep
+  - osd_max_scrubs
+  flags:
+  - runtime
 - name: osd_numa_prefer_iface
   type: bool
   level: advanced
