@@ -48,7 +48,7 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           
       - name: Documentation Assistant
-        uses: csoceanu/code-to-docs@refactor/split-monolith-add-tests
+        uses: csoceanu/code-to-docs@main
         with:
           model-api-base: ${{ secrets.MODEL_API_BASE }}
           model-api-key: ${{ secrets.MODEL_API_KEY }}
