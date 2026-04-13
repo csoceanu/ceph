@@ -468,6 +468,7 @@ void HealthMonitor::gather_all_health_checks(health_check_map_t *all)
   for (auto& svc : mon.paxos_service) {
     all->merge(svc->get_health_checks());
   }
+  dout(20) << __func__ << " " << all->checks.size() << " health checks gathered" << dendl;
 }
 
 health_status_t HealthMonitor::get_health_status(

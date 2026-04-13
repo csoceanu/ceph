@@ -15,6 +15,9 @@ readable in much the same way as a typical variable name. It is intended to
 enable tools (for example, monitoring and UIs) to make sense of health checks
 and present them in a way that reflects their meaning.
 
+Each health check includes a severity level (HEALTH_WARN or HEALTH_ERR) and
+a detailed message explaining the issue and how to resolve it.
+
 This page lists the health checks that are raised by the monitor and manager
 daemons. In addition to these, you may see health checks that originate
 from CephFS MDS daemons (see :ref:`cephfs-health-messages`), and health checks
