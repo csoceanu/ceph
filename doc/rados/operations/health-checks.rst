@@ -1090,6 +1090,29 @@ To see the state of a specific problematic PG, run a command of the following fo
 
    ceph tell <pgid> query
 
+PG_IMBALANCE
+____________
+
+The distribution of placement groups (PGs) across OSDs is significantly
+uneven. This health check is raised if the number of PGs on any OSD
+deviates from the cluster average by more than the threshold defined
+by :confval:`mon_pg_imbalance_threshold` (default: 0.30, or 30%).
+
+For detailed information about which OSDs are affected, run the following
+command:
+
+.. prompt:: bash $
+
+   ceph health detail
+
+To adjust the warning threshold, run the following command:
+
+.. prompt:: bash #
+
+   ceph config set global mon_pg_imbalance_threshold <value>
+
+Setting the threshold to 0 disables this health check.
+
 PG_DEGRADED
 ___________
 
