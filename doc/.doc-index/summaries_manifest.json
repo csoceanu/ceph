@@ -232,8 +232,8 @@
       "summary_file": "rados-configuration-network-config-ref.rst.summary.md"
     },
     "rados/operations/health-checks.rst": {
-      "hash": "0fa130ab853fe5be51471f6be9cbb4d10aead79dc0b5bcc5f1580e3f318c5da6",
-      "generated": "2026-04-14T11:51:14.363238",
+      "hash": "f94831a6f53637025b552681252e4b6294648b68f8990b226c32d381269a7d1a",
+      "generated": "2026-04-14T12:01:14.200570",
       "summary_file": "rados-operations-health-checks.rst.summary.md"
     },
     "man/8/ceph.rst": {
@@ -762,5 +762,5 @@
       "summary_file": "dev-developer_guide-essentials.rst.summary.md"
     }
   },
-  "updated": "2026-04-14T11:51:14.363282"
+  "updated": "2026-04-14T12:01:14.200608"
 }
