@@ -245,6 +245,10 @@ of the PG. These values can be important in a few cases:
 - The cluster is reaching its ``near full ratio`` or ``full ratio``.
 - Data is not being distributed across the cluster due to an error in the
   CRUSH configuration.
+- The PG distribution across OSDs is unbalanced. If the number of PGs on any
+  OSD deviates from the cluster average by more than the fraction specified
+  in ``mon_pg_imbalance_threshold`` (default: ``0.30``), a ``PG_IMBALANCE``
+  health warning is raised. Set to ``0`` to disable.
 
 
 .. topic:: Placement Group IDs
