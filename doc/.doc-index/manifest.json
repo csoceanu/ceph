@@ -424,13 +424,13 @@
       }
     },
     "rados": {
-      "built": "2026-04-14T11:34:18.966603",
+      "built": "2026-04-14T13:46:24.486797",
       "doc_hashes": {
         "rados/index.rst": "9d9f3cc40c715dd6c9347abe459fda2e3a06041bba8ef7377db72413c772c12e",
         "rados/man/index.rst": "2ff1d0156e21bc5d8d94a35e7d23a8d14e4ef64d7ecacac46a3f49d0631b2cd6",
         "rados/operations/add-or-rm-osds.rst": "8092d63863475676b5999b5ff233105eee6dab218eb92ec35067bfd6fac80cca",
         "rados/operations/erasure-code-shec.rst": "61575d77e3ea53d3f6de3bb7d5f1ca670ca862134e8dcab94e706af527c639d5",
-        "rados/operations/health-checks.rst": "0fa130ab853fe5be51471f6be9cbb4d10aead79dc0b5bcc5f1580e3f318c5da6",
+        "rados/operations/health-checks.rst": "f94831a6f53637025b552681252e4b6294648b68f8990b226c32d381269a7d1a",
         "rados/operations/erasure-code-lrc.rst": "2539472aedb6cdb1a407dc0b7158067c385255b0fadc122a2421e64a112957dc",
         "rados/operations/bluestore-migration.rst": "28c7dce80e86f7761ae63e3a701dfda49ea2c638f7d0cf27ad58816ad702d865",
         "rados/operations/change-mon-elections.rst": "8971be1aeda9f76176b490f192b4011eb2a2a3e2c69ddf6e320d9728fb2de17f",
@@ -673,5 +673,5 @@
       }
     }
   },
-  "updated": "2026-04-14T11:34:18.988735"
+  "updated": "2026-04-14T13:46:24.508466"
 }
