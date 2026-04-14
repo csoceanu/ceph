@@ -607,6 +607,14 @@ unreachable OSDs from communicating with Ceph clients properly.
 Even though these unreachable OSDs are in ``up`` state, RADOS clients
 will hang till TCP timeout before erroring out due to this inconsistency.
 
+SLOW_OSD_RECOVERY
+_________________
+
+One or more OSDs are recovering at a rate slower than the threshold defined by
+:confval:`osd_recovery_min_rate_mb` (default: 10.0 MB/s). This warning is
+intended to alert administrators to slow recovery progress. To disable this
+check, set the threshold to 0.
+
 POOL_FULL
 _________
 

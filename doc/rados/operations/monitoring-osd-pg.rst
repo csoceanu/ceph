@@ -393,7 +393,9 @@ timeout, because multiple OSDs might fail, restart, and re-peer at staggered
 rates.  The ``osd_recovery_max_active`` setting limits the number of recovery
 requests an OSD can entertain simultaneously, in order to prevent the OSD from
 failing to serve.  The ``osd_recovery_max_chunk`` setting limits the size of
-the recovered data chunks, in order to prevent network congestion.
+the recovered data chunks, in order to prevent network congestion.  The
+``osd_recovery_min_rate_mb`` setting specifies the minimum recovery rate per
+OSD before a ``SLOW_OSD_RECOVERY`` health warning is triggered.
 
 
 Back Filling
