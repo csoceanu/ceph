@@ -1531,6 +1531,16 @@ One or more OSD requests or monitor requests are taking a long time to process.
 This alert might be an indication of extreme load, a slow storage device, or a
 software bug.
 
+If a single OSD accumulates more than
+:confval:`mon_osd_slow_op_escalation_threshold` consecutive slow ops within the
+warning interval, the health check is escalated from ``HEALTH_WARN`` to
+``HEALTH_ERR``. This escalation distinguishes persistent performance problems
+from transient load spikes. Set the threshold to ``0`` to disable escalation:
+
+.. prompt:: bash $
+
+   ceph config set mon mon_osd_slow_op_escalation_threshold 0
+
 To query the request queue for the daemon that is causing the slowdown, run the
 following command from the daemon's host:
 

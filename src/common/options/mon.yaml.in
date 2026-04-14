@@ -1063,6 +1063,22 @@ options:
   services:
   - mgr
   with_legacy: true
+- name: mon_osd_slow_op_escalation_threshold
+  type: uint
+  level: advanced
+  desc: escalate SLOW_OPS from HEALTH_WARN to HEALTH_ERR if an OSD has more than
+    this many consecutive slow ops within the warn interval
+  long_desc: When the number of consecutive slow ops on a single OSD exceeds this
+    threshold, the health check severity is escalated from HEALTH_WARN to HEALTH_ERR.
+    This helps operators distinguish between transient load spikes and persistent
+    performance issues that require immediate attention. Set to 0 to disable
+    escalation.
+  default: 50
+  services:
+  - mon
+  see_also:
+  - mon_osd_warn_op_age
+  with_legacy: true
 - name: mon_osd_warn_num_repaired
   type: uint
   level: advanced
