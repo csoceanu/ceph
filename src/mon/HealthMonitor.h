@@ -37,6 +37,10 @@ class HealthMonitor : public PaxosService
   std::map<std::pair<std::string, std::string>, ceph::coarse_mono_clock::time_point> current_mon_netsplits;
   std::map<std::string,health_mute_t> pending_mutes;
 
+  // Maintenance mode tracking
+  utime_t maintenance_start_time;
+  bool check_maintenance_mode();
+
 public:
   HealthMonitor(Monitor &m, Paxos &p, const std::string& service_name);
 

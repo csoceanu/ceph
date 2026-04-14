@@ -66,6 +66,14 @@ class CephadmServe:
         self.log = logger
         self.last_certificates_check: Optional[datetime.datetime] = None
 
+    def _is_maintenance_mode(self) -> bool:
+        """Check if cluster-wide maintenance mode is active."""
+        try:
+            val = self.mgr.get_module_option_ex('mon', 'mon_maintenance_mode', 'false')
+            return str(val).lower() in ('true', '1', 'yes')
+        except Exception:
+            return False
+
     def serve(self) -> None:
         """
         The main loop of cephadm.
@@ -97,7 +105,11 @@ class CephadmServe:
                         self.log.info('Checking dashboard <-> RGW credentials')
                         self.mgr.remote('dashboard', 'set_rgw_credentials')
 
-                if not self.mgr.paused:
+                if self._is_maintenance_mode():
+                    self.log.info('Cluster maintenance mode active — deferring '
+                                 'non-essential daemon operations')
+
+                if not self.mgr.paused and not self._is_maintenance_mode():
                     self._run_async_actions()
 
                     removal_queue_result = self.mgr.to_remove_osds.process_removal_queue()
