@@ -399,9 +399,58 @@ void HealthMonitor::tick()
   if (check_mutes()) {
     changed = true;
   }
+  if (check_maintenance_mode()) {
+    changed = true;
+  }
   if (changed) {
     propose_pending();
   }
+}
+
+bool HealthMonitor::check_maintenance_mode()
+{
+  bool changed = false;
+  bool maintenance_enabled = g_conf().get_val<bool>("mon_maintenance_mode");
+
+  auto it = leader_checks.checks.find("CLUSTER_MAINTENANCE_MODE");
+  bool was_active = (it != leader_checks.checks.end());
+
+  if (maintenance_enabled && !was_active) {
+    // Entering maintenance mode
+    auto max_hours = g_conf().get_val<uint64_t>("mon_maintenance_mode_max_duration_hours");
+    health_check_t check(HEALTH_WARN, "Cluster is in maintenance mode");
+    check.summary = "Cluster maintenance mode is active";
+    check.detail.push_back("Non-critical health warnings are suppressed");
+    check.detail.push_back("Scrubbing and rebalancing are paused");
+    if (max_hours > 0) {
+      check.detail.push_back(
+        "Maintenance mode will auto-expire in " + stringify(max_hours) + " hours");
+    }
+    leader_checks.add("CLUSTER_MAINTENANCE_MODE", check);
+    mon.clog->info() << "Cluster entering maintenance mode";
+    maintenance_start_time = ceph_clock_now();
+    changed = true;
+  } else if (!maintenance_enabled && was_active) {
+    // Exiting maintenance mode
+    leader_checks.remove("CLUSTER_MAINTENANCE_MODE");
+    mon.clog->info() << "Cluster exiting maintenance mode";
+    changed = true;
+  } else if (maintenance_enabled && was_active) {
+    // Check auto-expiry
+    auto max_hours = g_conf().get_val<uint64_t>("mon_maintenance_mode_max_duration_hours");
+    if (max_hours > 0) {
+      auto elapsed = ceph_clock_now() - maintenance_start_time;
+      if (elapsed > (double)(max_hours * 3600)) {
+        mon.clog->warn() << "Maintenance mode auto-expired after "
+                         << max_hours << " hours";
+        // Auto-disable maintenance mode
+        leader_checks.remove("CLUSTER_MAINTENANCE_MODE");
+        changed = true;
+      }
+    }
+  }
+
+  return changed;
 }
 
 bool HealthMonitor::check_mutes()
