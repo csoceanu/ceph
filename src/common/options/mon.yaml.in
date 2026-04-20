@@ -2,6 +2,19 @@
 ---
 
 options:
+- name: mon_pg_imbalance_threshold
+  type: float
+  level: advanced
+  desc: threshold for PG imbalance warning as a fraction of the mean PG count per OSD
+  long_desc: When the number of PGs on any OSD deviates from the cluster average
+    by more than this fraction, a PG_IMBALANCE health warning is raised. For example,
+    a value of 0.30 means a 30% deviation triggers the warning. Set to 0 to disable.
+  default: 0.30
+  see_also:
+  - mon_pg_warn_min_per_osd
+  - mon_max_pg_per_osd
+  flags:
+  - runtime
 - name: osd_crush_update_weight_set
   type: bool
   level: advanced
