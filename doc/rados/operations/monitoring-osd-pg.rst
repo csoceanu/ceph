@@ -66,6 +66,15 @@ the cluster will **NOT** show ``HEALTH OK``:
    the OSDs are in the process of peering.
 #. You have just added or removed an OSD.
 #. You have just have modified your cluster map.
+#. The cluster is in maintenance mode.
+
+When ``mon_maintenance_mode`` is enabled, the cluster suppresses non-critical 
+health warnings (``HEALTH_WARN``) and pauses background operations (scrubbing, 
+deep-scrubbing, and rebalancing). A ``CLUSTER_MAINTENANCE_MODE`` health alert 
+is raised while this mode is active. Maintenance mode automatically expires 
+after the duration set in ``mon_maintenance_mode_max_duration_hours`` 
+(default: 24). The ``mon_maintenance_mode_suppress_warnings`` option 
+controls whether non-critical alerts are hidden from the health summary.
 
 Checking to see if OSDs are ``up`` and running is an important aspect of monitoring them:
 whenever the cluster is up and running, every OSD that is ``in`` the cluster should also

@@ -1055,6 +1055,50 @@ options:
   see_also:
   - mon_osd_down_out_interval
   with_legacy: true
+- name: mon_maintenance_mode
+  type: bool
+  level: advanced
+  desc: enable cluster-wide maintenance mode that suppresses non-critical health
+    warnings and pauses background operations
+  long_desc: When enabled, the cluster enters a maintenance state that suppresses
+    non-critical health warnings (HEALTH_WARN), pauses scrubbing, deep-scrubbing,
+    and rebalancing, and raises a CLUSTER_MAINTENANCE_MODE informational alert.
+    The dashboard displays a maintenance banner and the cephadm orchestrator defers
+    non-essential daemon restarts. Use this during planned maintenance windows to
+    reduce noise and prevent disruptive background operations.
+  default: false
+  services:
+  - mon
+  - mgr
+  see_also:
+  - mon_maintenance_mode_max_duration_hours
+  with_legacy: true
+- name: mon_maintenance_mode_max_duration_hours
+  type: uint
+  level: advanced
+  desc: maximum duration in hours for maintenance mode before auto-disabling
+  long_desc: Safety limit that automatically disables maintenance mode after the
+    specified number of hours. Prevents operators from forgetting to exit maintenance
+    mode. Set to 0 to disable the auto-expiry (not recommended for production).
+  default: 24
+  services:
+  - mon
+  see_also:
+  - mon_maintenance_mode
+  with_legacy: true
+- name: mon_maintenance_mode_suppress_warnings
+  type: bool
+  level: advanced
+  desc: suppress non-critical HEALTH_WARN alerts during maintenance mode
+  long_desc: When true and maintenance mode is active, non-critical HEALTH_WARN
+    alerts are suppressed from the health summary. Critical alerts (HEALTH_ERR)
+    are never suppressed. The suppressed warnings are still visible via
+    ceph health detail.
+  default: true
+  services:
+  - mon
+  see_also:
+  - mon_maintenance_mode
 - name: mon_osd_warn_op_age
   type: float
   level: advanced

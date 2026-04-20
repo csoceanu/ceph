@@ -376,6 +376,35 @@ For example, suppose that there is one OSD down and the health check is muted. I
 one or more additional OSDs go down, then the health mute disappears. This behavior occurs in any health check with a threshold value.
 
 
+.. _rados-monitoring-maintenance-mode:
+
+
+Maintenance Mode
+----------------
+
+Maintenance mode is a cluster-wide state that suppresses non-critical health
+warnings (``HEALTH_WARN``) and pauses background operations such as scrubbing
+and rebalancing. While active, the cluster raises a
+``CLUSTER_MAINTENANCE_MODE`` health check.
+
+Maintenance mode is controlled via the following configuration options:
+
+- ``mon_maintenance_mode``: Enable or disable maintenance mode (default: ``false``).
+- ``mon_maintenance_mode_max_duration_hours``: The number of hours before
+  maintenance mode is automatically disabled (default: ``24``).
+- ``mon_maintenance_mode_suppress_warnings``: Whether to suppress non-critical
+  health warnings while in maintenance mode (default: ``true``).
+
+To enable maintenance mode:
+
+.. prompt:: bash #
+
+   ceph config set mon mon_maintenance_mode true
+
+While in maintenance mode, suppressed warnings remain visible via the
+``ceph health detail`` command.
+
+
 .. _rados-monitoring-pool-usage:
 
 Checking a Cluster's Usage Stats

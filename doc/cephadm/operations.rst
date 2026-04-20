@@ -305,6 +305,33 @@ Resume cephadm work by running the following command:
 
   ceph orch resume
 
+CLUSTER_MAINTENANCE_MODE
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+This indicates that cluster-wide maintenance mode is active (the
+``mon_maintenance_mode`` option is ``true``). In this mode, the cluster
+suppresses non-critical health warnings (HEALTH_WARN), pauses scrubbing,
+deep-scrubbing, and rebalancing, and the cephadm orchestrator defers
+non-essential daemon restarts. Critical alerts (HEALTH_ERR) are never
+suppressed.
+
+* Enable maintenance mode:
+
+  .. prompt:: bash #
+
+    ceph config set mon mon_maintenance_mode true
+
+* Disable maintenance mode:
+
+  .. prompt:: bash #
+
+    ceph config set mon mon_maintenance_mode false
+
+* Maintenance mode automatically expires after a period of time (default: 24
+  hours), which is controlled by the ``mon_maintenance_mode_max_duration_hours``
+  option. Non-critical health warning suppression is controlled by the
+  ``mon_maintenance_mode_suppress_warnings`` option (default: true).
+
 .. _cephadm-stray-host:
 
 CEPHADM_STRAY_HOST

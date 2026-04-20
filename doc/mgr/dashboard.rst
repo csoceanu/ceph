@@ -119,6 +119,9 @@ The Ceph Dashboard offers the following monitoring and management capabilities:
   enable this functionality.
 * **Ceph Manager Modules**: Enable and disable Ceph Manager modules, manage
   module-specific configuration settings.
+* **Cluster Maintenance Mode**: Enable and manage cluster-wide maintenance mode,
+  which suppresses non-critical health warnings and pauses background
+  operations like scrubbing and rebalancing.
 
 Overview of the Dashboard Landing Page
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

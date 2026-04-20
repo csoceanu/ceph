@@ -99,3 +99,51 @@ class ClusterUpgrade(RESTController):
     def stop(self) -> str:
         orch = OrchClient.instance()
         return orch.upgrades.stop()
+
+
+@APIRouter('/cluster/maintenance', Scope.CONFIG_OPT)
+@APIDoc("Cluster Maintenance Mode API", "Maintenance")
+class ClusterMaintenance(RESTController):
+    @RESTController.MethodMap(version=APIVersion.EXPERIMENTAL)
+    @EndpointDoc("Get maintenance mode status")
+    @ReadPermission
+    def list(self) -> Dict:
+        """Return current maintenance mode status and configuration."""
+        from ..services.ceph_service import CephService
+        mon_config = CephService.get_config('mon_maintenance_mode')
+        max_duration = CephService.get_config('mon_maintenance_mode_max_duration_hours')
+        suppress = CephService.get_config('mon_maintenance_mode_suppress_warnings')
+        return {
+            'enabled': str_to_bool(mon_config),
+            'max_duration_hours': int(max_duration) if max_duration else 24,
+            'suppress_warnings': str_to_bool(suppress),
+        }
+
+    @Endpoint('POST')
+    @EndpointDoc("Enable cluster maintenance mode",
+                 parameters={
+                     'max_duration_hours': (int, 'Maximum duration in hours (0=no limit)'),
+                     'suppress_warnings': (bool, 'Suppress non-critical warnings'),
+                 })
+    @CreatePermission
+    def enable(self, max_duration_hours: Optional[int] = None,
+               suppress_warnings: Optional[bool] = None) -> Dict:
+        """Enable maintenance mode with optional parameter overrides."""
+        from ..services.ceph_service import CephService
+        if max_duration_hours is not None:
+            CephService.set_config('mon_maintenance_mode_max_duration_hours',
+                                   str(max_duration_hours))
+        if suppress_warnings is not None:
+            CephService.set_config('mon_maintenance_mode_suppress_warnings',
+                                   str(suppress_warnings).lower())
+        CephService.set_config('mon_maintenance_mode', 'true')
+        return {'status': 'maintenance mode enabled'}
+
+    @Endpoint('POST')
+    @EndpointDoc("Disable cluster maintenance mode")
+    @CreatePermission
+    def disable(self) -> Dict:
+        """Disable maintenance mode and resume normal operations."""
+        from ..services.ceph_service import CephService
+        CephService.set_config('mon_maintenance_mode', 'false')
+        return {'status': 'maintenance mode disabled'}
