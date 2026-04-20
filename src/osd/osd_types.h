@@ -1542,6 +1542,8 @@ public:
   uint64_t quota_max_bytes = 0; ///< maximum number of bytes for this pool
   uint64_t quota_max_objects = 0; ///< maximum number of objects for this pool
 
+  int32_t drain_priority = 0;   ///< priority for data drain during OSD removal (0 = default, higher = drain first)
+
   /*
    * Pool snaps (global to this pool).  These define a SnapContext for
    * the pool, unless the client manually specifies an alternate
