@@ -7392,6 +7392,27 @@ bool OSDMonitor::update_pools_status()
       (pool.quota_max_bytes > 0 && (uint64_t)sum.num_bytes >= pool.quota_max_bytes) ||
       (pool.quota_max_objects > 0 && (uint64_t)sum.num_objects >= pool.quota_max_objects);
 
+    // Check warning threshold before full
+    float warn_thresh = pool.quota_warning_threshold;
+    if (warn_thresh > 0 && !pool_is_full) {
+      bool approaching_bytes = pool.quota_max_bytes > 0 &&
+        (uint64_t)sum.num_bytes >= (uint64_t)(pool.quota_max_bytes * warn_thresh);
+      bool approaching_objects = pool.quota_max_objects > 0 &&
+        (uint64_t)sum.num_objects >= (uint64_t)(pool.quota_max_objects * warn_thresh);
+      if (approaching_bytes) {
+        mon.clog->warn() << "pool '" << pool_name << "' is approaching quota"
+                         << " (" << byte_u_t(sum.num_bytes) << " of "
+                         << byte_u_t(pool.quota_max_bytes) << " bytes, "
+                         << (int)(warn_thresh * 100) << "% threshold)";
+      }
+      if (approaching_objects) {
+        mon.clog->warn() << "pool '" << pool_name << "' is approaching quota"
+                         << " (" << sum.num_objects << " of "
+                         << pool.quota_max_objects << " objects, "
+                         << (int)(warn_thresh * 100) << "% threshold)";
+      }
+    }
+
     if (pool.has_flag(pg_pool_t::FLAG_FULL_QUOTA)) {
       if (pool_is_full)
         continue;
@@ -14419,8 +14440,8 @@ bool OSDMonitor::prepare_command_impl(MonOpRequestRef op,
 
     string field;
     cmd_getval(cmdmap, "field", field);
-    if (field != "max_objects" && field != "max_bytes") {
-      ss << "unrecognized field '" << field << "'; should be 'max_bytes' or 'max_objects'";
+    if (field != "max_objects" && field != "max_bytes" && field != "warning_threshold") {
+      ss << "unrecognized field '" << field << "'; should be 'max_bytes', 'max_objects', or 'warning_threshold'";
       err = -EINVAL;
       goto reply_no_propose;
     }
@@ -14448,6 +14469,9 @@ bool OSDMonitor::prepare_command_impl(MonOpRequestRef op,
       pi->quota_max_objects = value;
     } else if (field == "max_bytes") {
       pi->quota_max_bytes = value;
+    } else if (field == "warning_threshold") {
+      float threshold = static_cast<float>(value) / 100.0;
+      pi->set_quota_warning_threshold(threshold);
     } else {
       ceph_abort_msg("unrecognized option");
     }
