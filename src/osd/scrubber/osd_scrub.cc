@@ -354,8 +354,22 @@ std::chrono::milliseconds OsdScrub::scrub_sleep_time(
   const milliseconds regular_sleep_period =
       milliseconds{int64_t(std::max(0.0, 1'000 * conf->osd_scrub_sleep))};
 
+  // Adjust sleep time based on scrub priority setting.
+  // Higher priority (closer to 63) means shorter sleep intervals.
+  // Lower priority (closer to 1) means longer sleep to reduce client IO impact.
+  auto priority = conf->get_val<int64_t>("osd_scrub_priority");
+  double priority_factor = 1.0 - (static_cast<double>(priority - 1) / 62.0);
+  const milliseconds priority_adjusted_sleep =
+      milliseconds{int64_t(regular_sleep_period.count() * (1.0 + priority_factor))};
+
+  dout(20) << fmt::format(
+		  "scrub_sleep_time: priority={} factor={:.2f} base={}ms adjusted={}ms",
+		  priority, priority_factor,
+		  regular_sleep_period.count(), priority_adjusted_sleep.count())
+	   << dendl;
+
   if (!scrub_respects_ext_sleep || scrub_time_permit(t_now)) {
-    return regular_sleep_period;
+    return priority_adjusted_sleep;
   }
 
   // relevant if scrubbing started during allowed time, but continued into
@@ -364,10 +378,10 @@ std::chrono::milliseconds OsdScrub::scrub_sleep_time(
       milliseconds{int64_t(1'000 * conf->osd_scrub_extended_sleep)};
   dout(20) << fmt::format(
 		  "scrubbing started during allowed time, but continued into "
-		  "forbidden hours. regular_sleep_period {} extended_sleep {}",
-		  regular_sleep_period, extended_sleep)
+		  "forbidden hours. priority_adjusted_sleep {} extended_sleep {}",
+		  priority_adjusted_sleep, extended_sleep)
 	   << dendl;
-  return std::max(extended_sleep, regular_sleep_period);
+  return std::max(extended_sleep, priority_adjusted_sleep);
 }
 
 
