@@ -9050,6 +9050,18 @@ int PrimaryLogPG::prepare_transaction(OpContext *ctx)
     }
   }
 
+  // Check per-pool max_object_size quota
+  if (pool.info.quota_max_object_size > 0) {
+    uint64_t obj_size = ctx->obs->oi.size;
+    if (obj_size > pool.info.quota_max_object_size) {
+      dout(10) << __func__ << " object " << ctx->obs->oi.soid
+               << " size " << obj_size
+               << " exceeds pool max_object_size quota "
+               << pool.info.quota_max_object_size << dendl;
+      return -EFBIG;
+    }
+  }
+
   const hobject_t& soid = ctx->obs->oi.soid;
   // clone, if necessary
   if (soid.snap == CEPH_NOSNAP)

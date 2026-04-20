@@ -1541,6 +1541,7 @@ public:
 
   uint64_t quota_max_bytes = 0; ///< maximum number of bytes for this pool
   uint64_t quota_max_objects = 0; ///< maximum number of objects for this pool
+  uint64_t quota_max_object_size = 0; ///< maximum size of a single object in this pool (bytes)
 
   /*
    * Pool snaps (global to this pool).  These define a SnapContext for
@@ -1903,6 +1904,13 @@ public:
   }
   uint64_t get_quota_max_objects() {
     return quota_max_objects;
+  }
+
+  void set_quota_max_object_size(uint64_t m) {
+    quota_max_object_size = m;
+  }
+  uint64_t get_quota_max_object_size() {
+    return quota_max_object_size;
   }
 
   void set_last_force_op_resend(uint64_t t) {
